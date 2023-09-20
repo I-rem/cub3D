@@ -16,12 +16,10 @@
 # endif
 # include <stdlib.h>
 # include <unistd.h>
+# include "Libft/libft.h"
 
 char	*ft_strjoin2(char *s1, char *s2);
 int		result_len(char *stash);
-int		ft_strlen(char *stash);
 char	*get_next_line(int fd);
-char	*ft_strjoin(char *s1, char *s2);
 int		check_newline(char *s);
-char	*ft_strdup(char *s1);
 #endif

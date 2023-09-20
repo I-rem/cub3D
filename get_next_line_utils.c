@@ -24,63 +24,6 @@ int	result_len(char *stash)
 	return (len);
 }
 
-int	ft_strlen(char *stash)
-{
-	int	len;
-
-	len = 0;
-	while (stash[len] != '\0')
-		len++;
-	return (len);
-}
-
-char	*ft_strdup(char *s1)
-{
-	char	*p;
-	int		len;
-
-	len = ft_strlen(s1);
-	p = (char *) malloc(len + 1);
-	if (!p)
-		return (NULL);
-	len = 0;
-	while (s1[len] != '\0')
-	{
-		p[len] = s1[len];
-		len++;
-	}
-	p[len] = '\0';
-	return (p);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*joined;
-	int		i;
-	int		j;
-
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	if (s1 == NULL)
-		s1 = ft_strdup("\0");
-	if (s2 == NULL)
-		s2 = ft_strdup("\0");
-	joined = malloc(sizeof(char) * (ft_strlen((char *)s1) + ft_strlen(s2) + 1));
-	if (!joined)
-		return (NULL);
-	i = 0;
-	while (s1[i] != '\0')
-	{
-		joined[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j] != '\0')
-		joined[i++] = s2[j++];
-	joined[i] = '\0';
-	return (joined);
-}
-
 int	check_newline(char *s)
 {
 	int	i;
@@ -92,4 +35,31 @@ int	check_newline(char *s)
 		return (1);
 	else
 		return (0);
+}
+
+char	*ft_strjoin2(char *s1, char *s2)
+{
+	char	*return_str;
+	size_t	i;
+	size_t	j;
+
+	return_str = malloc (sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!return_str)
+	{
+		free (return_str);
+		return_str = NULL;
+		free(s1);
+		s1 = NULL;
+		return (NULL);
+	}
+	i = -1;
+	j = 0;
+	while (s1[++i])
+		return_str[i] = s1[i];
+	while (s2[j])
+		return_str[i++] = s2[j++];
+	return_str[i] = '\0';
+	free (s1);
+	s1 = NULL;
+	return (return_str);
 }

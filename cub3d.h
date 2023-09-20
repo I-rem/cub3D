@@ -2,12 +2,15 @@
 #define CUB3D_H
 # include "mlx_linux/mlx.h"
 # include "get_next_line.h"
+# include "Libft/libft.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-#include <sys/types.h>
-#include <string.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <string.h>
 # define WINDOW_WIDTH 10000
 # define WINDOW_HEIGHT 10000
 # define COIN "textures/chest_golden_open_full.xpm"

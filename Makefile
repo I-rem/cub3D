@@ -8,21 +8,27 @@ OBJS := $(SRCS:.c=.o)
 RM := rm -f
 UNAME := $(shell uname)
 
+# Directory where libft.a is located
+LIBFT_DIR := Libft
+
+# Name of the libft library
+LIBFT := $(LIBFT_DIR)/libft.a
+
 ifeq ($(UNAME), Darwin)
-$(NAME): ${OBJS}
+$(NAME): ${OBJS} $(LIBFT)
     @echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
     @ $(MAKE) -C mlx all >/dev/null 2>&1
     @ cp ./mlx/libmlx.a .
-    $(CC) $(CFLAGS) -g3 -Ofast -o $(NAME) -Imlx $(OBJS) -Lmlx -lmlx -lm -framework OpenGL -framework AppKit
+    $(CC) $(CFLAGS) -g3 -Ofast -o $(NAME) -Imlx $(OBJS) -Lmlx -lmlx -L$(LIBFT_DIR) -lft -lm -framework OpenGL -framework AppKit
     @echo "$(GREEN)$(NAME) created[0m ✔️"
 endif
 
 ifeq ($(UNAME), Linux)
-$(NAME): ${OBJS}
+$(NAME): ${OBJS} $(LIBFT)
 		@echo "$(GREEN)Linux compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
 		@chmod 777 mlx_linux/configure
 		@ $(MAKE) -C mlx_linux all
-		$(CC) $(CFLAGS) -g3 -o $(NAME) $(OBJS) -Imlx_linux -Lmlx_linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
+		$(CC) $(CFLAGS) -g3 -o $(NAME) $(OBJS) -Imlx_linux -Lmlx_linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -L$(LIBFT_DIR) -lft
 		@echo "$(GREEN)$(NAME) created[0m ✔️"
 endif
 
