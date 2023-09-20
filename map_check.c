@@ -47,8 +47,35 @@ int	color_check(char *color)
 	return (0);
 }
 
-int wall_check(t_map *Map)
+int wall_check(t_map *Map, int i, int j)
 {
+	(void)i;
+
+	//row = Map->row_count;
+	//The first row should consist of nothing but 1s and spaces
+	//It can only be space is the bottom cell is also space or if it is the first col in that row?
+	while(Map->map[6][++j])
+		if (Map->map[6][j] != '1' && Map->map[6][j] != ' ')
+			return (err("Map is not surrounded by walls. Error\n"));
+	j = -1;
+	while (Map->map[7][++j])
+		if ((Map->map[7][j] == '0' && Map->map[6][j] != '1'))
+			return (err("Map is not surrounded by walls. Error\n"));
+	j = -1;
+	while (Map->map[Map->row_count - 7][++j])
+		if ((Map->map[Map->row_count - 7][j] == '0'
+			&& Map->map[Map->row_count - 6][j] != '1'))
+			return (err("Map is not surrounded by walls. Error\n"));
+	j = -1;
+	while (Map->map[Map->row_count - 6][++j])
+		if (Map->map[Map->row_count - 6][j] != '1'
+			&& Map->map[Map->row_count - 6][j] != ' ')
+			return (err("Map is not surrounded by walls. Error\n"));
+	j = -1;
+	while ()
+	if ((Map->map[row-7][j] == '0' && Map->map[row-6][j] == ' ')
+			|| (Map->map[row-6][j] != '1' && Map->map[row-6][j] != ' '))
+			return (err("Map is not surrounded by walls. Error\n"));*/
 	return (0);
 }
 
@@ -64,5 +91,5 @@ int texture_check(t_map *Map)
 
 	//Check if the texture files exist, can be read, and have the right file ending
 	return (color_check(Map->F) || color_check(Map->C)
-			|| char_check(Map, 5, -1) || wall_check(Map));
+			|| char_check(Map, 5, -1) || wall_check(Map, 5, -1));
 }
