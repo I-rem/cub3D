@@ -2,7 +2,7 @@
 #define CUB3D_H
 # include "mlx_linux/mlx.h"
 # include "get_next_line.h"
-# include "Libft/libft.h"
+# include "libft/libft.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -24,4 +24,10 @@
 # define D 2
 # define RIGHT_ARR
 # define LEFT_ARR
+
+typedef struct s_map{
+    int row_count;
+    int col_count;
+    char **map;
+} t_map;
 #endif
