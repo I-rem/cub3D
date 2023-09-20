@@ -16,8 +16,7 @@ int file_check(char *filepath)
     len = ft_strlen(filepath);
     if (ft_strncmp(filepath + len - 4, ".cub", 4))
         return (0);
-    fd = open(filepath, O_CREAT || O_RDONLY);
-
+    fd = open(filepath, O_RDONLY);
     if (fd == -1)
     {
         close(fd);
@@ -33,6 +32,7 @@ void    init_map(int fd)
     char    *result;
 
     str = get_next_line(fd);
+    result = "";
     while(str)
     {
         result = ft_strjoin(result, str);
@@ -40,7 +40,9 @@ void    init_map(int fd)
         str = get_next_line(fd);
     }
     free(str);
+
 }
+
 int main(int argc, char **argv)
 {
     int fd;
@@ -49,8 +51,8 @@ int main(int argc, char **argv)
         return (err("Incorrect number of arguments. Error\n"));
     fd = file_check(argv[1]);
     if (!fd)
-        return (err("Invalid file. Error\n")); // Error mesajý fonksiyonu ekle;
-    //init_map(fd);
+        return (err("Invalid file. Error\n"));
+    init_map(fd);
     //free_all();
     return (0);
 }
