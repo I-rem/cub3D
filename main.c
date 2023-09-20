@@ -2,6 +2,7 @@
 
 int err(char *str)
 {
+    //free_all();
     while (*str)
         write(2, str++, 1);
     return (1);
@@ -50,10 +51,6 @@ void    map_size(char *map, t_map *Map)
     }
     Map->row_count = row;
     Map->col_count = max;
-
-    //Map->map = (char **)malloc(sizeof(char *) * row + 1);
-    //Map->*map = (char *)malloc(sizeof(char) * max + 1);
-
 }
 
 void    init_map(int fd, t_map *Map)
@@ -73,6 +70,14 @@ void    init_map(int fd, t_map *Map)
     map_size(result, Map);
     Map->map = ft_split(result, '\n');
     free(result);
+    // Check the number of rows before doing the stuff below
+    Map->NO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[0], " ") + 3), " ");
+    Map->SO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[1], " ") + 3), " ");
+    Map->WE = ft_strtrim(ft_strdup(ft_strtrim(Map->map[2], " ") + 3), " ");
+    Map->EA = ft_strtrim(ft_strdup(ft_strtrim(Map->map[3], " ") + 3), " ");
+    Map->F = ft_strtrim(ft_strdup(ft_strtrim(Map->map[4], " ") + 2), " ");
+    Map->C = ft_strtrim(ft_strdup(ft_strtrim(Map->map[5], " ") + 2), " ");
+    printf("%s\n%s\n%s\n%s\n", Map->NO, Map->SO, Map->WE, Map->EA);
 }
 
 int main(int argc, char **argv)
