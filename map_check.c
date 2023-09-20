@@ -1,93 +1,68 @@
 #include "cub3d.h"
 
-int err(char *str)
+int	char_check(t_map *Map, int i, int j)
 {
-    //free_all();
-    while (*str)
-        write(2, str++, 1);
-    return (1);
+	int	start_count;
+
+	start_count = 0;
+	while(Map->map[++i])
+	{
+		j = -1;
+		while(Map->map[i][++j])
+		{
+			if (Map->map[i][j] == 'N' || Map->map[i][j] == 'W'
+				|| Map->map[i][j] == 'E' || Map->map[i][j] == 'S')
+			{
+				start_count++;
+				if (start_count > 1)
+					return (err("Too many starting positions on map. Error\n"));
+				Map->start_pos_x = j;
+				Map->start_pos_y = i;
+			}
+			else if (Map->map[i][j] != '1' && Map->map[i][j] != '0'
+					&& Map->map[i][j] != ' ')
+				return (err("Invalid characters on map. Error\n"));
+		}
+	}
+	if (start_count == 0)
+		return err("No starting position entered on map. Error\n");
+	return (0);
 }
 
-// .cub formatý, dosya varlýðý, izinleri, açýlabilme kontrolü
-int file_check(char *filepath)
+int	color_check(char *color)
 {
-    int len;
-    int fd;
+	char	**rgb;
+	int		len;
 
-    len = ft_strlen(filepath);
-    if (ft_strncmp(filepath + len - 4, ".cub", 4))
-        return (0);
-    fd = open(filepath, O_RDONLY);
-    if (fd == -1)
-    {
-        close(fd);
-        return 0;
-    }
-    return (fd);
+	len = 0;
+	rgb = ft_split(color, ',');
+	while (rgb[len])
+		len++;
+	write(1, &len, 1);
+	if (len != 3)
+		return (err("Wrong color format. Error\n"));
+	while (--len >= 0)
+		if (ft_atoi(rgb[len]) > 255 || ft_atoi(rgb[len]) < 0)
+			return (err("Wrong color format. Error\n"));
+	return (0);
 }
 
-void    map_size(char *map, t_map *Map)
+int wall_check(t_map *Map)
 {
-    int max;
-    int row;
-    int i;
-    int col;
-
-    i = -1;
-    max = 0;
-    row = 0;
-    col = 0;
-    while (map[++i])
-    {
-        if (map[i] == '\n')
-        {
-            col = 0;
-            row++;
-        }
-        else
-            col++;
-        if (col > max)
-            max = col;
-    }
-    Map->row_count = row;
-    Map->col_count = max;
+	return (0);
 }
 
-int    init_map(int fd, t_map *Map)
+int texture_check(t_map *Map)
 {
-    char    *str;
-    char    *result;
+	// Texture adresses can be given in any order code below wont actually be enough for this project :(
+    Map->NO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[0], " ") + 3), " ");
+    Map->SO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[1], " ") + 3), " ");
+    Map->WE = ft_strtrim(ft_strdup(ft_strtrim(Map->map[2], " ") + 3), " ");
+    Map->EA = ft_strtrim(ft_strdup(ft_strtrim(Map->map[3], " ") + 3), " ");
+    Map->F = ft_strtrim(ft_strdup(ft_strtrim(Map->map[4], " ") + 2), " ");
+    Map->C = ft_strtrim(ft_strdup(ft_strtrim(Map->map[5], " ") + 2), " ");
 
-    str = get_next_line(fd);
-    result = "";
-    while(str)
-    {
-        result = ft_strjoin(result, str);
-        free(str);
-        str = get_next_line(fd);
-    }
-    free(str);
-    map_size(result, Map);
-    if (Map->row_count < 9 || Map->col_count < 4)
-        return (err("Invalid map format. Error\n"));
-    Map->map = ft_split(result, '\n');
-    free(result);
-    return (texture_check(Map));
-    //printf("%s\n%s\n%s\n%s\n", Map->NO, Map->SO, Map->WE, Map->EA);
-}
-
-int main(int argc, char **argv)
-{
-    int fd;
-    t_map Map;
-
-    if (argc != 2)
-        return (err("Incorrect number of arguments. Error\n"));
-    fd = file_check(argv[1]);
-    if (!fd)
-        return (err("Invalid file. Error\n"));
-    if (init_map(fd, &Map))
-        return (1);
-    //free_all();
-    return (0);
+	//Check if the texture files exist, can be read, and have the right file ending
+	return (color_check(Map->F) || color_check(Map->C)
+			|| char_check(Map, 5, -1) || wall_check(Map));
 }
