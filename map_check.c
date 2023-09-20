@@ -49,33 +49,23 @@ int	color_check(char *color)
 
 int wall_check(t_map *Map, int i, int j)
 {
-	(void)i;
-
-	//row = Map->row_count;
-	//The first row should consist of nothing but 1s and spaces
-	//It can only be space is the bottom cell is also space or if it is the first col in that row?
-	while(Map->map[6][++j])
-		if (Map->map[6][j] != '1' && Map->map[6][j] != ' ')
-			return (err("Map is not surrounded by walls. Error\n"));
-	j = -1;
-	while (Map->map[7][++j])
-		if ((Map->map[7][j] == '0' && Map->map[6][j] != '1'))
-			return (err("Map is not surrounded by walls. Error\n"));
-	j = -1;
-	while (Map->map[Map->row_count - 7][++j])
-		if ((Map->map[Map->row_count - 7][j] == '0'
-			&& Map->map[Map->row_count - 6][j] != '1'))
-			return (err("Map is not surrounded by walls. Error\n"));
-	j = -1;
-	while (Map->map[Map->row_count - 6][++j])
-		if (Map->map[Map->row_count - 6][j] != '1'
-			&& Map->map[Map->row_count - 6][j] != ' ')
-			return (err("Map is not surrounded by walls. Error\n"));
-	j = -1;
-	while ()
-	if ((Map->map[row-7][j] == '0' && Map->map[row-6][j] == ' ')
-			|| (Map->map[row-6][j] != '1' && Map->map[row-6][j] != ' '))
-			return (err("Map is not surrounded by walls. Error\n"));*/
+	while (Map->map[++i])
+	{
+		j = -1;
+		while (Map->map[i][++j])
+		{
+			if (Map->map[i][j] == '0' && (Map->map[i - 1][j] == ' '
+				|| Map->map[i + 1][j] == ' ' || Map->map[i ][j - 1] == ' '
+				|| Map->map[i][j + 1] == ' '))
+			return (err("Improper map. Error\n"));
+			if ((Map->map[i][j] == 'N' || Map->map[i][j] == 'S'
+				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
+				&& (Map->map[i - 1][j] == ' '
+				|| Map->map[i + 1][j] == ' ' || Map->map[i ][j - 1] == ' '
+				|| Map->map[i][j + 1] == ' '))
+			return (err("Improper map. Error\n"));
+		}
+	}
 	return (0);
 }
 
