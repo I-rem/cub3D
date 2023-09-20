@@ -26,8 +26,17 @@
 # define LEFT_ARR
 
 typedef struct s_map{
-    int row_count;
-    int col_count;
-    char **map;
+    int     row_count;
+    int     col_count;
+    char    **map;
+    char    *NO;
+    char    *SO;
+    char    *WE;
+    char    *EA;
+    char    *F;
+    char    *C;
 } t_map;
+
+int err(char *str);
+int texture_check(t_map *Map);
 #endif
