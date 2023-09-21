@@ -18,7 +18,7 @@ int file_check(char *filepath, int type)
         if (ft_strncmp(filepath + len - 4, ".cub", 4))
             return (0);
     if (type == 2)
-        if (ft_strncmp(filepath + len - 4, ".png", 4))
+        if (ft_strncmp(filepath + len - 4, ".xpm", 4))
             return (0);
     fd = open(filepath, O_RDONLY);
     if (fd == -1)
@@ -82,7 +82,6 @@ int main(int argc, char **argv)
 {
     int fd;
     t_map Map;
-    t_window Window;
 
     if (argc != 2)
         return (err("Incorrect number of arguments. Error\n"));
@@ -91,12 +90,9 @@ int main(int argc, char **argv)
         return (err("Invalid file. Error\n"));
     if (init_map(fd, &Map))
         return (1);
-    Window.mlx_ptr = mlx_init();
-    if (Window.mlx_ptr == NULL)
+    Map.Window.mlx_ptr = mlx_init();
+    if (Map.Window.mlx_ptr == NULL)
         return (err("Mlx Pointer Error\n"));
-    Window.win_ptr = mlx_new_window(Window.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
-    if (Window.win_ptr == NULL)
-        return (err("Window Pointer Error\n"));
-    mlx_loop(Window.mlx_ptr);
+    open_window(&Map);
     //free_all();
 }
