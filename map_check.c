@@ -25,7 +25,7 @@ int	char_check2(t_map *Map, int i, int j)
 	return (0);
 }
 
-int	char_check(t_map *Map, int i, int j) // To do: count 0s and 1s too and make sure there is at least one of each
+int	char_check(t_map *Map, int i, int j)
 {
 	int	start_count;
 
@@ -94,28 +94,29 @@ int wall_check(t_map *Map, int i, int j)
 	return (0);
 }
 
-int texture_check2(t_map *Map)
+int texture_check(t_map *Map, int i)
 {
-	return (!(file_check(Map->NO, 2) && file_check(Map->SO, 2)
-		&& file_check(Map->WE, 2) && file_check(Map->EA, 2)));
-}
-
-int texture_check(t_map *Map)
-{
-	// Texture adresses can be given in any order code below wont actually be enough for this project :(
-    Map->NO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[0], " ") + 3), " ");
-    Map->SO = ft_strtrim(ft_strdup(ft_strtrim(Map->map[1], " ") + 3), " ");
-    Map->WE = ft_strtrim(ft_strdup(ft_strtrim(Map->map[2], " ") + 3), " ");
-    Map->EA = ft_strtrim(ft_strdup(ft_strtrim(Map->map[3], " ") + 3), " ");
-    Map->F = ft_strtrim(ft_strdup(ft_strtrim(Map->map[4], " ") + 2), " ");
-    Map->C = ft_strtrim(ft_strdup(ft_strtrim(Map->map[5], " ") + 2), " ");
-
-	//Check if the texture files exist, can be read, and have the right file ending
+	while (Map->map[++i] && i < 6)
+		Map->map[i] = ft_strdup(ft_strtrim(Map->map[i], " "));
+	i = -1;
+	while (Map->map[++i] && i < 6)
+	{
+		if (!ft_strncmp(Map->map[i], "NO ", 3))
+			Map->NO = ft_strdup(ft_strtrim(ft_strdup(Map->map[i] + 3), " "));
+		else if (!ft_strncmp(Map->map[i], "SO ", 3))
+			Map->SO = ft_strdup(ft_strtrim(ft_strdup(Map->map[i] + 3), " "));
+		else if (!ft_strncmp(Map->map[i], "WE ", 3))
+			Map->WE = ft_strtrim(ft_strdup(Map->map[i] + 3), " ");
+		else if (!ft_strncmp(Map->map[i], "EA ", 3))
+			Map->EA = ft_strtrim(ft_strdup(Map->map[i] + 3), " ");
+		else if (!ft_strncmp(Map->map[i], "F ", 2))
+			Map->F = ft_strtrim(ft_strdup(Map->map[i] + 2), " ");
+		else if (!ft_strncmp(Map->map[i], "C ", 2))
+			Map->C = ft_strtrim(ft_strdup(Map->map[i] + 2), " ");
+	}
+	if (!(file_check(Map->NO, 2) && file_check(Map->SO, 2)
+		&& file_check(Map->WE, 2) && file_check(Map->EA, 2)))
+		return (err("Invalid texture files. Error\n"));
 	return (color_check(Map->F) || color_check(Map->C)
 			|| char_check(Map, 5, -1) || wall_check(Map, 5, -1));
-}
-
-int	map_check(t_map *Map)
-{
-	return (texture_check(Map) || char_check(Map, 5, -1) || wall_check(Map, 5, -1));
 }
