@@ -3,13 +3,13 @@
 NAME := cub3D
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror -MMD -MP
-SRCS := get_next_line_utils.c get_next_line.c main.c
+SRCS := get_next_line_utils.c get_next_line.c main.c map_check.c
 OBJS := $(SRCS:.c=.o)
 RM := rm -f
 UNAME := $(shell uname)
 
 # Directory where libft.a is located
-LIBFT_DIR := Libft
+LIBFT_DIR := libft
 
 # Name of the libft library
 LIBFT := $(LIBFT_DIR)/libft.a
@@ -32,7 +32,7 @@ $(NAME): ${OBJS} $(LIBFT)
 		@echo "$(GREEN)$(NAME) created[0m ✔️"
 endif
 
-all: ${NAME}
+all: ${NAME} cub3d.h
 
 ifeq ($(UNAME), Darwin)
 clean:
