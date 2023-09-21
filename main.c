@@ -8,15 +8,18 @@ int err(char *str)
     return (1);
 }
 
-// .cub formatý, dosya varlýðý, izinleri, açýlabilme kontrolü
-int file_check(char *filepath)
+int file_check(char *filepath, int type)
 {
     int len;
     int fd;
 
     len = ft_strlen(filepath);
-    if (ft_strncmp(filepath + len - 4, ".cub", 4))
-        return (0);
+    if (type == 1)
+        if (ft_strncmp(filepath + len - 4, ".cub", 4))
+            return (0);
+    if (type == 2)
+        if (ft_strncmp(filepath + len - 4, ".png", 4))
+            return (0);
     fd = open(filepath, O_RDONLY);
     if (fd == -1)
     {
@@ -72,22 +75,28 @@ int    init_map(int fd, t_map *Map)
         return (err("Invalid map format. Error\n"));
     Map->map = ft_split(result, '\n');
     free(result);
-    return (texture_check(Map));
-    //printf("%s\n%s\n%s\n%s\n", Map->NO, Map->SO, Map->WE, Map->EA);
+    return (texture_check(Map, -1));
 }
 
 int main(int argc, char **argv)
 {
     int fd;
     t_map Map;
+    t_window Window;
 
     if (argc != 2)
         return (err("Incorrect number of arguments. Error\n"));
-    fd = file_check(argv[1]);
+    fd = file_check(argv[1], 1);
     if (!fd)
         return (err("Invalid file. Error\n"));
     if (init_map(fd, &Map))
         return (1);
+    Window.mlx_ptr = mlx_init();
+    if (Window.mlx_ptr == NULL)
+        return (err("Mlx Pointer Error\n"));
+    Window.win_ptr = mlx_new_window(Window.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
+    if (Window.win_ptr == NULL)
+        return (err("Window Pointer Error\n"));
+    mlx_loop(Window.mlx_ptr);
     //free_all();
-    return (0);
 }

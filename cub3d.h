@@ -11,12 +11,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# define WINDOW_WIDTH 10000
-# define WINDOW_HEIGHT 10000
-# define COIN "textures/chest_golden_open_full.xpm"
-# define EXIT "textures/Floor_ladder.xpm"
-# define PLAYER "textures/npc_paladin.xpm"
-# define FLOOR "textures/Edge_single.xpm"
+# define WINDOW_WIDTH 1000
+# define WINDOW_HEIGHT 1000
 # define ESC 53
 # define W 13
 # define A 0
@@ -25,9 +21,16 @@
 # define RIGHT_ARR
 # define LEFT_ARR
 
+typedef struct s_window{
+    void    *mlx_ptr;
+    void    *win_ptr;
+} t_window;
+
 typedef struct s_map{
     int     row_count;
     int     col_count;
+    int     start_pos_x;
+    int     start_pos_y; // We will probably need to decrease this value before we can actually use it
     char    **map;
     char    *NO;
     char    *SO;
@@ -38,5 +41,6 @@ typedef struct s_map{
 } t_map;
 
 int err(char *str);
-int texture_check(t_map *Map);
+int texture_check(t_map *Map, int i);
+int file_check(char *filepath, int type);
 #endif
