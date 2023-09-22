@@ -63,4 +63,5 @@ int	handle_no_event(t_map *data);
 void	open_window(t_map *Map);
 void	img_delete(t_map *data);
 void	img_init(t_map *data);
+void	check_move(t_map *Map, int keycode);
 #endif

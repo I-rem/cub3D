@@ -25,41 +25,46 @@ int	handle_no_event(t_map *data)
 
 void	render_map(t_map *Map)
 {
-	/*
+	
 	int	i;
 	int	j;
 
-	i = -1;
-	while (data->map_data.map[++i])
+	i = Map->start_pos_x - 1;
+	j = Map->start_pos_y - 1;
+
+	while (Map->map[++i])
 	{
-		j = -1;
-		while ((*data).map_data.map[i][++j] != '\n')
+		while (Map->map[i][j] != '1')
+			i++;
+		if (Map->map[i][j] == '1')
 		{
-			mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
-				data -> floor.img_ptr, j * 16, i * 16);
-			if ((*data).map_data.map[i][j] == 'C')
-				mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
-					data -> coin.img_ptr, j * 16, i * 16);
-			else if ((*data).map_data.map[i][j] == 'E')
-				mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
-					data -> exit.img_ptr, j * 16, i * 16);
-			else if ((*data).map_data.map[i][j] == '1')
-				mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
-					data -> wall.img_ptr, j * 16, i * 16);
+		    // mlx_destroy_image(Map->Window.mlx_ptr, Map->NO);
+		    // Map->NO = mlx_new_image(Map->Window.mlx_ptr, 1000, 100);
+		    mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+					Map->NO_img, WINDOW_WIDTH / 4, abs(Map->start_pos_y -i)*64); // Ekranı ortalaması lazım
+			break;		
 		}
 	}
-	mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
+/*	i = 5;
+	while (Map->map[++i])
+	{
+		j = -1;
+		while (Map->map[i][++j])
+		{
+	//		mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+	//			Map-> floor.img_ptr, j * 16, i * 16);
+			if (Map->map[i][j] == '1')
+				mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+					Map->NO_img, j * 64, (i-6) * 64);
+		}
+	}*/
+	/*mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
 		data -> player.img_ptr, data -> map_data.p_position_x * 16,
-		data -> map_data.p_position_y * 16);
-		*/
-	(void)Map;
-	return ;
+		data -> map_data.p_position_y * 16);*/
 }
 
 int handle_input(int keycode, t_map *Map)
 {
-
-	printf("\n--%d--\n", keycode);
     if (keycode == ESC)
     {
 	write(1, "ESC\n", 4);
@@ -67,10 +72,10 @@ int handle_input(int keycode, t_map *Map)
     }
     if (keycode == W || keycode == A || keycode == S || keycode == D)
     {
-	write(1,"\nwasd",5);
-        //check_move(Map, keycode);
-        render_map(Map);
-		write(1, "abc", 3);
+	
+        check_move(Map, keycode);
+        //render_map(Map);
+		
     }
 	/*
 	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
