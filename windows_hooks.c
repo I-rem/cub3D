@@ -5,7 +5,7 @@ int	close_program(t_map *Map)
 	int	i;
 
 	mlx_destroy_window(Map->Window.mlx_ptr, Map->Window.win_ptr);
-	//img_delete(data);
+	img_delete(Map);
 	i = 0;
 	while (Map->map[i] != NULL)
 	{
@@ -81,6 +81,7 @@ int handle_input(int keycode, t_map *Map)
 
 void	open_window(t_map *Map)
 {
+
     Map->Window.win_ptr = mlx_new_window(Map->Window.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	mlx_hook(Map->Window.win_ptr, 17, 0, close_program, Map);
 }

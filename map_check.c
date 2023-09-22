@@ -96,9 +96,11 @@ int wall_check(t_map *Map, int i, int j)
 
 int texture_check(t_map *Map, int i)
 {
+
 	while (Map->map[++i] && i < 6)
 		Map->map[i] = ft_strdup(ft_strtrim(Map->map[i], " "));
 	i = -1;
+
 	while (Map->map[++i] && i < 6)
 	{
 		if (!ft_strncmp(Map->map[i], "NO ", 3))
@@ -114,8 +116,8 @@ int texture_check(t_map *Map, int i)
 		else if (!ft_strncmp(Map->map[i], "C ", 2))
 			Map->C = ft_strtrim(ft_strdup(Map->map[i] + 2), " ");
 	}
-	if (!(file_check(Map->NO, 2) && file_check(Map->SO, 2)
-		&& file_check(Map->WE, 2) && file_check(Map->EA, 2)))
+	if (!file_check(Map->NO, 2) || !file_check(Map->SO, 2)
+		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))
 		return (err("Invalid texture files. Error\n"));
 	return (color_check(Map->F) || color_check(Map->C)
 			|| char_check(Map, 5, -1) || wall_check(Map, 5, -1));

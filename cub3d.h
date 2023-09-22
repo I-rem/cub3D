@@ -38,9 +38,21 @@ typedef struct s_map{
     char    *EA;
     char    *F;
     char    *C;
+    t_window Window;
+    void    *NO_img;
+    void    *SO_img;
+    void    *EA_img;
+    void    *WE_img;
 } t_map;
 
 int err(char *str);
 int texture_check(t_map *Map, int i);
 int file_check(char *filepath, int type);
+void    open_window(t_map *Map);
+void    render_map(t_map *Map);
+int handle_input(int keycode, t_map *Map);
+int	handle_no_event(t_map *data);
+void	open_window(t_map *Map);
+void	img_delete(t_map *data);
+void	img_init(t_map *data);
 #endif

@@ -14,8 +14,11 @@
 
 void	move(t_map *Map, int x, int y)
 {
-	Map->start_pos_x = x;
-	Map->start_pos_y = y;
+	(void)Map;
+	(void)x;
+	(void)y;
+	/*Map->start_pos_x = x;
+	Map->start_pos_y = y;*/
 }
 
 void	img_init(t_map *data)
@@ -25,6 +28,7 @@ void	img_init(t_map *data)
 
 	w = 16;
 	h = 16;
+
 	data->NO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &w, &h);
 	data->SO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &w, &h);
 	data->EA_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &w, &h);
@@ -45,7 +49,9 @@ void	img_delete(t_map *data)
 
 void	check_move(t_map *Map, int keycode) // This kind of movement is probably too discrete for this project, need to figure more continous functions
 {
-	int	x;
+	(void)Map;
+	(void)keycode;
+	/*int	x;
 	int	y;
 
 	x = Map->start_pos_x;
@@ -57,5 +63,5 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 	if (keycode == A && Map->map[y][x - 1] != '1')
 		move(Map, x - 1, y);
 	if (keycode == D && Map->map[y][x + 1] != '1')
-		move(Map, x + 1, y);
+		move(Map, x + 1, y);*/
 }

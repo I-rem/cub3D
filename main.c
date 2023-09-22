@@ -4,7 +4,7 @@ int err(char *str)
 {
     //free_all();
     while (*str)
-        write(2, str++, 1);
+        write(1, str++, 1);
     return (1);
 }
 
@@ -13,6 +13,8 @@ int file_check(char *filepath, int type)
     int len;
     int fd;
 
+    if (filepath == NULL)
+	return(0);
     len = ft_strlen(filepath);
     if (type == 1)
         if (ft_strncmp(filepath + len - 4, ".cub", 4))
@@ -87,12 +89,14 @@ int main(int argc, char **argv)
         return (err("Incorrect number of arguments. Error\n"));
     fd = file_check(argv[1], 1);
     if (!fd)
-        return (err("Invalid file. Error\n"));
+        return (err("Invalid file. Error\n"));   
     if (init_map(fd, &Map))
         return (1);
+
     Map.Window.mlx_ptr = mlx_init();
     if (Map.Window.mlx_ptr == NULL)
         return (err("Mlx Pointer Error\n"));
     open_window(&Map);
+    img_init(&Map);
     //free_all();
 }
