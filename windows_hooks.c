@@ -58,12 +58,16 @@ void	render_map(t_map *Map)
 
 int handle_input(int keycode, t_map *Map)
 {
+
+	printf("\n--%d--\n", keycode);
     if (keycode == ESC)
     {
-        close_program(Map);
+	write(1, "ESC\n", 4);
+	close_program(Map);
     }
     if (keycode == W || keycode == A || keycode == S || keycode == D)
     {
+	write(1,"\nwasd",5);
         //check_move(Map, keycode);
         render_map(Map);
 		write(1, "abc", 3);

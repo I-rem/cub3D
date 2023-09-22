@@ -13,13 +13,21 @@
 # include <string.h>
 # define WINDOW_WIDTH 1000
 # define WINDOW_HEIGHT 1000
-# define ESC 53
-# define W 13
-# define A 0
-# define S 1
-# define D 2
-# define RIGHT_ARR
-# define LEFT_ARR
+//# define ESC 53
+//# define W 13
+//# define A 0
+//# define S 1
+//# define D 2
+//# define RIGHT_ARR
+//# define LEFT_ARR
+
+# define ESC 65307
+# define W 119
+# define A 97
+# define S 115
+# define D 100
+# define RIGHT_ARR 65361
+# define LEFT_ARR 65307
 
 typedef struct s_window{
     void    *mlx_ptr;
@@ -45,12 +53,12 @@ typedef struct s_map{
     void    *WE_img;
 } t_map;
 
-int err(char *str);
-int texture_check(t_map *Map, int i);
-int file_check(char *filepath, int type);
-void    open_window(t_map *Map);
+int	err(char *str);
+int	texture_check(t_map *Map, int i);
+int	file_check(char *filepath, int type);
+void	open_window(t_map *Map);
 void    render_map(t_map *Map);
-int handle_input(int keycode, t_map *Map);
+int	handle_input(int keycode, t_map *Map);
 int	handle_no_event(t_map *data);
 void	open_window(t_map *Map);
 void	img_delete(t_map *data);
