@@ -27,13 +27,16 @@ void	img_init(t_map *data)
 	int	w;
 	int	h;
 
-	w = 64;
-	h = 64;
+	w = 16;
+	h = 16;
 
 	data->NO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &w, &h);
 	data->SO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &w, &h);
 	data->EA_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &w, &h);
 	data->WE_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &w, &h);
+	data->Minimap.floor_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, FLOOR, &w, &h);
+	data->Minimap.wall_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, WALL, &w, &h);	
+	data->Minimap.player_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, PLAYER, &w, &h);		
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
@@ -46,6 +49,8 @@ void	img_delete(t_map *data)
 	mlx_destroy_image(data->Window.mlx_ptr, data->SO_img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->EA_img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->WE_img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.floor_img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.wall_img);
 }
 
 void	check_move(t_map *Map, int keycode) // This kind of movement is probably too discrete for this project, need to figure more continous functions

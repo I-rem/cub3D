@@ -11,8 +11,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# define WINDOW_WIDTH 1000
-# define WINDOW_HEIGHT 1000
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 //# define ESC 53
 //# define W 13
 //# define A 0
@@ -28,11 +28,20 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65307
+#define FLOOR "./pics/minimap/Floor.xpm"
+#define WALL "./pics/minimap/Wall.xpm"
+#define PLAYER "./pics/minimap/Player.xpm"
 
 typedef struct s_window{
     void    *mlx_ptr;
     void    *win_ptr;
 } t_window;
+
+typedef struct s_minimap{
+    void    *floor_img;
+    void    *wall_img;
+    void    *player_img;
+} t_minimap;
 
 typedef struct s_map{
     int     row_count;
@@ -47,6 +56,7 @@ typedef struct s_map{
     char    *F;
     char    *C;
     t_window Window;
+    t_minimap Minimap;
     void    *NO_img;
     void    *SO_img;
     void    *EA_img;

@@ -23,7 +23,29 @@ int	handle_no_event(t_map *data)
 	return (0);
 }
 
-void	render_map(t_map *Map)
+void	render_minimap(t_map *Map)
+{
+	int	i;
+	int	j;
+
+	i = 5;
+	while (Map->map[++i])
+	{
+		j = -1;
+		while (Map->map[i][++j])
+		{
+			mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+				Map->Minimap.floor_img, j * 16, (i-6) * 16);
+			if (Map->map[i][j] == '1')
+				mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+					Map->Minimap.wall_img, j * 16, (i-6) * 16);
+		}
+	}
+	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+		Map->Minimap.player_img, Map->start_pos_x * 16, (Map->start_pos_y-6) * 16);
+}
+
+void	render_map(t_map *Map) // render sky color and floor color horizon will be at the middle of  the window
 {
 	
 	int	i;
@@ -38,13 +60,14 @@ void	render_map(t_map *Map)
 			i++;
 		if (Map->map[i][j] == '1')
 		{
-		    // mlx_destroy_image(Map->Window.mlx_ptr, Map->NO);
-		    // Map->NO = mlx_new_image(Map->Window.mlx_ptr, 1000, 100);
+		    //mlx_destroy_image(Map->Window.mlx_ptr, Map->NO);
+		    //Map->NO = mlx_new_image(Map->Window.mlx_ptr, 1000, 100);
 		    mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
 					Map->NO_img, WINDOW_WIDTH / 4, abs(Map->start_pos_y -i)*64); // Ekranı ortalaması lazım
 			break;		
 		}
 	}
+	render_minimap(Map);
 /*	i = 5;
 	while (Map->map[++i])
 	{
