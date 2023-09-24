@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-char	*find_binary(int decimal)
+char	*find_binary (int decimal)
 {
 	char	*binary;
 
@@ -16,21 +16,21 @@ char	*find_binary(int decimal)
 	return binary;
 }
 
-int	find_decimal(char *binary)
+int	find_decimal (char *binary)
 {
-	int result;
-	int i;
+	int	result;
+	int	i;
 
 	i = -1;
 	result = 0;
 	while (binary[++i])
 	{
-		result = result*2 + binary[i] - '0';
+		result = result * 2 + binary[i] - '0';
 	}
 	return (result);
 }
 
-int find_color(char *str)
+int	find_color (char *str)
 {
 	char	**rgb;
 	int	temp;
@@ -45,6 +45,5 @@ int find_color(char *str)
 		temp = ft_atoi(rgb[i]);
 		color = ft_strjoin(color, find_binary(temp));
 	}
-	printf("%s ", color);
 	return (find_decimal(color));	
 }

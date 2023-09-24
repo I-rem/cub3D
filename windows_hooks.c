@@ -45,11 +45,49 @@ void	render_minimap(t_map *Map)
 		Map->Minimap.player_img, Map->start_pos_x * 16, (Map->start_pos_y-6) * 16);
 }
 
+void render_image(int s, t_map *data)
+{
+	void *img = mlx_new_image(data->Window.mlx_ptr
+			            , s, s);
+	int pixel_bits;
+	int line_bytes;
+	int endian;
+	char *buffer;
+	int	pixel;
+	int x = 0;
+	int y = 0;
+	int color = 0xAAADEF;
+	buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
+	while(y++ < s)
+	{
+		x = 0;
+		while(x++ <s)
+		{
+			pixel = (y * line_bytes) + (x*4);
+			if (endian == 1)
+			{
+			    buffer[pixel + 0] = (color >> 24);
+			    buffer[pixel + 1] = (color >> 16) & 0xFF;
+                            buffer[pixel + 2] = (color >> 8) & 0xFF;
+			    buffer[pixel + 3] = (color) & 0xFF;
+			} 
+                        else if (endian == 0)
+			{
+			    buffer[pixel + 0] = (color) & 0xFF;
+			    buffer[pixel + 1] = (color >> 8) & 0xFF;
+                            buffer[pixel + 2] = (color >> 16) & 0xFF;
+			    buffer[pixel + 3] = (color >> 24);
+			} 
+		}
+	}
+	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, img,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+}
 void	render_map(t_map *Map) // render sky color and floor color horizon will be at the middle of  the window
 {
 	
 	int	i;
 	int	j;
+
 
 	/*i = -1;
 	j = -1;
@@ -63,22 +101,24 @@ void	render_map(t_map *Map) // render sky color and floor color horizon will be 
 	}*/
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->C_img, 0, 0);
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->F_img, 0, WINDOW_HEIGHT / 2);
-	i = Map->start_pos_x - 1;
-	j = Map->start_pos_y - 1;
-	while (Map->map[++i])
+	i = Map->start_pos_y;
+	j = Map->start_pos_x;
+	while (Map->map[i])
 	{
 		while (Map->map[i][j] != '1')
-			i++;
+			i--;
 		if (Map->map[i][j] == '1')
 		{
 		    //mlx_destroy_image(Map->Window.mlx_ptr, Map->NO);
 		    //Map->NO = mlx_new_image(Map->Window.mlx_ptr, 1000, 100);
-		    mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-					Map->NO_img, WINDOW_WIDTH / 4, abs(Map->start_pos_y -i)*64); // Ekranı ortalaması lazım
+		   // mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
+			//		Map->NO_img, WINDOW_WIDTH / 4, abs(Map->start_pos_y -i)*64); // Ekranı ortalaması lazım
+			render_image(64 / abs(i - Map->start_pos_y), Map);			
 			break;		
 		}
 	}
 	render_minimap(Map);
+	//raycasting(Map);
 /*	i = 5;
 	while (Map->map[++i])
 	{

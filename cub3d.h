@@ -33,50 +33,51 @@
 #define PLAYER "./pics/minimap/Player.xpm"
 
 typedef struct s_window{
-    void    *mlx_ptr;
-    void    *win_ptr;
+    void	*mlx_ptr;
+    void	*win_ptr;
 } t_window;
 
 typedef struct s_minimap{
-    void    *floor_img;
-    void    *wall_img;
-    void    *player_img;
+    void	*floor_img;
+    void	*wall_img;
+    void	*player_img;
 } t_minimap;
 
 typedef struct s_map{
-    int     row_count;
-    int     col_count;
-    int     start_pos_x;
-    int     start_pos_y; // We will probably need to decrease this value before we can actually use it
-    char    **map;
-    char    *NO;
-    char    *SO;
-    char    *WE;
-    char    *EA;
-    char    *F;
-    char    *C;
-    int	    F_col;
-    int     C_col;
-    t_window Window;
-    t_minimap Minimap;
-    void    *NO_img;
-    void    *SO_img;
-    void    *EA_img;
-    void    *WE_img;
-    void    *F_img;
-    void    *C_img;
+    int		row_count;
+    int		col_count;
+    int		start_pos_x;
+    int		start_pos_y; // We will probably need to decrease this value before we can actually use it
+    char	**map;
+    char	*NO;
+    char	*SO;
+    char	*WE;
+    char	*EA;
+    char	*F;
+    char	*C;
+    int		F_col;
+    int		C_col;
+    t_window	Window;
+    t_minimap	Minimap;
+    void	*NO_img;
+    void	*SO_img;
+    void	*EA_img;
+    void	*WE_img;
+    void	*F_img;
+    void	*C_img;
 } t_map;
 
 int	err(char *str);
 int	texture_check(t_map *Map, int i);
 int	file_check(char *filepath, int type);
 void	open_window(t_map *Map);
-void    render_map(t_map *Map);
+void	render_map(t_map *Map);
 int	handle_input(int keycode, t_map *Map);
 int	handle_no_event(t_map *data);
 void	open_window(t_map *Map);
 void	img_delete(t_map *data);
 void	img_init(t_map *data);
 void	check_move(t_map *Map, int keycode);
-int find_color(char *str);
+int	find_color(char *str);
+void	raycasting(t_map *Map);
 #endif

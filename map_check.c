@@ -2,15 +2,15 @@
 
 int	char_check2(t_map *Map, int i, int j)
 {
-	int zero_count;
-	int one_count;
+	int	zero_count;
+	int	one_count;
 
 	zero_count = 0;
 	one_count = 0;
-	while(Map->map[++i])
+	while (Map->map[++i])
 	{
 		j = -1;
-		while(Map->map[i][++j])
+		while (Map->map[i][++j])
 		{
 			if (Map->map[i][j] == '0')
 				zero_count++;
@@ -25,15 +25,15 @@ int	char_check2(t_map *Map, int i, int j)
 	return (0);
 }
 
-int	char_check(t_map *Map, int i, int j)
+int	char_check (t_map *Map, int i, int j)
 {
 	int	start_count;
 
 	start_count = 0;
-	while(Map->map[++i])
+	while (Map->map[++i])
 	{
 		j = -1;
-		while(Map->map[i][++j])
+		while (Map->map[i][++j])
 		{
 			if (Map->map[i][j] == 'N' || Map->map[i][j] == 'W'
 				|| Map->map[i][j] == 'E' || Map->map[i][j] == 'S')
@@ -54,7 +54,7 @@ int	char_check(t_map *Map, int i, int j)
 	return (char_check2(Map, 5, -1));
 }
 
-int	color_check(char *color)
+int	color_check (char *color)
 {
 	char	**rgb;
 	int		len;
@@ -72,7 +72,7 @@ int	color_check(char *color)
 	return (0);
 }
 
-int wall_check(t_map *Map, int i, int j)
+int	wall_check (t_map *Map, int i, int j)
 {
 	while (Map->map[++i])
 	{
@@ -94,13 +94,12 @@ int wall_check(t_map *Map, int i, int j)
 	return (0);
 }
 
-int texture_check(t_map *Map, int i)
+int	texture_check(t_map *Map, int i)
 {
 
 	while (Map->map[++i] && i < 6)
 		Map->map[i] = ft_strdup(ft_strtrim(Map->map[i], " "));
 	i = -1;
-
 	while (Map->map[++i] && i < 6)
 	{
 		if (!ft_strncmp(Map->map[i], "NO ", 3))

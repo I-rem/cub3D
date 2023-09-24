@@ -14,9 +14,6 @@
 
 void	move(t_map *Map, int x, int y)
 {
-	(void)Map;
-	(void)x;
-	(void)y;
 	Map->start_pos_x = x;
 	Map->start_pos_y = y;
 	render_map(Map);
