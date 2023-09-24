@@ -16,7 +16,7 @@
 # endif
 # include <stdlib.h>
 # include <unistd.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 char	*ft_strjoin2(char *s1, char *s2);
 int		result_len(char *stash);

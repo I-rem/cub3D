@@ -1,7 +1,7 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 # include "mlx_linux/mlx.h"
-# include "get_next_line.h"
+# include "gnl/get_next_line.h"
 # include "libft/libft.h"
 # include <math.h>
 # include <unistd.h>
@@ -61,6 +61,8 @@ typedef struct s_map{
     void    *SO_img;
     void    *EA_img;
     void    *WE_img;
+    void    *F_img;
+    void    *C_img;
 } t_map;
 
 int	err(char *str);

@@ -3,7 +3,7 @@
 NAME := cub3D
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror -MMD -MP
-SRCS := get_next_line_utils.c get_next_line.c main.c map_check.c img_utils.c windows_hooks.c
+SRCS := gnl/get_next_line_utils.c gnl/get_next_line.c main.c map_check.c img_utils.c windows_hooks.c
 OBJS := $(SRCS:.c=.o)
 RM := rm -f
 UNAME := $(shell uname)
