@@ -32,14 +32,14 @@ void	img_init2(t_map *data)
 	int endian2;
 	char *buffer;
 	char *buffer2;
-	//data->F_col = get_color(data->F);
-	//data->C_col = get_color(data->C);
+	data->F_col = find_color(data->F);
+	data->C_col = find_color(data->C);
 	data->F_img = mlx_new_image(data->Window.mlx_ptr
 			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	data->C_img = mlx_new_image(data->Window.mlx_ptr
 			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	buffer = mlx_get_data_addr(data->F_img, &pixel_bits, &line_bytes, &endian);
-	int color = 0xABCDEF;
+	int color = data->C_col;
 	if (pixel_bits != 32)
 		color = mlx_get_color_value(data->Window.mlx_ptr, color);
 		
@@ -63,7 +63,7 @@ void	img_init2(t_map *data)
 			} 
 		}
 	
-	color = 0xAA00000;
+	color = data->F_col;
 	if (pixel_bits2 != 32)
 		color = mlx_get_color_value(data->Window.mlx_ptr, color);
 	buffer2 = mlx_get_data_addr(data->C_img, &pixel_bits2, &line_bytes2, &endian2);

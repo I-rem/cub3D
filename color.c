@@ -3,12 +3,20 @@
 char	*find_binary(int decimal)
 {
 	char	*binary;
-	
+
 	binary = "";
+	while (decimal > 0)
+	{
+		if (decimal % 2 == 1)
+			binary = ft_strjoin("1", binary);
+		else
+			binary = ft_strjoin("0", binary);
+		decimal /= 2;
+	}
 	return binary;
 }
 
-int	*find_decimal(char *binary)
+int	find_decimal(char *binary)
 {
 	int result;
 	int i;
@@ -19,6 +27,7 @@ int	*find_decimal(char *binary)
 	{
 		result = result*2 + binary[i] - '0';
 	}
+	return (result);
 }
 
 int find_color(char *str)
@@ -29,12 +38,13 @@ int find_color(char *str)
 	char	*color;
 
 	color = "";
-	rgb = ft_split(str, ", ");
+	rgb = ft_split(str, ',');
 	i = - 1;
 	while (rgb[++i])
 	{
 		temp = ft_atoi(rgb[i]);
-		color = ft_strjoin(color, find_binary(decimal));
+		color = ft_strjoin(color, find_binary(temp));
 	}
+	printf("%s ", color);
 	return (find_decimal(color));	
 }

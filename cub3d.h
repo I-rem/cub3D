@@ -78,4 +78,5 @@ void	open_window(t_map *Map);
 void	img_delete(t_map *data);
 void	img_init(t_map *data);
 void	check_move(t_map *Map, int keycode);
+int find_color(char *str);
 #endif
