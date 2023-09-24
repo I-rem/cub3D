@@ -22,31 +22,21 @@ void	move(t_map *Map, int x, int y)
 	render_map(Map);
 }
 
-void	img_init2(t_map *data)
+void	img_init2(void *img, int color, int y, int x)
 {
 	int pixel_bits;
 	int line_bytes;
 	int endian;
-	int pixel_bits2;
-	int line_bytes2;
-	int endian2;
 	char *buffer;
-	char *buffer2;
-	data->F_col = find_color(data->F);
-	data->C_col = find_color(data->C);
-	data->F_img = mlx_new_image(data->Window.mlx_ptr
-			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
-	data->C_img = mlx_new_image(data->Window.mlx_ptr
-			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
-	buffer = mlx_get_data_addr(data->F_img, &pixel_bits, &line_bytes, &endian);
-	int color = data->C_col;
-	if (pixel_bits != 32)
-		color = mlx_get_color_value(data->Window.mlx_ptr, color);
-		
-	for (int y = 0; y < WINDOW_HEIGHT / 2; ++y)
-		for(int x = 0; x < WINDOW_WIDTH; ++x)
+	int	pixel;
+
+	buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
+	while(y++ <= WINDOW_HEIGHT / 2)
+	{
+		x = 0;
+		while(x++ <= WINDOW_WIDTH)
 		{
-			int pixel = (y * line_bytes) + (x*4);
+			pixel = (y * line_bytes) + (x*4);
 			if (endian == 1)
 			{
 			    buffer[pixel + 0] = (color >> 24);
@@ -62,32 +52,7 @@ void	img_init2(t_map *data)
 			    buffer[pixel + 3] = (color >> 24);
 			} 
 		}
-	
-	color = data->F_col;
-	if (pixel_bits2 != 32)
-		color = mlx_get_color_value(data->Window.mlx_ptr, color);
-	buffer2 = mlx_get_data_addr(data->C_img, &pixel_bits2, &line_bytes2, &endian2);
-	for (int y = 0; y <= WINDOW_HEIGHT / 2; ++y)
-		for(int x = 0; x < WINDOW_WIDTH; ++x)
-		{
-			int pixel = (y * line_bytes) + (x*4);
-			if (endian2 == 1)
-			{
-			    buffer2[pixel + 0] = (color >> 24);
-			    buffer2[pixel + 1] = (color >> 16) & 0xFF;
-                         buffer2[pixel + 2] = (color >> 8) & 0xFF;
-			    buffer2[pixel + 3] = (color) & 0xFF;
-			} 
-                        else if (endian == 0)
-			{
-			    buffer2[pixel + 0] = (color) & 0xFF;
-			    buffer2[pixel + 1] = (color >> 8) & 0xFF;
-                            buffer2[pixel + 2] = (color >> 16) & 0xFF;
-			    buffer2[pixel + 3] = (color >> 24);
-			} 
-		}
-	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, data->F_img, 0, 0);
-	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, data->C_img, 0, WINDOW_HEIGHT / 2);
+	}
 }
 void	img_init(t_map *data)
 {
@@ -96,7 +61,15 @@ void	img_init(t_map *data)
 
 	w = 16;
 	h = 16;
-	img_init2(data);
+
+	data->F_col = find_color(data->F);
+	data->C_col = find_color(data->C);
+	data->F_img = mlx_new_image(data->Window.mlx_ptr
+			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
+	data->C_img = mlx_new_image(data->Window.mlx_ptr
+			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
+	img_init2(data->C_img, data->C_col, 0, 0);
+	img_init2(data->F_img, data->F_col, 0, 0);
 	data->NO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &w, &h);
 	data->SO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &w, &h);
 	data->EA_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &w, &h);

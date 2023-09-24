@@ -11,8 +11,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 600
+# define WINDOW_WIDTH 400
+# define WINDOW_HEIGHT 400
 //# define ESC 53
 //# define W 13
 //# define A 0

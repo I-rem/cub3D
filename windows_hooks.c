@@ -61,6 +61,8 @@ void	render_map(t_map *Map) // render sky color and floor color horizon will be 
 		mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, i, j, 255);
 		mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr,i, WINDOW_HEIGHT - j, 255255);}
 	}*/
+	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->C_img, 0, 0);
+	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->F_img, 0, WINDOW_HEIGHT / 2);
 	i = Map->start_pos_x - 1;
 	j = Map->start_pos_y - 1;
 	while (Map->map[++i])
