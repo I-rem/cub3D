@@ -24,19 +24,20 @@ void	move(t_map *Map, int x, int y)
 
 void	img_init2(t_map *data)
 {
-	//int F_color;
-	//int C_color;
 	int pixel_bits;
 	int line_bytes;
 	int endian;
+	int pixel_bits2;
+	int line_bytes2;
+	int endian2;
 	char *buffer;
-	
-	//F_color = get_color(data->F);
-	//C_color = get_color(data->C);
+	char *buffer2;
+	//data->F_col = get_color(data->F);
+	//data->C_col = get_color(data->C);
 	data->F_img = mlx_new_image(data->Window.mlx_ptr
 			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	data->C_img = mlx_new_image(data->Window.mlx_ptr
-			            , WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	buffer = mlx_get_data_addr(data->F_img, &pixel_bits, &line_bytes, &endian);
 	int color = 0xABCDEF;
 	if (pixel_bits != 32)
@@ -61,7 +62,32 @@ void	img_init2(t_map *data)
 			    buffer[pixel + 3] = (color >> 24);
 			} 
 		}
+	
+	color = 0xAA00000;
+	if (pixel_bits2 != 32)
+		color = mlx_get_color_value(data->Window.mlx_ptr, color);
+	buffer2 = mlx_get_data_addr(data->C_img, &pixel_bits2, &line_bytes2, &endian2);
+	for (int y = 0; y <= WINDOW_HEIGHT / 2; ++y)
+		for(int x = 0; x < WINDOW_WIDTH; ++x)
+		{
+			int pixel = (y * line_bytes) + (x*4);
+			if (endian2 == 1)
+			{
+			    buffer2[pixel + 0] = (color >> 24);
+			    buffer2[pixel + 1] = (color >> 16) & 0xFF;
+                         buffer2[pixel + 2] = (color >> 8) & 0xFF;
+			    buffer2[pixel + 3] = (color) & 0xFF;
+			} 
+                        else if (endian == 0)
+			{
+			    buffer2[pixel + 0] = (color) & 0xFF;
+			    buffer2[pixel + 1] = (color >> 8) & 0xFF;
+                            buffer2[pixel + 2] = (color >> 16) & 0xFF;
+			    buffer2[pixel + 3] = (color >> 24);
+			} 
+		}
 	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, data->F_img, 0, 0);
+	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, data->C_img, 0, WINDOW_HEIGHT / 2);
 }
 void	img_init(t_map *data)
 {

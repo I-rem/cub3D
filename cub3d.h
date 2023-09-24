@@ -55,6 +55,8 @@ typedef struct s_map{
     char    *EA;
     char    *F;
     char    *C;
+    int	    F_col;
+    int     C_col;
     t_window Window;
     t_minimap Minimap;
     void    *NO_img;
