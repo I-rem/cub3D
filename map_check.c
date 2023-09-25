@@ -41,8 +41,8 @@ int	char_check (t_map *Map, int i, int j)
 				start_count++;
 				if (start_count > 1)
 					return (err("Too many starting positions on map. Error\n"));
-				Map->start_pos_x = j;
-				Map->start_pos_y = i;
+				Map->p_pos_x = j;
+				Map->p_pos_y = i;
 			}
 			else if (Map->map[i][j] != '1' && Map->map[i][j] != '0'
 					&& Map->map[i][j] != ' ')

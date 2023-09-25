@@ -14,8 +14,8 @@
 
 void	move(t_map *Map, int x, int y)
 {
-	Map->start_pos_x = x;
-	Map->start_pos_y = y;
+	Map->p_pos_x = x;
+	Map->p_pos_y = y;
 	render_map(Map);
 }
 
@@ -40,14 +40,14 @@ void	img_init2(void *img, int color, int y, int x)
 			    buffer[pixel + 1] = (color >> 16) & 0xFF;
                             buffer[pixel + 2] = (color >> 8) & 0xFF;
 			    buffer[pixel + 3] = (color) & 0xFF;
-			} 
+			}
                         else if (endian == 0)
 			{
 			    buffer[pixel + 0] = (color) & 0xFF;
 			    buffer[pixel + 1] = (color >> 8) & 0xFF;
                             buffer[pixel + 2] = (color >> 16) & 0xFF;
 			    buffer[pixel + 3] = (color >> 24);
-			} 
+			}
 		}
 	}
 }
@@ -72,8 +72,8 @@ void	img_init(t_map *data)
 	data->EA_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &w, &h);
 	data->WE_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &w, &h);
 	data->Minimap.floor_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, FLOOR, &w, &h);
-	data->Minimap.wall_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, WALL, &w, &h);	
-	data->Minimap.player_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, PLAYER, &w, &h);		
+	data->Minimap.wall_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, WALL, &w, &h);
+	data->Minimap.player_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, PLAYER, &w, &h);
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
@@ -95,8 +95,8 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 	int	x;
 	int	y;
 
-	x = Map->start_pos_x;
-	y = Map->start_pos_y;
+	x = Map->p_pos_x;
+	y = Map->p_pos_y;
 	if (keycode == W && Map->map[y - 1][x] != '1')
 		move(Map, x, y - 1);
 	if (keycode == S && Map->map[y + 1][x] != '1')
@@ -106,3 +106,4 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 	if (keycode == D && Map->map[y][x + 1] != '1')
 		move(Map, x + 1, y);
 }
+
