@@ -84,16 +84,19 @@ void render_image(int s, t_map *data)
 }
 
 void render_map(t_map *Map) {
+	
+	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->C_img, 0, 0);
+	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->F_img, 0, WINDOW_HEIGHT / 2);
 	double ray_angle_increment = FOV / WINDOW_WIDTH;
-	double player_angle = 0.0; // add this to struct so you can change its value with arrow keys
+	 // add this to struct so you can change its value with arrow keys
     for (int column = 0; column < WINDOW_WIDTH; column++) {
         // Calculate the current ray's angle based on player's angle and FOV
-        double ray_angle = player_angle - (FOV / 2) + (column * ray_angle_increment);
+        double ray_angle = Map->player_angle - (FOV / 2) + (column * ray_angle_increment);
 
         // Cast the ray and get the hit point
         double hit_x, hit_y;
-        cast_ray(Map, Map->p_pos_x, Map->p_pos_y, ray_angle, &hit_x, &hit_y);
 
+        cast_ray(Map, Map->p_pos_x, Map->p_pos_y, ray_angle, &hit_x, &hit_y);
         // Calculate distance from player to hit point (you may need trigonometry)
         double distance = calculate_distance(Map->p_pos_x, Map->p_pos_y, hit_x, hit_y);
 
@@ -104,7 +107,7 @@ void render_map(t_map *Map) {
         render_wall_column(Map, column, wall_height);
     }
 
-    // render minimap
+    render_minimap(Map);
 }
 
 
@@ -169,28 +172,24 @@ int handle_input(int keycode, t_map *Map)
 {
     if (keycode == ESC)
     {
-	write(1, "ESC\n", 4);
 	close_program(Map);
     }
     if (keycode == W || keycode == A || keycode == S || keycode == D)
     {
 
         check_move(Map, keycode);
-        //render_map(Map);
 
     }
-	/*
 	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
     {
-        //look();
-        render_map(Map);
-		// Rotate the player clockwise (right)
-player_angle += ROTATION_SPEED;
-
-// Rotate the player counterclockwise (left)
-player_angle -= ROTATION_SPEED;
+	
+	if (keycode == RIGHT_ARR)
+		Map->player_angle += ROTATION_SPEED;
+	else
+		Map->player_angle -= ROTATION_SPEED;
+	render_map(Map);
     }
-	*/
+	
     return (0);
 }
 

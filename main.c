@@ -77,6 +77,7 @@ int	init_map (int fd, t_map *Map)
 		return (err("Invalid map format. Error\n"));
 	Map->map = ft_split(result, '\n');
 	free(result);
+	Map->player_angle = 0.0;
 	return (texture_check(Map, -1));
 }
 

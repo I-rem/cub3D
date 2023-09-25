@@ -27,7 +27,7 @@
 # define S 115
 # define D 100
 # define RIGHT_ARR 65361
-# define LEFT_ARR 65307
+# define LEFT_ARR 65363
 # define FOV 120
 # define PI 3.14159265359
 # define ROTATION_SPEED 0.05
@@ -68,6 +68,7 @@ typedef struct s_map{
     void	*WE_img;
     void	*F_img;
     void	*C_img;
+    double	player_angle; // initialize this according to the map file
 } t_map;
 
 int	err(char *str);

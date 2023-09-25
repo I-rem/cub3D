@@ -1,5 +1,5 @@
 #include "cub3d.h"
-#define looking_angle 90
+//#define looking_angle 90
 // If north looking angle is 90
 
 double calculate_distance(double x1, double y1, double x2, double y2) {
@@ -11,6 +11,7 @@ void cast_ray(t_map *Map, double player_x, double player_y, double ray_angle, do
     double x_check, y_check;
     double x_intersect, y_intersect;
     int grid_x, grid_y;
+
 
     // Initialize steps based on the ray angle
     if (ray_angle >= 0 && ray_angle <= M_PI) {
@@ -29,11 +30,11 @@ void cast_ray(t_map *Map, double player_x, double player_y, double ray_angle, do
 
     // Perform ray casting until we hit a wall
     while (x_check >= 0 && x_check < Map->col_count * TILE_SIZE &&
-           y_check >= 0 && y_check < Map->row_count * TILE_SIZE) {
-        grid_x = (int)(x_check / TILE_SIZE);
+           y_check >= 0 && y_check < (Map->row_count-5) * TILE_SIZE) {       
+grid_x = (int)(x_check / TILE_SIZE);
         grid_y = (int)(y_check / TILE_SIZE);
 
-        if (Map->map[grid_y][grid_x] == '1') {
+        if (Map->map[grid_y][grid_x] && Map->map[grid_y][grid_x] == '1') {
             // Wall hit
             x_intersect = x_check;
             y_intersect = y_check;
@@ -43,7 +44,6 @@ void cast_ray(t_map *Map, double player_x, double player_y, double ray_angle, do
         x_check += x_step;
         y_check += y_step;
     }
-
     *hit_x = x_intersect;
     *hit_y = y_intersect;
 }
@@ -55,7 +55,7 @@ int calculate_wall_height(double distance) {
 }
 
 void render_wall_column(t_map *Map, int column, int wall_height) {
-    int wall_color = 0xFFFFFF;  // Color of the wall texture
+    int wall_color = 0xBBFFFF;  // Color of the wall texture
 
     int column_height = WINDOW_HEIGHT / 2;  // Half of the window height
 
@@ -67,7 +67,7 @@ void render_wall_column(t_map *Map, int column, int wall_height) {
     for (int y = 0; y < WINDOW_HEIGHT / 2; y++) {
         if (y < wall_top || y >= wall_bottom) {
             // Render the sky or floor
-            mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, column, y, Map->C_col);
+            //mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, column, y, Map->C_col);
         } else {
             // Render the wall
             mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, column, y, wall_color);
