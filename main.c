@@ -81,6 +81,29 @@ int	init_map (int fd, t_map *Map)
 	return (texture_check(Map, -1));
 }
 
+void new_map_size(t_map *Map)
+{
+	int	i;
+	int	j;
+	int	max;
+
+	i = 6;
+	while (Map->map[i] != NULL)
+		i++;
+	Map->row_count = i - 6;
+	i = 6;
+	max = 0;
+	while (Map->map[i])
+	{
+		j = 0;
+		while (Map->map[i][j])
+			j++;
+		if (j > max)
+			max = j;
+		i++;
+	}
+	Map->col_count = max;
+}
 int	main (int argc, char **argv)
 {
 	int	fd;
@@ -93,6 +116,7 @@ int	main (int argc, char **argv)
 		return (err("Invalid file. Error\n"));   
 	if (init_map(fd, &Map))
 		return (1);
+	new_map_size(&Map);
 	Map.Window.mlx_ptr = mlx_init();
 	if (Map.Window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n"));
