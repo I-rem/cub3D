@@ -1,5 +1,16 @@
 #include "cub3d.h"
 
+void draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end, int id) {
+    t_img *image;
+
+    image = &Map->Images[id];
+    for (int y = draw_start; y < draw_end; y++) {
+        int img_y = (int)((y - draw_start) * (double)image->height / (double)(draw_end - draw_start));
+        int color = *(int *)(image->addr + (img_y * image->line_len + x * (image->bpp / 8)));
+        mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, x, y, color);
+    }
+}
+
 void    draw_col(t_map *Map, int x, int start, int end, int color)
 {
     int y;
@@ -91,15 +102,21 @@ void cast_ray(t_map *Map, int x) {
     }
 
     // Choose wall color based on the side of the wall
-    int color;
-    if (Map->Ray.side == 0) {
-        color = 0x00FF00; // Green for horizontal walls
-    } else {
-        color = 0x0000FF; // Blue for vertical walls
-    }
+   
 
     // Draw the wall slice
    
-    draw_col(Map, x, draw_start, draw_end, color);
+    //draw_col(Map, x, draw_start, draw_end, color);
+    // Determine which texture to use based on the wall's orientation
+    int tex_id = 0; // Default to north texture
+    if (Map->Ray.side == 0 && Map->Ray.dir_x > 0)
+        tex_id = 2; // East texture
+    else if (Map->Ray.side == 0 && Map->Ray.dir_x < 0)
+        tex_id = 3; // West texture
+    else if (Map->Ray.side == 1 && Map->Ray.dir_y > 0)
+        tex_id = 1; // South texture
+
+    // Render the wall slice with the appropriate texture
+    draw_wall_slice(Map, x, draw_start, draw_end, tex_id);
 }
 

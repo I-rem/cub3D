@@ -49,6 +49,16 @@ typedef struct s_minimap{
     void	*player_img;
 } t_minimap;
 
+typedef struct s_img{
+    void *img;
+    char *addr;
+    int bpp;
+    int line_len;
+    int endian;
+    int width;
+    int height;
+} t_img;
+
 typedef struct s_ray{
     double  pos_x;
     double  dir_x;
@@ -90,12 +100,9 @@ typedef struct s_map{
     int		C_col;
     t_window	Window;
     t_minimap	Minimap;
-    void	*NO_img;
-    void	*SO_img;
-    void	*EA_img;
-    void	*WE_img;
     void	*F_img;
     void	*C_img;
+    t_img   Images[4];
     t_ray   Ray;
     t_player Player;
 } t_map;

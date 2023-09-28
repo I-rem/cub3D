@@ -67,13 +67,16 @@ void	img_init(t_map *data)
 			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	img_init2(data->C_img, data->C_col, 0, 0);
 	img_init2(data->F_img, data->F_col, 0, 0);
-	data->NO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &w, &h);
-	data->SO_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &w, &h);
-	data->EA_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &w, &h);
-	data->WE_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &w, &h);
+	data->Images[0].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &data->Images[0].width, &data->Images[0].height);
+	data->Images[1].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &data->Images[1].width, &data->Images[1].height);
+	data->Images[2].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &data->Images[2].width, &data->Images[2].height);
+	data->Images[3].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &data->Images[3].width, &data->Images[3].height);
 	data->Minimap.floor_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, FLOOR, &w, &h);
 	data->Minimap.wall_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, WALL, &w, &h);
 	data->Minimap.player_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, PLAYER, &w, &h);
+	for (int i = 0; i < 4; i++) {
+        data->Images[i].addr = mlx_get_data_addr(data->Images[i].img, &data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
+    }
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
@@ -83,10 +86,10 @@ void	img_init(t_map *data)
 
 void	img_delete(t_map *data)
 {
-	mlx_destroy_image(data->Window.mlx_ptr, data->NO_img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->SO_img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->EA_img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->WE_img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Images[0].img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Images[1].img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
+	mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.floor_img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.wall_img);
 }
