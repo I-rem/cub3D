@@ -28,13 +28,16 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65363
-# define FOV 120
-# define PI 3.14159265359
-# define ROTATION_SPEED 0.05
 # define FLOOR "./pics/minimap/Floor.xpm"
 # define WALL "./pics/minimap/Wall.xpm"
 # define PLAYER "./pics/minimap/Player.xpm"
+
+# define FOV 120
+# define PI 3.14159265359
+# define ROTATION_SPEED 0.05
+# define MOVE_SPEED 0.05
 # define TILE_SIZE 64
+
 typedef struct s_window{
     void	*mlx_ptr;
     void	*win_ptr;
@@ -46,11 +49,36 @@ typedef struct s_minimap{
     void	*player_img;
 } t_minimap;
 
+typedef struct s_ray{
+    double  pos_x;
+    double  dir_x;
+    double  dir_y;
+    int     map_x;
+    int     map_y;
+    double side_dist_x;
+    double side_dist_y;
+    double delta_dist_x;
+    double delta_dist_y;
+    double perp_dist;
+    int step_x;
+    int step_y;
+    int is_hit;
+    int side;
+} t_ray;
+
+typedef struct s_player{
+    double     pos_x;
+    double     pos_y; // We will probably need to decrease this value before we can actually use it
+    double  dir_x;
+    double  dir_y;
+    double  cam_x;
+    double  cam_y;
+} t_player;
+
 typedef struct s_map{
     int		row_count;
     int		col_count;
-    int		p_pos_x;
-    int		p_pos_y; // We will probably need to decrease this value before we can actually use it
+    
     char	**map;
     char	*NO;
     char	*SO;
@@ -68,14 +96,15 @@ typedef struct s_map{
     void	*WE_img;
     void	*F_img;
     void	*C_img;
-    double	player_angle; // initialize this according to the map file
+    t_ray   Ray;
+    t_player Player;
 } t_map;
 
 int	err(char *str);
 int	texture_check(t_map *Map, int i);
 int	file_check(char *filepath, int type);
 void	open_window(t_map *Map);
-void	render_map(t_map *Map);
+int	render_map(t_map *Map);
 int	handle_input(int keycode, t_map *Map);
 int	handle_no_event(t_map *data);
 void	open_window(t_map *Map);
@@ -85,9 +114,6 @@ void	check_move(t_map *Map, int keycode);
 int	find_color(char *str);
 
 //void	raycasting(t_map *Map);
-double calculate_distance(double x1, double y1, double x2, double y2);
-void cast_ray(t_map *Map, double player_x, double player_y, double ray_angle, double *hit_x, double *hit_y);
-int calculate_wall_height(double distance);
-void render_wall_column(t_map *Map, int column, int wall_height);
+void cast_ray(t_map *Map, int x);
 #endif
 

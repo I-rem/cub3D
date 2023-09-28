@@ -14,8 +14,8 @@
 
 void	move(t_map *Map, int x, int y)
 {
-	Map->p_pos_x = x;
-	Map->p_pos_y = y;
+	Map->Player.pos_x = x;
+	Map->Player.pos_y = y;
 	render_map(Map);
 }
 
@@ -77,6 +77,7 @@ void	img_init(t_map *data)
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
+	//mlx_loop_hook(data->Window.mlx_ptr, (int (*)(void *))render_map, data);
 	mlx_loop(data->Window.mlx_ptr);
 }
 
@@ -95,11 +96,11 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 	int	x;
 	int	y;
 
-	x = Map->p_pos_x;
-	y = Map->p_pos_y;
-	if (keycode == W && Map->map[y - 1][x] != '1')
+	x = Map->Player.pos_x;
+	y = Map->Player.pos_y;
+	if (keycode == S && Map->map[y - 1][x] != '1')
 		move(Map, x, y - 1);
-	if (keycode == S && Map->map[y + 1][x] != '1')
+	if (keycode == W && Map->map[y + 1][x] != '1')
 		move(Map, x, y + 1);
 	if (keycode == A && Map->map[y][x - 1] != '1')
 		move(Map, x - 1, y);

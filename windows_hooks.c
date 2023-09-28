@@ -28,21 +28,21 @@ void	render_minimap(t_map *Map)
 	int	i;
 	int	j;
 
-	i = 5;
+	i = -1;
 	while (Map->map[++i])
 	{
 		j = -1;
 		while (Map->map[i][++j])
 		{
 			mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-				Map->Minimap.floor_img, j * 16, (i-6) * 16);
+				Map->Minimap.floor_img, j * 16, i * 16);
 			if (Map->map[i][j] == '1')
 				mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-					Map->Minimap.wall_img, j * 16, (i-6) * 16);
+					Map->Minimap.wall_img, j * 16, i * 16);
 		}
 	}
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-		Map->Minimap.player_img, Map->p_pos_x * 16, (Map->p_pos_y-6) * 16);
+		Map->Minimap.player_img, Map->Player.pos_x * 16, (Map->Player.pos_y) * 16);
 }
 
 void render_image(int s, t_map *data)
@@ -83,90 +83,18 @@ void render_image(int s, t_map *data)
 	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, img,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 }
 
-void render_map(t_map *Map) {
-	
-	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->C_img, 0, 0);
-	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->F_img, 0, WINDOW_HEIGHT / 2);
-	double ray_angle_increment = FOV / WINDOW_WIDTH;
-	 // add this to struct so you can change its value with arrow keys
-    for (int column = 0; column < WINDOW_WIDTH; column++) {
-        // Calculate the current ray's angle based on player's angle and FOV
-        double ray_angle = Map->player_angle - (FOV / 2) + (column * ray_angle_increment);
-
-        // Cast the ray and get the hit point
-        double hit_x, hit_y;
-
-        cast_ray(Map, Map->p_pos_x, Map->p_pos_y, ray_angle, &hit_x, &hit_y);
-        // Calculate distance from player to hit point (you may need trigonometry)
-        double distance = calculate_distance(Map->p_pos_x, Map->p_pos_y, hit_x, hit_y);
-
-        // Calculate wall height based on distance (you may need perspective correction)
-        int wall_height = calculate_wall_height(distance);
-
-        // Render the wall column based on the wall_height
-        render_wall_column(Map, column, wall_height);
-    }
-
-    render_minimap(Map);
-}
-
-
-/*
-void	render_map(t_map *Map) // render sky color and floor color horizon will be at the middle of  the window
+int	render_map(t_map *Map)
 {
+	int	x;
 
-	int	i;
-	int	j;
-
-
-	i = -1;
-	j = -1;
-
-	while(++i < WINDOW_WIDTH)
-	{
-		j = -1;
-		while (++j <= WINDOW_HEIGHT / 2){
-		mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, i, j, 255);
-		mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr,i, WINDOW_HEIGHT - j, 255255);}
-	}
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->C_img, 0, 0);
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr, Map->F_img, 0, WINDOW_HEIGHT / 2);
-	i = Map->p_pos_y;
-	j = Map->p_pos_x;
-	while (Map->map[i])
-	{
-		while (Map->map[i][j] != '1')
-			i--;
-		if (Map->map[i][j] == '1')
-		{
-		    //mlx_destroy_image(Map->Window.mlx_ptr, Map->NO);
-		    //Map->NO = mlx_new_image(Map->Window.mlx_ptr, 1000, 100);
-		   // mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-			//		Map->NO_img, WINDOW_WIDTH / 4, abs(Map->p_pos_y -i)*64); // Ekraný ortalamasý lazým
-			render_image(64 / abs(i - Map->p_pos_y), Map);
-			break;
-		}
-	}
-	render_minimap(Map);
-	//raycasting(Map);
-	i = 5;
-	while (Map->map[++i])
-	{
-		j = -1;
-		while (Map->map[i][++j])
-		{
-	//		mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-	//			Map-> floor.img_ptr, j * 16, i * 16);
-			if (Map->map[i][j] == '1')
-				mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-					Map->NO_img, j * 64, (i-6) * 64);
-		}
-	}
-	mlx_put_image_to_window(data -> mlx_ptr, data -> win_ptr,
-		data -> player.img_ptr, data -> map_data.p_position_x * 16,
-		data -> map_data.p_position_y * 16);
+	x = -1;
+	while(++x < WINDOW_WIDTH)
+		cast_ray(Map, x);	
+	return 0;
 }
-*/
+
 
 int handle_input(int keycode, t_map *Map)
 {
@@ -180,16 +108,16 @@ int handle_input(int keycode, t_map *Map)
         check_move(Map, keycode);
 
     }
-	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
+	/*
+		if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
     {
 	
 	if (keycode == RIGHT_ARR)
 		Map->player_angle += ROTATION_SPEED;
 	else
 		Map->player_angle -= ROTATION_SPEED;
-	render_map(Map);
-    }
-	
+		render_map(Map);
+	*/
     return (0);
 }
 
@@ -198,5 +126,6 @@ void	open_window(t_map *Map)
 
     Map->Window.win_ptr = mlx_new_window(Map->Window.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	mlx_hook(Map->Window.win_ptr, 17, 0, close_program, Map);
+	//mlx_loop_hook(Map->Window.mlx_ptr, (int (*)(void *))render_map, Map);
 }
 

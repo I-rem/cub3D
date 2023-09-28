@@ -1,120 +1,105 @@
 #include "cub3d.h"
-//#define looking_angle 90
-// If north looking angle is 90
 
-double calculate_distance(double x1, double y1, double x2, double y2) {
-    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+void    draw_col(t_map *Map, int x, int start, int end, int color)
+{
+    int y;
+
+    y = start;
+    while (y++ < end)
+    {
+        mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, x, y, color);
+    }
 }
 
-void cast_ray(t_map *Map, double player_x, double player_y, double ray_angle, double *hit_x, double *hit_y) {
-    double x_step, y_step;
-    double x_check, y_check;
-    double x_intersect, y_intersect;
-    int grid_x, grid_y;
+void cast_ray(t_map *Map, int x) {
+    
+    // Calculate the ray's direction in the game world
+    double camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
+    Map->Ray.dir_x = Map->Player.dir_x + Map->Player.cam_x * camera_x;
+    Map->Ray.dir_y = Map->Player.dir_y + Map->Player.cam_y * camera_x;
 
+    // Initial position and direction of the ray
+    int map_x = (int)Map->Player.pos_y;
+    int map_y = (int)Map->Player.pos_x;
 
-    // Initialize steps based on the ray angle
-    if (ray_angle >= 0 && ray_angle <= M_PI) {
-        // Ray facing down
-        y_step = -1;
-        x_step = fabs(1 / tan(ray_angle));
+    // Length of ray from current position to next x or y-side
+    double side_dist_x;
+    double side_dist_y;
+
+    // Length of ray from one side to next in map
+    double delta_dist_x = fabs(1 / Map->Ray.dir_x);
+    double delta_dist_y = fabs(1 / Map->Ray.dir_y);
+
+    // Step to determine whether the ray moves in the x-direction or y-direction
+    int step_x;
+    int step_y;
+
+    // Calculate initial side_dist_x and side_dist_y
+    if (Map->Ray.dir_x < 0) {
+        step_x = -1;
+        side_dist_x = (Map->Player.pos_y - map_x) * delta_dist_x;
     } else {
-        // Ray facing up
-        y_step = 1;
-        x_step = fabs(1 / tan(ray_angle));
+        step_x = 1;
+        side_dist_x = (map_x + 1.0 - Map->Player.pos_y) * delta_dist_x;
+    }
+    if (Map->Ray.dir_y < 0) {
+        step_y = -1;
+        side_dist_y = (Map->Player.pos_x - map_y) * delta_dist_y;
+    } else {
+        step_y = 1;
+        side_dist_y = (map_y + 1.0 - Map->Player.pos_x) * delta_dist_y;
     }
 
-    // Initialize the first intersection point (grid cell)
-    x_check = floor(player_x / TILE_SIZE) * TILE_SIZE;
-    y_check = player_y + (player_x - x_check) * tan(ray_angle);
-
-    // Perform ray casting until we hit a wall
-    while (x_check >= 0 && x_check < Map->col_count * TILE_SIZE &&
-           y_check >= 0 && y_check < (Map->row_count-5) * TILE_SIZE) {       
-grid_x = (int)(x_check / TILE_SIZE);
-        grid_y = (int)(y_check / TILE_SIZE);
-
-        if (Map->map[grid_y][grid_x] && Map->map[grid_y][grid_x] == '1') {
-            // Wall hit
-            x_intersect = x_check;
-            y_intersect = y_check;
-            break;
-        }
-
-        x_check += x_step;
-        y_check += y_step;
-    }
-    *hit_x = x_intersect;
-    *hit_y = y_intersect;
-}
-
-int calculate_wall_height(double distance) {
-    // Apply perspective correction based on distance
-    // This is a simplified example; you may need more complex calculations
-    return (int)(WINDOW_HEIGHT / (2 * distance));
-}
-
-void render_wall_column(t_map *Map, int column, int wall_height) {
-    int wall_color = 0xBBFFFF;  // Color of the wall texture
-
-    int column_height = WINDOW_HEIGHT / 2;  // Half of the window height
-
-    // Calculate top and bottom positions of the wall segment
-    int wall_top = column_height - (wall_height / 2);
-    int wall_bottom = wall_top + wall_height;
-
-    // Render the wall segment in the specified column
-    for (int y = 0; y < WINDOW_HEIGHT / 2; y++) {
-        if (y < wall_top || y >= wall_bottom) {
-            // Render the sky or floor
-            //mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, column, y, Map->C_col);
+    // Perform DDA (Digital Differential Analysis) algorithm
+    while (1) {
+        
+        // Check if the ray has hit a wall
+        if (side_dist_x < side_dist_y) {
+            side_dist_x += delta_dist_x;
+            map_x += step_x;
+            Map->Ray.side = 0;
         } else {
-            // Render the wall
-            mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, column, y, wall_color);
+            side_dist_y += delta_dist_y;
+            map_y += step_y;
+            Map->Ray.side = 1;
+        }
+        // Check if the ray has hit a wall (you need to implement this condition based on your map data)
+        if (map_x >= 0 && map_x < Map->row_count && map_y >= 0 && map_y  < Map->col_count && Map->map[map_x][map_y] == '1') {
+            break;
+            
         }
     }
+   
+    // Calculate the perpendicular distance to the wall
+    if (Map->Ray.side == 0) {
+        Map->Ray.perp_dist = fabs((map_x - Map->Player.pos_y + (1 - step_x) / 2) / Map->Ray.dir_x);
+    } else {
+        Map->Ray.perp_dist = fabs((map_y - Map->Player.pos_x + (1 - step_y) / 2) / Map->Ray.dir_y);
+    }
+
+    // Calculate the height of the wall slice to draw
+    int line_height = (int)(WINDOW_HEIGHT / Map->Ray.perp_dist);
+
+    // Calculate the starting and ending points for drawing the wall slice
+    int draw_start = -line_height / 2 + WINDOW_HEIGHT / 2;
+    if (draw_start < 0) {
+        draw_start = 0;
+    }
+    int draw_end = line_height / 2 + WINDOW_HEIGHT / 2;
+    if (draw_end >= WINDOW_HEIGHT) {
+        draw_end = WINDOW_HEIGHT - 1;
+    }
+
+    // Choose wall color based on the side of the wall
+    int color;
+    if (Map->Ray.side == 0) {
+        color = 0x00FF00; // Green for horizontal walls
+    } else {
+        color = 0x0000FF; // Blue for vertical walls
+    }
+
+    // Draw the wall slice
+   
+    draw_col(Map, x, draw_start, draw_end, color);
 }
-
-/*
-typedef struct s_ray{
-	int	ray_len;
-	int	wall_height;
-	int	ray_x;
-	int	ray_y;
-	int	angle;
-} t_ray;
-
-void	check_gridline(t_ray *ray, t_map *Map)
-{
-	ray->ray_y = ((Map->p_pos_y / 64) * 64) + (- Map->p_pos_y);
-	ray->ray_x =(Map->p_pos_y - ray->ray_y) / -tan(looking_angle) + p_pos_x;
-}
-
-void	draw_line()
-{
-
-}
-
-void	raycasting(t_map *Map)
-{
-	int	x;
-	int	y;
-	int	begin;
-	int	end;
-
-	t_ray ray[WINDOW_WIDTH];
-
-	x = -1;
-	while (++x < WINDOW_WIDTH)
-	{
-		check_gridline(ray[x], Map);
-		ray[x].wall_height = (64 * WINDOW_HEIGHT
-				/ ray[x].ray_len);
-		begin = WINDOW_HEIGHT / 2 - ray[x].wall_height / 2;
-		end = WINDOW_HEIGHT / 2 + ray[x].wall_height / 2;
-		y = begin - 1;
-		while (++y < end)
-			draw_line(x, y);
-	}
-}*/
 

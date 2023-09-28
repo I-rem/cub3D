@@ -77,30 +77,32 @@ int	init_map (int fd, t_map *Map)
 		return (err("Invalid map format. Error\n"));
 	Map->map = ft_split(result, '\n');
 	free(result);
-	Map->player_angle = 0.0;
 	return (texture_check(Map, -1));
 }
 
-void new_map_size(t_map *Map)
+void new_map(t_map *Map)
 {
 	int	i;
 	int	j;
 	int	max;
-
-	i = 6;
+	
+	i = -1;
+	while (++i < 6)
+		free(Map->map[i]);
+	Map->map += 6;
+	i = 0;
 	while (Map->map[i] != NULL)
 		i++;
-	Map->row_count = i - 6;
-	i = 6;
+	Map->row_count = i;
+	i = -1;
 	max = 0;
-	while (Map->map[i])
+	while (Map->map[++i])
 	{
 		j = 0;
 		while (Map->map[i][j])
 			j++;
 		if (j > max)
 			max = j;
-		i++;
 	}
 	Map->col_count = max;
 }
@@ -116,11 +118,18 @@ int	main (int argc, char **argv)
 		return (err("Invalid file. Error\n"));   
 	if (init_map(fd, &Map))
 		return (1);
-	new_map_size(&Map);
+	new_map(&Map);
+	
+	Map.Player.dir_x = 1.0;
+    Map.Player.dir_y = 0.0;
+    Map.Player.cam_x = 0.0;
+    Map.Player.cam_y = 0.66;
 	Map.Window.mlx_ptr = mlx_init();
 	if (Map.Window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n"));
 	open_window(&Map);
 	img_init(&Map);
+	
+	
 	//free_all();
 }
