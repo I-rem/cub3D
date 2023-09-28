@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	move(t_map *Map, int x, int y)
+void	move(t_map *Map, double x, double y)
 {
 	Map->Player.pos_x = x;
 	Map->Player.pos_y = y;
@@ -93,18 +93,37 @@ void	img_delete(t_map *data)
 
 void	check_move(t_map *Map, int keycode) // This kind of movement is probably too discrete for this project, need to figure more continous functions
 {
-	int	x;
-	int	y;
+	double	x;
+	double	y;
+	double new_x;
+	double new_y;
 
 	x = Map->Player.pos_x;
 	y = Map->Player.pos_y;
-	if (keycode == S && Map->map[y - 1][x] != '1')
-		move(Map, x, y - 1);
-	if (keycode == W && Map->map[y + 1][x] != '1')
-		move(Map, x, y + 1);
-	if (keycode == A && Map->map[y][x - 1] != '1')
-		move(Map, x - 1, y);
-	if (keycode == D && Map->map[y][x + 1] != '1')
-		move(Map, x + 1, y);
+
+	if (keycode == S)
+	{
+		new_x = x - Map->Player.dir_y * MOVE_SPEED;
+        new_y = y - Map->Player.dir_x * MOVE_SPEED;
+
+	}
+	else if (keycode == W)
+	{
+		new_x = x + Map->Player.dir_y * MOVE_SPEED;
+        new_y = y + Map->Player.dir_x * MOVE_SPEED;
+	}		
+	else if (keycode == A)
+	{
+		new_x = x - Map->Player.dir_x * MOVE_SPEED;
+		new_y = y + Map->Player.dir_y * MOVE_SPEED;
+	}	
+	else if (keycode == D)
+	{
+		new_x = x + Map->Player.dir_x * MOVE_SPEED;
+		new_y = y - Map->Player.dir_y * MOVE_SPEED;
+	}
+	if (new_x >= 0 && new_x < WINDOW_WIDTH && new_y >= 0 && new_y < WINDOW_HEIGHT)
+		if (Map->map[(int)new_y][(int)new_x] != '1')
+			move(Map, new_x, new_y);		
 }
 
