@@ -108,16 +108,29 @@ int handle_input(int keycode, t_map *Map)
         check_move(Map, keycode);
 
     }
-	/*
-		if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
+	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
     {
 	
-	if (keycode == RIGHT_ARR)
-		Map->player_angle += ROTATION_SPEED;
-	else
-		Map->player_angle -= ROTATION_SPEED;
+		if (keycode == RIGHT_ARR)
+		{
+			double old_dir_x = Map->Player.dir_x;
+			Map->Player.dir_x = Map->Player.dir_x * cos(-ROTATION_SPEED) - Map->Player.dir_y * sin(-ROTATION_SPEED);
+			Map->Player.dir_y = old_dir_x * sin(-ROTATION_SPEED) + Map->Player.dir_y * cos(-ROTATION_SPEED);
+			double old_plane_x = Map->Player.cam_x;
+			Map->Player.cam_x = Map->Player.cam_x * cos(-ROTATION_SPEED) - Map->Player.cam_y * sin(-ROTATION_SPEED);
+			Map->Player.cam_y = old_plane_x * sin(-ROTATION_SPEED) + Map->Player.cam_y * cos(-ROTATION_SPEED);
+		}
+		if (keycode == LEFT_ARR)
+		{
+			double old_dir_x = Map->Player.dir_x;
+			Map->Player.dir_x = Map->Player.dir_x * cos(ROTATION_SPEED) - Map->Player.dir_y * sin(ROTATION_SPEED);
+			Map->Player.dir_y = old_dir_x * sin(ROTATION_SPEED) + Map->Player.dir_y * cos(ROTATION_SPEED);
+			double old_plane_x = Map->Player.cam_x;
+			Map->Player.cam_x = Map->Player.cam_x * cos(ROTATION_SPEED) - Map->Player.cam_y * sin(ROTATION_SPEED);
+			Map->Player.cam_y = old_plane_x * sin(ROTATION_SPEED) + Map->Player.cam_y * cos(ROTATION_SPEED);
+		}
 		render_map(Map);
-	*/
+	}
     return (0);
 }
 
