@@ -43,6 +43,7 @@ int	char_check (t_map *Map, int i, int j)
 					return (err("Too many starting positions on map. Error\n"));
 				Map->Player.pos_x = j;
 				Map->Player.pos_y = i - 6;
+				Map->start_dir = Map->map[i][j];
 			}
 			else if (Map->map[i][j] != '1' && Map->map[i][j] != '0'
 					&& Map->map[i][j] != ' ')

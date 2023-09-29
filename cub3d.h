@@ -32,11 +32,8 @@
 # define WALL "./pics/minimap/Wall.xpm"
 # define PLAYER "./pics/minimap/Player.xpm"
 
-# define FOV 120
-# define PI 3.14159265359
 # define ROTATION_SPEED 0.05
 # define MOVE_SPEED 0.05
-# define TILE_SIZE 64
 
 typedef struct s_window{
     void	*mlx_ptr;
@@ -78,7 +75,7 @@ typedef struct s_ray{
 
 typedef struct s_player{
     double     pos_x;
-    double     pos_y; // We will probably need to decrease this value before we can actually use it
+    double     pos_y;
     double  dir_x;
     double  dir_y;
     double  cam_x;
@@ -98,6 +95,7 @@ typedef struct s_map{
     char	*C;
     int		F_col;
     int		C_col;
+    char    start_dir;
     t_window	Window;
     t_minimap	Minimap;
     void	*F_img;

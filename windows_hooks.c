@@ -92,6 +92,7 @@ int	render_map(t_map *Map)
 	x = -1;
 	while(++x < WINDOW_WIDTH)
 		cast_ray(Map, x);	
+	printf("%f %f\n", Map->Player.dir_x, Map->Player.dir_y);
 	return 0;
 }
 
@@ -100,7 +101,7 @@ int handle_input(int keycode, t_map *Map)
 {
     if (keycode == ESC)
     {
-	close_program(Map);
+		close_program(Map);
     }
     if (keycode == W || keycode == A || keycode == S || keycode == D)
     {
@@ -111,7 +112,7 @@ int handle_input(int keycode, t_map *Map)
 	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
     {
 	
-		if (keycode == RIGHT_ARR)
+		if (keycode == LEFT_ARR)
 		{
 			double old_dir_x = Map->Player.dir_x;
 			Map->Player.dir_x = Map->Player.dir_x * cos(-ROTATION_SPEED) - Map->Player.dir_y * sin(-ROTATION_SPEED);
@@ -120,7 +121,7 @@ int handle_input(int keycode, t_map *Map)
 			Map->Player.cam_x = Map->Player.cam_x * cos(-ROTATION_SPEED) - Map->Player.cam_y * sin(-ROTATION_SPEED);
 			Map->Player.cam_y = old_plane_x * sin(-ROTATION_SPEED) + Map->Player.cam_y * cos(-ROTATION_SPEED);
 		}
-		if (keycode == LEFT_ARR)
+		if (keycode == RIGHT_ARR)
 		{
 			double old_dir_x = Map->Player.dir_x;
 			Map->Player.dir_x = Map->Player.dir_x * cos(ROTATION_SPEED) - Map->Player.dir_y * sin(ROTATION_SPEED);

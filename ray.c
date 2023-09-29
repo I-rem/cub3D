@@ -26,8 +26,8 @@ void cast_ray(t_map *Map, int x) {
     
     // Calculate the ray's direction in the game world
     double camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
-    Map->Ray.dir_x = Map->Player.dir_x + Map->Player.cam_x * camera_x;
-    Map->Ray.dir_y = Map->Player.dir_y + Map->Player.cam_y * camera_x;
+    Map->Ray.dir_y = Map->Player.dir_x + Map->Player.cam_x * camera_x;
+    Map->Ray.dir_x = Map->Player.dir_y + Map->Player.cam_y * camera_x;
 
     // Initial position and direction of the ray
     int map_x = (int)Map->Player.pos_y;

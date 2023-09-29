@@ -106,27 +106,26 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 
 	if (keycode == S)
 	{
-		new_x = x - Map->Player.dir_y * MOVE_SPEED;
-        new_y = y - Map->Player.dir_x * MOVE_SPEED;
+		new_x = x - Map->Player.dir_x * MOVE_SPEED;
+        new_y = y - Map->Player.dir_y * MOVE_SPEED;
 
 	}
 	else if (keycode == W)
 	{
-		new_x = x + Map->Player.dir_y * MOVE_SPEED;
-        new_y = y + Map->Player.dir_x * MOVE_SPEED;
+		new_x = x + Map->Player.dir_x * MOVE_SPEED;
+        new_y = y + Map->Player.dir_y * MOVE_SPEED;
 	}		
 	else if (keycode == A)
 	{
-		new_x = x - Map->Player.dir_x * MOVE_SPEED;
-		new_y = y + Map->Player.dir_y * MOVE_SPEED;
+		new_x = x - Map->Player.dir_y * MOVE_SPEED;
+		new_y = y + Map->Player.dir_x * MOVE_SPEED;
 	}	
 	else if (keycode == D)
 	{
-		new_x = x + Map->Player.dir_x * MOVE_SPEED;
-		new_y = y - Map->Player.dir_y * MOVE_SPEED;
+		new_x = x + Map->Player.dir_y * MOVE_SPEED;
+		new_y = y - Map->Player.dir_x * MOVE_SPEED;
 	}
 	if (new_x >= 0 && new_x < WINDOW_WIDTH && new_y >= 0 && new_y < WINDOW_HEIGHT)
 		if (Map->map[(int)new_y][(int)new_x] != '1')
 			move(Map, new_x, new_y);		
 }
-
