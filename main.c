@@ -129,25 +129,6 @@ void	init_dir (t_map *Map)
 		Map->Player.dir_x = 0.0;
 		Map->Player.dir_y = 1.0;
 	}
-	/*
-	if (Map->start_dir == 'W' || Map->start_dir == 'E')
-	{
-		Map->Player.dir_y = 0.0;
-		if (Map->start_dir == 'W')
-			Map->Player.dir_x = 1.0;
-		else
-			Map->Player.dir_x = -1.0;
-	}
-		
-	else if (Map->start_dir == 'N' || Map->start_dir == 'S')
-	{
-		Map->Player.dir_x = 0.0;
-		if (Map->start_dir == 'N')
-			Map->Player.dir_y = -1.0;
-		else
-			Map->Player.dir_y = 1.0;
-	}
-	*/
 }
 
 int	main (int argc, char **argv)
@@ -166,8 +147,8 @@ int	main (int argc, char **argv)
 	init_dir(&Map);
     Map.Player.cam_x = 0.0;
     Map.Player.cam_y = 0.66;
-	Map.Player.pos_x += 0.5;
-	Map.Player.pos_y += 0.5;
+	Map.Player.pos_x += 0.64;
+	Map.Player.pos_y += 0.64;
 	Map.Window.mlx_ptr = mlx_init();
 	if (Map.Window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n"));

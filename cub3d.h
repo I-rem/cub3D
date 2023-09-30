@@ -11,7 +11,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# define WINDOW_WIDTH 400
+# define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 400
 //# define ESC 53
 //# define W 13
@@ -32,7 +32,7 @@
 # define WALL "./pics/minimap/Wall.xpm"
 # define PLAYER "./pics/minimap/Player.xpm"
 
-# define ROTATION_SPEED 0.05
+#define ROTATION_SPEED (M_PI / 180.0)
 # define MOVE_SPEED 0.05
 
 typedef struct s_window{

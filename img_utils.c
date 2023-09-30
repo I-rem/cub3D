@@ -126,6 +126,6 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 		new_y = y - Map->Player.dir_x * MOVE_SPEED;
 	}
 	if (new_x >= 0 && new_x < WINDOW_WIDTH && new_y >= 0 && new_y < WINDOW_HEIGHT)
-		if (Map->map[(int)new_y][(int)new_x] != '1')
+		if (Map->map[(int)new_y][(int)new_x] && Map->map[(int)new_y][(int)new_x] != '1')
 			move(Map, new_x, new_y);		
 }
