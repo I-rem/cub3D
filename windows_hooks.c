@@ -111,31 +111,26 @@ int handle_input(int keycode, t_map *Map)
 
     }
 	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
-    {
-	
+    	{
+		double	rotation_speed;
 		if (keycode == RIGHT_ARR)
 		{
-			// Rotate the player's direction and camera plane to the right
-			double old_dir_x = Map->Player.dir_x;
-			Map->Player.dir_x = Map->Player.dir_x * cos(-ROTATION_SPEED) - Map->Player.dir_y * sin(-ROTATION_SPEED);
-			Map->Player.dir_y = old_dir_x * sin(-ROTATION_SPEED) + Map->Player.dir_y * cos(-ROTATION_SPEED);
-
-			double old_plane_x = Map->Player.cam_x;
-			Map->Player.cam_x = Map->Player.cam_x * cos(-ROTATION_SPEED) - Map->Player.cam_y * sin(-ROTATION_SPEED);
-			Map->Player.cam_y = old_plane_x * sin(-ROTATION_SPEED) + Map->Player.cam_y * cos(-ROTATION_SPEED);
-
+			
+			rotation_speed = -ROTATION_SPEED;
 		}
-		if (keycode == LEFT_ARR)
+		else if (keycode == LEFT_ARR)
 		{
-		    double old_dir_x = Map->Player.dir_x;
-		    Map->Player.dir_x = Map->Player.dir_x * cos(ROTATION_SPEED) - Map->Player.dir_y * sin(ROTATION_SPEED);
-		    Map->Player.dir_y = old_dir_x * sin(ROTATION_SPEED) + Map->Player.dir_y * cos(ROTATION_SPEED);
-
-		    double old_plane_x = Map->Player.cam_x;
-		    Map->Player.cam_x = Map->Player.cam_x * cos(ROTATION_SPEED) - Map->Player.cam_y * sin(ROTATION_SPEED);
-		    Map->Player.cam_y = old_plane_x * sin(ROTATION_SPEED) + Map->Player.cam_y * cos(ROTATION_SPEED);
+			rotation_speed = ROTATION_SPEED;
 		}
+		if (Map->start_dir == 'W')
+			rotation_speed *= -1;
+		double old_dir_x = Map->Player.dir_x;
+		Map->Player.dir_x = Map->Player.dir_x * cos(rotation_speed) - Map->Player.dir_y * sin(rotation_speed);
+		Map->Player.dir_y = old_dir_x * sin(rotation_speed) + Map->Player.dir_y * cos(rotation_speed);
 
+		double old_plane_x = Map->Player.cam_x;
+		Map->Player.cam_x = Map->Player.cam_x * cos(rotation_speed) - Map->Player.cam_y * sin(rotation_speed);
+		Map->Player.cam_y = old_plane_x * sin(rotation_speed) + Map->Player.cam_y * cos(rotation_speed);
 		render_map(Map);
 	}
     return (0);
