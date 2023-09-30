@@ -145,8 +145,8 @@ int	main (int argc, char **argv)
 		return (1);
 	new_map(&Map);
 	init_dir(&Map);
-    Map.Player.cam_x = 0.0;
-    Map.Player.cam_y = 0.66;
+	Map.Player.cam_x = 0.0;
+	Map.Player.cam_y = 0.66;
 	Map.Player.pos_x += 0.64;
 	Map.Player.pos_y += 0.64;
 	Map.Window.mlx_ptr = mlx_init();

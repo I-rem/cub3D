@@ -13,7 +13,7 @@ char	*find_binary (int decimal)
 			binary = ft_strjoin("0", binary);
 		decimal /= 2;
 	}
-	return binary;
+	return (binary);
 }
 
 int	find_decimal (char *binary)
@@ -24,9 +24,7 @@ int	find_decimal (char *binary)
 	i = -1;
 	result = 0;
 	while (binary[++i])
-	{
 		result = result * 2 + binary[i] - '0';
-	}
 	return (result);
 }
 

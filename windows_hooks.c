@@ -23,66 +23,6 @@ int	handle_no_event(t_map *data)
 	return (0);
 }
 
-void	render_minimap(t_map *Map)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (Map->map[++i])
-	{
-		j = -1;
-		while (Map->map[i][++j])
-		{
-			mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-				Map->Minimap.floor_img, j * 16, i * 16);
-			if (Map->map[i][j] == '1')
-				mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-					Map->Minimap.wall_img, j * 16, i * 16);
-		}
-	}
-	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-		Map->Minimap.player_img, Map->Player.pos_x * 16, (Map->Player.pos_y) * 16);
-}
-
-void render_image(int s, t_map *data)
-{
-	void *img = mlx_new_image(data->Window.mlx_ptr
-			            , s, s);
-	int pixel_bits;
-	int line_bytes;
-	int endian;
-	char *buffer;
-	int	pixel;
-	int x = 0;
-	int y = 0;
-	int color = 0xAAADEF;
-	buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
-	while(y++ < s)
-	{
-		x = 0;
-		while(x++ <s)
-		{
-			pixel = (y * line_bytes) + (x*4);
-			if (endian == 1)
-			{
-			    buffer[pixel + 0] = (color >> 24);
-			    buffer[pixel + 1] = (color >> 16) & 0xFF;
-                            buffer[pixel + 2] = (color >> 8) & 0xFF;
-			    buffer[pixel + 3] = (color) & 0xFF;
-			}
-                        else if (endian == 0)
-			{
-			    buffer[pixel + 0] = (color) & 0xFF;
-			    buffer[pixel + 1] = (color >> 8) & 0xFF;
-                            buffer[pixel + 2] = (color >> 16) & 0xFF;
-			    buffer[pixel + 3] = (color >> 24);
-			}
-		}
-	}
-	mlx_put_image_to_window(data->Window.mlx_ptr, data->Window.win_ptr, img,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-}
-
 int	render_map(t_map *Map)
 {
 	int	x;
@@ -92,43 +32,31 @@ int	render_map(t_map *Map)
 	x = -1;
 	while(++x < WINDOW_WIDTH)
 		cast_ray(Map, x);	
-	render_minimap(Map);
-	//printf("%f %f\n", Map->Player.dir_x, Map->Player.dir_y);
 	return 0;
 }
 
-
 int handle_input(int keycode, t_map *Map)
 {
-    if (keycode == ESC)
-    {
+	double	rotation_speed;
+	double	old_dir_x;
+	double old_plane_x;
+
+	if (keycode == ESC)
 		close_program(Map);
-    }
-    if (keycode == W || keycode == A || keycode == S || keycode == D)
-    {
-
-        check_move(Map, keycode);
-
-    }
-	if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
+	else if (keycode == W || keycode == A || keycode == S || keycode == D)
+	        check_move(Map, keycode);
+	else if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
     	{
-		double	rotation_speed;
 		if (keycode == RIGHT_ARR)
-		{
-			
 			rotation_speed = -ROTATION_SPEED;
-		}
 		else if (keycode == LEFT_ARR)
-		{
 			rotation_speed = ROTATION_SPEED;
-		}
 		if (Map->start_dir == 'W')
 			rotation_speed *= -1;
-		double old_dir_x = Map->Player.dir_x;
+		old_dir_x = Map->Player.dir_x;
 		Map->Player.dir_x = Map->Player.dir_x * cos(rotation_speed) - Map->Player.dir_y * sin(rotation_speed);
 		Map->Player.dir_y = old_dir_x * sin(rotation_speed) + Map->Player.dir_y * cos(rotation_speed);
-
-		double old_plane_x = Map->Player.cam_x;
+		old_plane_x = Map->Player.cam_x;
 		Map->Player.cam_x = Map->Player.cam_x * cos(rotation_speed) - Map->Player.cam_y * sin(rotation_speed);
 		Map->Player.cam_y = old_plane_x * sin(rotation_speed) + Map->Player.cam_y * cos(rotation_speed);
 		render_map(Map);

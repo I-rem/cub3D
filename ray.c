@@ -22,28 +22,30 @@ void    draw_col(t_map *Map, int x, int start, int end, int color)
     }
 }
 
-void cast_ray(t_map *Map, int x) {
-    
-    // Calculate the ray's direction in the game world
-	if (Map->Player.dir_x == 0 && Map->Player.dir_y == -1) {
-    Map->Player.cam_x = 1.0;
-    Map->Player.cam_y = 0.0;
-}
-else if (Map->Player.dir_x == 0 && Map->Player.dir_y == 1) {
-    Map->Player.cam_x = -1.0;
-    Map->Player.cam_y = 0.0;
-}
-    double camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
-    Map->Ray.dir_x = Map->Player.dir_x + Map->Player.cam_x * camera_x;
-    Map->Ray.dir_y = Map->Player.dir_y + Map->Player.cam_y * camera_x;
+void cast_ray(t_map *Map, int x)
+{
+	// Calculate the ray's direction in the game world
+	if (Map->Player.dir_x == 0 && Map->Player.dir_y == -1)
+	{
+		Map->Player.cam_x = 1.0;
+		Map->Player.cam_y = 0.0;
+	}
+	else if (Map->Player.dir_x == 0 && Map->Player.dir_y == 1)
+	{
+    		Map->Player.cam_x = -1.0;
+    		Map->Player.cam_y = 0.0;
+	}
+	double camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
+	Map->Ray.dir_x = Map->Player.dir_x + Map->Player.cam_x * camera_x;
+	Map->Ray.dir_y = Map->Player.dir_y + Map->Player.cam_y * camera_x;
 
-    // Initial position and direction of the ray
-    int map_x = (int)Map->Player.pos_x;
-    int map_y = (int)Map->Player.pos_y;
+	// Initial position and direction of the ray
+	int map_x = (int)Map->Player.pos_x;
+	int map_y = (int)Map->Player.pos_y;
 
     // Length of ray from current position to next x or y-side
-    double side_dist_x;
-    double side_dist_y;
+	double side_dist_x;
+	double side_dist_y;
 
     // Length of ray from one side to next in map
     double delta_dist_x = fabs(1 / Map->Ray.dir_x);

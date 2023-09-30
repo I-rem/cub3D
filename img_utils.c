@@ -21,10 +21,10 @@ void	move(t_map *Map, double x, double y)
 
 void	img_init2(void *img, int color, int y, int x)
 {
-	int pixel_bits;
-	int line_bytes;
-	int endian;
-	char *buffer;
+	int	pixel_bits;
+	int	line_bytes;
+	int	endian;
+	char	*buffer;
 	int	pixel;
 
 	buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
@@ -34,30 +34,16 @@ void	img_init2(void *img, int color, int y, int x)
 		while(x++ <= WINDOW_WIDTH)
 		{
 			pixel = (y * line_bytes) + (x*4);
-			if (endian == 1)
-			{
-			    buffer[pixel + 0] = (color >> 24);
-			    buffer[pixel + 1] = (color >> 16) & 0xFF;
-                            buffer[pixel + 2] = (color >> 8) & 0xFF;
-			    buffer[pixel + 3] = (color) & 0xFF;
-			}
-                        else if (endian == 0)
-			{
-			    buffer[pixel + 0] = (color) & 0xFF;
-			    buffer[pixel + 1] = (color >> 8) & 0xFF;
-                            buffer[pixel + 2] = (color >> 16) & 0xFF;
-			    buffer[pixel + 3] = (color >> 24);
-			}
+			buffer[pixel + 0] = (color) & 0xFF;
+			buffer[pixel + 1] = (color >> 8) & 0xFF;
+                        buffer[pixel + 2] = (color >> 16) & 0xFF;
+			buffer[pixel + 3] = (color >> 24);
 		}
 	}
 }
 void	img_init(t_map *data)
 {
-	int	w;
-	int	h;
-
-	w = 16;
-	h = 16;
+	int	i;
 
 	data->F_col = find_color(data->F);
 	data->C_col = find_color(data->C);
@@ -71,16 +57,12 @@ void	img_init(t_map *data)
 	data->Images[1].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &data->Images[1].width, &data->Images[1].height);
 	data->Images[2].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &data->Images[2].width, &data->Images[2].height);
 	data->Images[3].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &data->Images[3].width, &data->Images[3].height);
-	data->Minimap.floor_img = mlx_xpm_file_to_image(data->Window.mlx_ptr, FLOOR, &w, &h);
-	data->Minimap.wall_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, WALL, &w, &h);
-	data->Minimap.player_img =  mlx_xpm_file_to_image(data->Window.mlx_ptr, PLAYER, &w, &h);
-	for (int i = 0; i < 4; i++) {
-        data->Images[i].addr = mlx_get_data_addr(data->Images[i].img, &data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
-    }
+	i = -1;	
+	while (++i < 4)
+		data->Images[i].addr = mlx_get_data_addr(data->Images[i].img, &data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
-	//mlx_loop_hook(data->Window.mlx_ptr, (int (*)(void *))render_map, data);
 	mlx_loop(data->Window.mlx_ptr);
 }
 
@@ -90,8 +72,6 @@ void	img_delete(t_map *data)
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[1].img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.floor_img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Minimap.wall_img);
 }
 
 void	check_move(t_map *Map, int keycode) // This kind of movement is probably too discrete for this project, need to figure more continous functions
@@ -115,12 +95,12 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 		new_x = x + Map->Player.dir_x * MOVE_SPEED;
         new_y = y + Map->Player.dir_y * MOVE_SPEED;
 	}		
-	else if (keycode == A)
+	else if ((keycode == A && Map->start_dir == 'W') || (keycode == D && Map->start_dir != 'W'))
 	{
 		new_x = x - Map->Player.dir_y * MOVE_SPEED;
 		new_y = y + Map->Player.dir_x * MOVE_SPEED;
 	}	
-	else if (keycode == D)
+	else if ((keycode == D && Map->start_dir == 'W') || (keycode == A && Map->start_dir != 'W'))
 	{
 		new_x = x + Map->Player.dir_y * MOVE_SPEED;
 		new_y = y - Map->Player.dir_x * MOVE_SPEED;
