@@ -74,7 +74,7 @@ void	img_delete(t_map *data)
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
 }
 
-void	check_move(t_map *Map, int keycode) // This kind of movement is probably too discrete for this project, need to figure more continous functions
+void	check_move(t_map *Map, int keycode)
 {
 	double	x;
 	double	y;
@@ -87,13 +87,13 @@ void	check_move(t_map *Map, int keycode) // This kind of movement is probably to
 	if (keycode == S)
 	{
 		new_x = x - Map->Player.dir_x * MOVE_SPEED;
-        new_y = y - Map->Player.dir_y * MOVE_SPEED;
+		new_y = y - Map->Player.dir_y * MOVE_SPEED;
 
 	}
 	else if (keycode == W)
 	{
 		new_x = x + Map->Player.dir_x * MOVE_SPEED;
-        new_y = y + Map->Player.dir_y * MOVE_SPEED;
+		new_y = y + Map->Player.dir_y * MOVE_SPEED;
 	}		
 	else if ((keycode == A && Map->start_dir == 'W') || (keycode == D && Map->start_dir != 'W'))
 	{
