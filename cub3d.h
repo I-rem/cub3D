@@ -114,7 +114,7 @@ int	handle_input(int keycode, t_map *Map);
 int	handle_no_event(t_map *data);
 void	open_window(t_map *Map);
 void	img_delete(t_map *data);
-void	img_init(t_map *data);
+void	img_init(t_map *data, int i);
 void	check_move(t_map *Map, int keycode);
 int	find_color(char *str);
 

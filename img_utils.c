@@ -41,10 +41,8 @@ void	img_init2(void *img, int color, int y, int x)
 		}
 	}
 }
-void	img_init(t_map *data)
+void	img_init(t_map *data, int i)
 {
-	int	i;
-
 	data->F_col = find_color(data->F);
 	data->C_col = find_color(data->C);
 	data->F_img = mlx_new_image(data->Window.mlx_ptr
@@ -53,13 +51,16 @@ void	img_init(t_map *data)
 			            , WINDOW_WIDTH, WINDOW_HEIGHT / 2);
 	img_init2(data->C_img, data->C_col, 0, 0);
 	img_init2(data->F_img, data->F_col, 0, 0);
-	data->Images[0].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, &data->Images[0].width, &data->Images[0].height);
-	data->Images[1].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO, &data->Images[1].width, &data->Images[1].height);
-	data->Images[2].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE, &data->Images[2].width, &data->Images[2].height);
+	data->Images[0].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->NO, 
+							&data->Images[0].width, &data->Images[0].height);
+	data->Images[1].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->SO,
+							&data->Images[1].width, &data->Images[1].height);
+	data->Images[2].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE,
+							&data->Images[2].width, &data->Images[2].height);
 	data->Images[3].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &data->Images[3].width, &data->Images[3].height);
-	i = -1;	
 	while (++i < 4)
-		data->Images[i].addr = mlx_get_data_addr(data->Images[i].img, &data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
+		data->Images[i].addr = mlx_get_data_addr(data->Images[i].img,
+							&data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
@@ -76,35 +77,27 @@ void	img_delete(t_map *data)
 
 void	check_move(t_map *Map, int keycode)
 {
-	double	x;
-	double	y;
 	double new_x;
 	double new_y;
 
-	x = Map->Player.pos_x;
-	y = Map->Player.pos_y;
-
-	if (keycode == S)
+	new_x = Map->Player.pos_x + Map->Player.dir_y * MOVE_SPEED;
+	new_y = Map->Player.pos_y - Map->Player.dir_x * MOVE_SPEED;
+	if (keycode == S || keycode == W)
 	{
-		new_x = x - Map->Player.dir_x * MOVE_SPEED;
-		new_y = y - Map->Player.dir_y * MOVE_SPEED;
-
-	}
-	else if (keycode == W)
-	{
-		new_x = x + Map->Player.dir_x * MOVE_SPEED;
-		new_y = y + Map->Player.dir_y * MOVE_SPEED;
+		new_x = Map->Player.pos_x - Map->Player.dir_x * MOVE_SPEED;
+		new_y = Map->Player.pos_y - Map->Player.dir_y * MOVE_SPEED;
+		if (keycode == W)
+		{
+			new_x = Map->Player.pos_x + Map->Player.dir_x * MOVE_SPEED;
+			new_y = Map->Player.pos_y + Map->Player.dir_y * MOVE_SPEED;
+		}
 	}		
-	else if ((keycode == A && Map->start_dir == 'W') || (keycode == D && Map->start_dir != 'W'))
+	else if ((keycode == A && Map->start_dir == 'W')
+		|| (keycode == D && Map->start_dir != 'W'))
 	{
-		new_x = x - Map->Player.dir_y * MOVE_SPEED;
-		new_y = y + Map->Player.dir_x * MOVE_SPEED;
+		new_x = Map->Player.pos_x - Map->Player.dir_y * MOVE_SPEED;
+		new_y = Map->Player.pos_y + Map->Player.dir_x * MOVE_SPEED;
 	}	
-	else if ((keycode == D && Map->start_dir == 'W') || (keycode == A && Map->start_dir != 'W'))
-	{
-		new_x = x + Map->Player.dir_y * MOVE_SPEED;
-		new_y = y - Map->Player.dir_x * MOVE_SPEED;
-	}
 	if (new_x >= 0 && new_x < WINDOW_WIDTH && new_y >= 0 && new_y < WINDOW_HEIGHT)
 		if (Map->map[(int)new_y][(int)new_x] && Map->map[(int)new_y][(int)new_x] != '1')
 			move(Map, new_x, new_y);		

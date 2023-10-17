@@ -153,6 +153,6 @@ int	main (int argc, char **argv)
 	if (Map.Window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n"));
 	open_window(&Map);
-	img_init(&Map);
+	img_init(&Map, -1);
 	//free_all();
 }
