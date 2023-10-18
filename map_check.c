@@ -25,11 +25,8 @@ int	char_check2(t_map *Map, int i, int j)
 	return (0);
 }
 
-int	char_check (t_map *Map, int i, int j)
+int	char_check (t_map *Map, int i, int j, int start_count)
 {
-	int	start_count;
-
-	start_count = 0;
 	while (Map->map[++i])
 	{
 		j = -1;
@@ -97,7 +94,6 @@ int	wall_check (t_map *Map, int i, int j)
 
 int	texture_check(t_map *Map, int i)
 {
-
 	while (Map->map[++i] && i < 6)
 		Map->map[i] = ft_strdup(ft_strtrim(Map->map[i], " "));
 	i = -1;
@@ -120,5 +116,5 @@ int	texture_check(t_map *Map, int i)
 		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))
 		return (err("Invalid texture files. Error\n"));
 	return (color_check(Map->F) || color_check(Map->C)
-			|| char_check(Map, 5, -1) || wall_check(Map, 5, -1));
+			|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1));
 }

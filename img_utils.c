@@ -57,10 +57,12 @@ void	img_init(t_map *data, int i)
 							&data->Images[1].width, &data->Images[1].height);
 	data->Images[2].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->WE,
 							&data->Images[2].width, &data->Images[2].height);
-	data->Images[3].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA, &data->Images[3].width, &data->Images[3].height);
+	data->Images[3].img = mlx_xpm_file_to_image(data->Window.mlx_ptr, data->EA,
+							&data->Images[3].width, &data->Images[3].height);
 	while (++i < 4)
 		data->Images[i].addr = mlx_get_data_addr(data->Images[i].img,
-							&data->Images[i].bpp, &data->Images[i].line_len, &data->Images[i].endian);
+								&data->Images[i].bpp, &data->Images[i].line_len,
+								&data->Images[i].endian);
 	render_map(data);
 	mlx_key_hook(data->Window.win_ptr, &handle_input, data);
 	mlx_loop_hook(data->Window.mlx_ptr, &handle_no_event, data);
@@ -77,28 +79,29 @@ void	img_delete(t_map *data)
 
 void	check_move(t_map *Map, int keycode)
 {
-	double new_x;
-	double new_y;
+	double nw_x;
+	double nw_y;
 
-	new_x = Map->Player.pos_x + Map->Player.dir_y * MOVE_SPEED;
-	new_y = Map->Player.pos_y - Map->Player.dir_x * MOVE_SPEED;
+	nw_x = Map->Player.pos_x + Map->Player.dir_y * MOVE_SPEED;
+	nw_y = Map->Player.pos_y - Map->Player.dir_x * MOVE_SPEED;
 	if (keycode == S || keycode == W)
 	{
-		new_x = Map->Player.pos_x - Map->Player.dir_x * MOVE_SPEED;
-		new_y = Map->Player.pos_y - Map->Player.dir_y * MOVE_SPEED;
+		nw_x = Map->Player.pos_x - Map->Player.dir_x * MOVE_SPEED;
+		nw_y = Map->Player.pos_y - Map->Player.dir_y * MOVE_SPEED;
 		if (keycode == W)
 		{
-			new_x = Map->Player.pos_x + Map->Player.dir_x * MOVE_SPEED;
-			new_y = Map->Player.pos_y + Map->Player.dir_y * MOVE_SPEED;
+			nw_x = Map->Player.pos_x + Map->Player.dir_x * MOVE_SPEED;
+			nw_y = Map->Player.pos_y + Map->Player.dir_y * MOVE_SPEED;
 		}
 	}		
 	else if ((keycode == A && Map->start_dir == 'W')
 		|| (keycode == D && Map->start_dir != 'W'))
 	{
-		new_x = Map->Player.pos_x - Map->Player.dir_y * MOVE_SPEED;
-		new_y = Map->Player.pos_y + Map->Player.dir_x * MOVE_SPEED;
+		nw_x = Map->Player.pos_x - Map->Player.dir_y * MOVE_SPEED;
+		nw_y = Map->Player.pos_y + Map->Player.dir_x * MOVE_SPEED;
 	}	
-	if (new_x >= 0 && new_x < WINDOW_WIDTH && new_y >= 0 && new_y < WINDOW_HEIGHT)
-		if (Map->map[(int)new_y][(int)new_x] && Map->map[(int)new_y][(int)new_x] != '1')
-			move(Map, new_x, new_y);		
+	if (nw_x >= 0 && nw_x < WINDOW_WIDTH && nw_y >= 0 && nw_y < WINDOW_HEIGHT)
+		if (Map->map[(int)nw_y][(int)nw_x] &&
+			Map->map[(int)nw_y][(int)nw_x] != '1')
+			move(Map, nw_x, nw_y);		
 }

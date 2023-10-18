@@ -1,6 +1,7 @@
 #include "cub3d.h"
 
-void draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end, int id) {
+void	draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end, int id)
+{
 	t_img	*image;
 	int	y;
 	int	img_y;

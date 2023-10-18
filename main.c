@@ -1,36 +1,5 @@
 #include "cub3d.h"
 
-int	err (char *str)
-{
-	//free_all();
-	while (*str)
-		write(1, str++, 1);
-	return (1);
-}
-
-int	file_check(char *filepath, int type)
-{
-	int	len;
-	int	fd;
-
-	if (filepath == NULL)
-		return(0);
-	len = ft_strlen(filepath);
-       	if (type == 1)
-	       	if (ft_strncmp(filepath + len - 4, ".cub", 4))
-			return (0);
-	if (type == 2)
-		if (ft_strncmp(filepath + len - 4, ".xpm", 4))
-			return (0);
-	fd = open(filepath, O_RDONLY);
-	if (fd == -1)
-	{
-		close(fd);
-		return 0;
-	}
-	return (fd);
-}
-
 void	map_size (char *map, t_map *Map)
 {
 	int	max;
@@ -80,7 +49,7 @@ int	init_map (int fd, t_map *Map)
 	return (texture_check(Map, -1));
 }
 
-void new_map(t_map *Map)
+void	new_map(t_map *Map)
 {
 	int	i;
 	int	j;
@@ -147,8 +116,8 @@ int	main (int argc, char **argv)
 	init_dir(&Map);
 	Map.Player.cam_x = 0.0;
 	Map.Player.cam_y = 0.66;
-	Map.Player.pos_x += 0.64;
-	Map.Player.pos_y += 0.64;
+	Map.Player.pos_x += 0.5;
+	Map.Player.pos_y += 0.5;
 	Map.Window.mlx_ptr = mlx_init();
 	if (Map.Window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n"));

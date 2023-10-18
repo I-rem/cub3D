@@ -105,20 +105,18 @@ typedef struct s_map{
     t_player Player;
 } t_map;
 
-int	err(char *str);
-int	texture_check(t_map *Map, int i);
-int	file_check(char *filepath, int type);
+int		err(char *str);
+int		texture_check(t_map *Map, int i);
+int		file_check(char *filepath, int type);
 void	open_window(t_map *Map);
-int	render_map(t_map *Map);
-int	handle_input(int keycode, t_map *Map);
-int	handle_no_event(t_map *data);
+int		render_map(t_map *Map);
+int		handle_input(int keycode, t_map *Map);
+int		handle_no_event(t_map *data);
 void	open_window(t_map *Map);
 void	img_delete(t_map *data);
 void	img_init(t_map *data, int i);
 void	check_move(t_map *Map, int keycode);
-int	find_color(char *str);
-
-//void	raycasting(t_map *Map);
-void cast_ray(t_map *Map, int x);
+int		find_color(char *str);
+void 	cast_ray(t_map *Map, int x);
 #endif
 
