@@ -11,7 +11,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# define WINDOW_WIDTH 800
+# define WINDOW_WIDTH 600
 # define WINDOW_HEIGHT 400
 //# define ESC 53
 //# define W 13
@@ -28,23 +28,13 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65363
-# define FLOOR "./pics/minimap/Floor.xpm"
-# define WALL "./pics/minimap/Wall.xpm"
-# define PLAYER "./pics/minimap/Player.xpm"
-
-#define ROTATION_SPEED (M_PI / 180.0)
-# define MOVE_SPEED 0.05
+#define ROTATION_SPEED (3.14 / 180.0)
+# define MOVE_SPEED 0.1
 
 typedef struct s_window{
     void	*mlx_ptr;
     void	*win_ptr;
 } t_window;
-
-typedef struct s_minimap{
-    void	*floor_img;
-    void	*wall_img;
-    void	*player_img;
-} t_minimap;
 
 typedef struct s_img{
     void *img;
@@ -69,7 +59,6 @@ typedef struct s_ray{
     double perp_dist;
     int step_x;
     int step_y;
-    int is_hit;
     int side;
 } t_ray;
 
@@ -85,7 +74,6 @@ typedef struct s_player{
 typedef struct s_map{
     int		row_count;
     int		col_count;
-    
     char	**map;
     char	*NO;
     char	*SO;
@@ -97,7 +85,6 @@ typedef struct s_map{
     int		C_col;
     char    start_dir;
     t_window	Window;
-    t_minimap	Minimap;
     void	*F_img;
     void	*C_img;
     t_img   Images[4];
@@ -118,5 +105,6 @@ void	img_init(t_map *data, int i);
 void	check_move(t_map *Map, int keycode);
 int		find_color(char *str);
 void 	cast_ray(t_map *Map, int x);
+void    free_map(t_map *Map);
 #endif
 

@@ -2,7 +2,6 @@
 
 int	err (char *str)
 {
-	//free_all();
 	while (*str)
 		write(1, str++, 1);
 	return (1);
@@ -16,8 +15,8 @@ int	file_check(char *filepath, int type)
 	if (filepath == NULL)
 		return(0);
 	len = ft_strlen(filepath);
-       	if (type == 1)
-	       	if (ft_strncmp(filepath + len - 4, ".cub", 4))
+	if (type == 1)
+		if (ft_strncmp(filepath + len - 4, ".cub", 4))
 			return (0);
 	if (type == 2)
 		if (ft_strncmp(filepath + len - 4, ".xpm", 4))
@@ -59,20 +58,29 @@ int	find_decimal (char *binary)
 	return (result);
 }
 
-int	find_color (char *str)
+int find_color(char *str)
 {
-	char	**rgb;
-	int	temp;
-	int 	i;
-	char	*color;
+    char **rgb = ft_split(str, ',');
+    int i = -1;
+    char *color = NULL;
 
-	color = "";
-	rgb = ft_split(str, ',');
-	i = - 1;
-	while (rgb[++i])
-	{
-		temp = ft_atoi(rgb[i]);
-		color = ft_strjoin(color, find_binary(temp));
-	}
-	return (find_decimal(color));	
+    while (rgb[++i])
+    {
+        int temp = ft_atoi(rgb[i]);
+        char *binary = find_binary(temp);
+        char *temp_color = ft_strjoin(color, binary);
+
+        if (color)
+            free(color);
+
+        color = temp_color;
+    }
+
+    int result = find_decimal(color);
+
+    if (color)
+        free(color);
+
+    return result;
 }
+

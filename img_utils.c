@@ -71,6 +71,8 @@ void	img_init(t_map *data, int i)
 
 void	img_delete(t_map *data)
 {
+	mlx_destroy_image(data->Window.mlx_ptr, data->C_img);
+    mlx_destroy_image(data->Window.mlx_ptr, data->F_img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[0].img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[1].img);
 	mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
