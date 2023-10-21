@@ -33,14 +33,18 @@ int	file_check(char *filepath, int type)
 char	*find_binary (int decimal)
 {
 	char	*binary;
+	char	*temp;
 
-	binary = "";
+	binary = ft_strdup("");
 	while (decimal > 0)
 	{
 		if (decimal % 2 == 1)
-			binary = ft_strjoin("1", binary);
+			temp = ft_strjoin("1", binary);
 		else
-			binary = ft_strjoin("0", binary);
+			temp = ft_strjoin("0", binary);
+		free(binary);
+		binary = temp;
+		temp = NULL;
 		decimal /= 2;
 	}
 	return (binary);
@@ -62,22 +66,31 @@ int find_color(char *str)
 {
     char **rgb = ft_split(str, ',');
     int i;
-    char *color = NULL;
-	int	result;
+    char *color = ft_strdup("");
+    int result;
 
-	i = -1;
+    i = -1;
     while (rgb[++i])
     {
         int temp = ft_atoi(rgb[i]);
         char *binary = find_binary(temp);
         char *temp_color = ft_strjoin(color, binary);
         if (color)
-            free(color);
+            free(color);  
         color = temp_color;
+        free(binary);
     }
     result = find_decimal(color);
-    if (color)
-        free(color);
+    free(color);
+    color = NULL;
+
+    i = -1;
+    while (rgb[++i])
+    {
+        free(rgb[i]);
+        rgb[i] = NULL;
+    }
+    free(rgb);
+    rgb = NULL;
     return result;
 }
-

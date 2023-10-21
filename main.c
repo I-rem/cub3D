@@ -31,24 +31,32 @@ int	init_map (int fd, t_map *Map)
 {
 	char	*str;
 	char	*result;
+	char	*temp;
 
 	str = get_next_line(fd);
-	result = "";
+	result = strdup("");
 	while(str)
 	{
-		result = ft_strjoin(result, str);
+		temp  = ft_strjoin(result, str);
+		free(result);
+		result = temp;
+		temp = NULL;
 		free(str);
 		str = get_next_line(fd);
 	}
 	free(str);
+	str = NULL;
 	map_size(result, Map);
 	if (Map->row_count < 9 || Map->col_count < 4)
 	{
-		free(result);
+		if (result)
+			free(result);
+		result = NULL;
 		return (err("Invalid map format. Error\n", Map));
 	}
 	Map->map = ft_split(result, '\n');
 	free(result);
+	result = NULL;
 	return (texture_check(Map, -1));
 }
 
@@ -60,7 +68,11 @@ void	new_map(t_map *Map)
 	
 	i = -1;
 	while (++i < 6)
+	{
 		free(Map->map[i]);
+		Map->map[i] = NULL;
+	}
+	//free(Map->map);
 	Map->map += 6;
 	i = 0;
 	while (Map->map[i] != NULL)

@@ -18,15 +18,19 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		j;
 
-	if (s1 == NULL && s2 == NULL)
+	if (!s1 && !s2)
 		return (NULL);
-	if (s1 == NULL)
-		s1 = ft_strdup("\0");
-	if (s2 == NULL)
-		s2 = ft_strdup("\0");
-	joined = malloc(sizeof(char) * (ft_strlen((char *)s1) + ft_strlen(s2) + 1));
+
+	if (!s1)
+		s1 = "";
+	if (!s2)
+		s2 = "";
+
+	joined = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+
 	if (!joined)
 		return (NULL);
+
 	i = 0;
 	while (s1[i] != '\0')
 	{

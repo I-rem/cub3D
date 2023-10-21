@@ -87,15 +87,17 @@ int	wall_check (t_map *Map, int i, int j)
 		j = -1;
 		while (Map->map[i][++j])
 		{
-			if (Map->map[i][j] == '0' && (Map->map[i - 1][j] == ' '
-				|| Map->map[i + 1][j] == ' ' || Map->map[i ][j - 1] == ' '
-				|| Map->map[i][j + 1] == ' '))
+			if (Map->map[i][j] == '0' && ((i != 0 && (Map->map[i - 1][j] == ' '))
+				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
+				|| (j != 0 && Map->map[i ][j - 1] == ' ')
+				|| (Map->map[i][j + 1] && Map->map[i][j + 1] == ' ')))
 			return (err("Improper map. Error\n", Map));
 			if ((Map->map[i][j] == 'N' || Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
-				&& (Map->map[i - 1][j] == ' '
-				|| Map->map[i + 1][j] == ' ' || Map->map[i ][j - 1] == ' '
-				|| Map->map[i][j + 1] == ' '))
+				&& ((i != 0 && Map->map[i - 1][j] == ' ')
+				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
+				|| (j != 0 && Map->map[i ][j - 1] == ' ')
+				|| (Map->map[i][j + 1] && Map->map[i][j + 1] == ' ')))
 			return (err("Improper map. Error\n", Map));
 		}
 	}
@@ -104,23 +106,29 @@ int	wall_check (t_map *Map, int i, int j)
 
 int	texture_check(t_map *Map, int i)
 {
+	char	*temp;
 	while (Map->map[++i] && i < 6)
-		Map->map[i] = ft_strdup(ft_strtrim(Map->map[i], " "));
+	{
+		temp = ft_strtrim(Map->map[i], " ");
+		free(Map->map[i]);
+		Map->map[i] = temp;
+		temp = NULL;
+	}
 	i = -1;
 	while (Map->map[++i] && i < 6)
 	{
 		if (!ft_strncmp(Map->map[i], "NO ", 3))
-			Map->NO = ft_strdup(ft_strtrim(ft_strdup(Map->map[i] + 3), " "));
+			Map->NO = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "SO ", 3))
-			Map->SO = ft_strdup(ft_strtrim(ft_strdup(Map->map[i] + 3), " "));
+			Map->SO = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "WE ", 3))
-			Map->WE = ft_strtrim(ft_strdup(Map->map[i] + 3), " ");
+			Map->WE = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "EA ", 3))
-			Map->EA = ft_strtrim(ft_strdup(Map->map[i] + 3), " ");
+			Map->EA = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "F ", 2))
-			Map->F = ft_strtrim(ft_strdup(Map->map[i] + 2), " ");
+			Map->F = ft_strtrim(Map->map[i] + 2, " ");
 		else if (!ft_strncmp(Map->map[i], "C ", 2))
-			Map->C = ft_strtrim(ft_strdup(Map->map[i] + 2), " ");
+			Map->C = ft_strtrim(Map->map[i] + 2, " ");
 	}
 	if (!file_check(Map->NO, 2) || !file_check(Map->SO, 2)
 		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))

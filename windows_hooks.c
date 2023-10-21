@@ -4,32 +4,35 @@ void free_map(t_map *Map)
 {
     int i;
 
-	i = 0;
+	i = -1;
 	img_delete(Map);
-    while (Map->map[i] != NULL)
+    while (Map->map[++i] != NULL)
     {
         free(Map->map[i]);
         Map->map[i] = NULL;
-        i++;
     }
 	if (Map->NO)
     	free(Map->NO);
+	Map->NO = NULL;
 	if (Map->SO)
     	free(Map->SO);
+	Map->SO = NULL;
 	if (Map->WE)
     	free(Map->WE);
+	Map->WE = NULL;
 	if (Map->EA)
     	free(Map->EA);
+	Map->EA = NULL;
 	if (Map->F)
     	free(Map->F);
+	Map->F = NULL;
 	if (Map->C)
     	free(Map->C);
-	
+	Map->C = NULL;
 }
 
 int	close_program(t_map *Map)
 {
-	
 	mlx_destroy_window(Map->Window.mlx_ptr, Map->Window.win_ptr);
 	free_map(Map);
 	exit(EXIT_SUCCESS);
