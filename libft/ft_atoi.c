@@ -32,7 +32,9 @@ int	ft_atoi(const char *str)
 		if (result * sign > 2147483647)
 			return (-1);
 		else if (result * sign < -2147483648)
-			return (0);
+			return (-1);
 	}
+	if (*str != '\0')
+		return (-1);
 	return (result * sign);
 }
