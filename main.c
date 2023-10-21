@@ -43,7 +43,10 @@ int	init_map (int fd, t_map *Map)
 	free(str);
 	map_size(result, Map);
 	if (Map->row_count < 9 || Map->col_count < 4)
-		return (err("Invalid map format. Error\n"));
+	{
+		free(result);
+		return (err("Invalid map format. Error\n", Map));
+	}
 	Map->map = ft_split(result, '\n');
 	free(result);
 	return (texture_check(Map, -1));
@@ -106,10 +109,10 @@ int	main (int argc, char **argv)
 	t_map	Map;
 
 	if (argc != 2)
-		return (err("Incorrect number of arguments. Error\n"));
+		return (err("Incorrect number of arguments. Error\n", NULL));
 	fd = file_check(argv[1], 1);
 	if (!fd)
-		return (err("Invalid file. Error\n"));   
+		return (err("Invalid file. Error\n", NULL));   
 	if (init_map(fd, &Map))
 		return (1);
 	new_map(&Map);
@@ -120,8 +123,7 @@ int	main (int argc, char **argv)
 	Map.Player.pos_y += 0.5;
 	Map.Window.mlx_ptr = mlx_init();
 	if (Map.Window.mlx_ptr == NULL)
-		return (err("Mlx Pointer Error\n"));
+		return (err("Mlx Pointer Error\n", &Map));
 	open_window(&Map);
 	img_init(&Map, -1);
-	//free_all();
 }

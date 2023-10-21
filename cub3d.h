@@ -92,7 +92,7 @@ typedef struct s_map{
     t_player Player;
 } t_map;
 
-int		err(char *str);
+int		err(char *str, t_map *Map);
 int		texture_check(t_map *Map, int i);
 int		file_check(char *filepath, int type);
 void	open_window(t_map *Map);

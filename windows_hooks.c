@@ -2,52 +2,36 @@
 
 void free_map(t_map *Map)
 {
-    int i = 0;
+    int i;
 
-    // Free the map array
+	i = 0;
+	img_delete(Map);
     while (Map->map[i] != NULL)
     {
         free(Map->map[i]);
         Map->map[i] = NULL;
         i++;
     }
-
-    // Free texture paths
-    free(Map->NO);
-    free(Map->SO);
-    free(Map->WE);
-    free(Map->EA);
-    free(Map->F);
-    free(Map->C);
-
-    // Free image data
-    img_delete(Map);
-
-    // Destroy the window
-    mlx_destroy_window(Map->Window.mlx_ptr, Map->Window.win_ptr);
-
-    // Optionally, you can add more cleanup as needed
-
-    // Free any additional resources
-
-    // Free the Map itself
-    free(Map);
+	if (Map->NO)
+    	free(Map->NO);
+	if (Map->SO)
+    	free(Map->SO);
+	if (Map->WE)
+    	free(Map->WE);
+	if (Map->EA)
+    	free(Map->EA);
+	if (Map->F)
+    	free(Map->F);
+	if (Map->C)
+    	free(Map->C);
+	
 }
 
 int	close_program(t_map *Map)
 {
-	int	i;
-
+	
 	mlx_destroy_window(Map->Window.mlx_ptr, Map->Window.win_ptr);
-	img_delete(Map);
-	i = 0;
-	while (Map->map[i] != NULL)
-	{
-		free(Map->map[i]);
-		Map->map[i] = NULL;
-		i++;
-	}
-	free(Map->Window.mlx_ptr);
+	free_map(Map);
 	exit(EXIT_SUCCESS);
 }
 

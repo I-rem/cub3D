@@ -1,7 +1,9 @@
 #include "cub3d.h"
 
-int	err (char *str)
+int	err (char *str, t_map *Map)
 {
+	if (Map)
+		free_map(Map);
 	while (*str)
 		write(1, str++, 1);
 	return (1);
@@ -15,17 +17,15 @@ int	file_check(char *filepath, int type)
 	if (filepath == NULL)
 		return(0);
 	len = ft_strlen(filepath);
-	if (type == 1)
-		if (ft_strncmp(filepath + len - 4, ".cub", 4))
-			return (0);
-	if (type == 2)
-		if (ft_strncmp(filepath + len - 4, ".xpm", 4))
-			return (0);
+	if (type == 1 && ft_strncmp(filepath + len - 4, ".cub", 4))
+		return (0);
+	else if (type == 2 && ft_strncmp(filepath + len - 4, ".xpm", 4))
+		return (0);
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
 	{
 		close(fd);
-		return 0;
+		return (0);
 	}
 	return (fd);
 }
@@ -61,26 +61,23 @@ int	find_decimal (char *binary)
 int find_color(char *str)
 {
     char **rgb = ft_split(str, ',');
-    int i = -1;
+    int i;
     char *color = NULL;
+	int	result;
 
+	i = -1;
     while (rgb[++i])
     {
         int temp = ft_atoi(rgb[i]);
         char *binary = find_binary(temp);
         char *temp_color = ft_strjoin(color, binary);
-
         if (color)
             free(color);
-
         color = temp_color;
     }
-
-    int result = find_decimal(color);
-
+    result = find_decimal(color);
     if (color)
         free(color);
-
     return result;
 }
 

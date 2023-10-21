@@ -71,12 +71,18 @@ void	img_init(t_map *data, int i)
 
 void	img_delete(t_map *data)
 {
-	mlx_destroy_image(data->Window.mlx_ptr, data->C_img);
-    mlx_destroy_image(data->Window.mlx_ptr, data->F_img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Images[0].img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Images[1].img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
-	mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
+	if (data->C_img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->C_img);
+    if (data->F_img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->F_img);
+	if (data->Images[0].img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->Images[0].img);
+	if (data->Images[1].img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->Images[1].img);
+	if (data->Images[2].img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
+	if (data->Images[3].img)
+		mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
 }
 
 void	check_move(t_map *Map, int keycode)
