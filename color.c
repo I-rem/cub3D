@@ -4,8 +4,10 @@ int	err (char *str, t_map *Map)
 {
 	if (Map)
 		free_map(Map);
-	while (*str)
-		write(1, str++, 1);
+	Map = NULL;
+	if (str)
+		while (*str)
+			write(1, str++, 1);
 	return (1);
 }
 
@@ -23,10 +25,7 @@ int	file_check(char *filepath, int type)
 		return (0);
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
-	{
-		close(fd);
 		return (0);
-	}
 	return (fd);
 }
 
@@ -86,7 +85,6 @@ int find_color(char *str)
     result = find_decimal(color);
     free(color);
     color = NULL;
-
     i = -1;
     while (rgb[++i])
     {

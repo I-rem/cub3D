@@ -11,53 +11,57 @@ void	map_size (char *map, t_map *Map)
 	max = 0;
 	row = 0;
 	col = 0;
-	while (map[++i])
-	{
-		if (map[i] == '\n')
+	if (map)
+		while (map[++i])
 		{
-			col = 0;
-			row++;
+			if (map[i] == '\n')
+			{
+				col = 0;
+				row++;
+			}
+			else
+				col++;
+			if (col > max)
+				max = col;
 		}
-		else
-			col++;
-		if (col > max)
-			max = col;
-	}
 	Map->row_count = row;
 	Map->col_count = max;
 }
 
-int	init_map (int fd, t_map *Map)
+int init_map(int fd, t_map *Map)
 {
-	char	*str;
-	char	*result;
-	char	*temp;
+    char *str;
+    char *result;
+    char *temp;
 
-	str = get_next_line(fd);
-	result = strdup("");
-	while(str)
-	{
-		temp  = ft_strjoin(result, str);
-		free(result);
-		result = temp;
-		temp = NULL;
-		free(str);
-		str = get_next_line(fd);
-	}
-	free(str);
-	str = NULL;
-	map_size(result, Map);
-	if (Map->row_count < 9 || Map->col_count < 4)
-	{
-		if (result)
-			free(result);
-		result = NULL;
-		return (err("Invalid map format. Error\n", Map));
-	}
-	Map->map = ft_split(result, '\n');
-	free(result);
 	result = NULL;
-	return (texture_check(Map, -1));
+	temp = NULL;
+    while ((str = get_next_line(fd)) != NULL)
+    {
+        temp = ft_strjoin(result, str);
+        free(str);
+        if (!temp)
+        {
+            free(result);
+            return err("Memory allocation failed. Error\n", Map);
+        }
+        free(result);
+        result = temp;
+		temp = NULL;
+    }
+    if (result == NULL)
+        return err("Failed to read map. Error\n", Map);
+    map_size(result, Map);
+    if (Map->row_count < 9 || Map->col_count < 4)
+    {
+        free(result);
+        return err("Invalid map format. Error\n", Map);
+    }
+    Map->map = ft_split(result, '\n');
+    free(result);
+    if (!Map->map)
+        return err("Memory allocation failed. Error\n", Map);
+    return (texture_check(Map, -1));
 }
 
 void	new_map(t_map *Map)
@@ -69,7 +73,8 @@ void	new_map(t_map *Map)
 	i = -1;
 	while (++i < 6)
 	{
-		free(Map->map[i]);
+		if (Map->map[i])
+			free(Map->map[i]);
 		Map->map[i] = NULL;
 	}
 	//free(Map->map);
@@ -129,7 +134,8 @@ int	main (int argc, char **argv)
 	{
 		free_map(&Map);
 		return (1);
-	}	
+	}
+	close(fd);
 	new_map(&Map);
 	init_dir(&Map);
 	Map.Player.cam_x = 0.0;

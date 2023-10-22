@@ -19,28 +19,31 @@ void	move(t_map *Map, double x, double y)
 	render_map(Map);
 }
 
-void	img_init2(void *img, int color, int y, int x)
+void img_init2(void *img, int color, int y, int x)
 {
-	int	pixel_bits;
-	int	line_bytes;
-	int	endian;
-	char	*buffer;
-	int	pixel;
+    int pixel_bits;
+    int line_bytes;
+    int endian;
+    char *buffer;
+    int pixel;
 
-	buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
-	while(y++ <= WINDOW_HEIGHT / 2)
-	{
-		x = 0;
-		while(x++ <= WINDOW_WIDTH)
-		{
-			pixel = (y * line_bytes) + (x*4);
-			buffer[pixel + 0] = (color) & 0xFF;
-			buffer[pixel + 1] = (color >> 8) & 0xFF;
-                        buffer[pixel + 2] = (color >> 16) & 0xFF;
-			buffer[pixel + 3] = (color >> 24);
-		}
-	}
+    buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
+    while (y < WINDOW_HEIGHT / 2)
+    {
+        x = 0;
+        while (x < WINDOW_WIDTH)
+        {
+            pixel = (y * line_bytes) + (x * 4);
+            buffer[pixel + 0] = (color >> 0) & 0xFF;
+            buffer[pixel + 1] = (color >> 8) & 0xFF; 
+            buffer[pixel + 2] = (color >> 16) & 0xFF;
+            buffer[pixel + 3] = (color >> 24) & 0xFF;
+            x++;
+        }
+        y++;
+    }
 }
+
 void	img_init(t_map *data, int i)
 {
 	data->F_col = find_color(data->F);
