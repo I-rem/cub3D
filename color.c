@@ -42,10 +42,10 @@ char	*find_binary (int decimal)
 			temp = ft_strjoin("1", binary);
 		else
 			temp = ft_strjoin("0", binary);
+		decimal /= 2;
 		free(binary);
 		binary = temp;
 		temp = NULL;
-		decimal /= 2;
 	}
 	return (binary);
 }
@@ -78,7 +78,10 @@ int find_color(char *str)
         if (color)
             free(color);  
         color = temp_color;
-        free(binary);
+		if (binary)
+        	free(binary);
+		binary = NULL;
+		temp_color = NULL;
     }
     result = find_decimal(color);
     free(color);
@@ -90,7 +93,8 @@ int find_color(char *str)
         free(rgb[i]);
         rgb[i] = NULL;
     }
-    free(rgb);
+	if (rgb)
+    	free(rgb);
     rgb = NULL;
     return result;
 }

@@ -126,7 +126,10 @@ int	main (int argc, char **argv)
 	if (!fd)
 		return (err("Invalid file. Error\n", NULL));   
 	if (init_map(fd, &Map))
+	{
+		free_map(&Map);
 		return (1);
+	}	
 	new_map(&Map);
 	init_dir(&Map);
 	Map.Player.cam_x = 0.0;

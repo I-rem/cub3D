@@ -18,6 +18,7 @@ void	draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end, int id)
 		mlx_pixel_put(Map->Window.mlx_ptr, Map->Window.win_ptr, x, y, color);
 		y++;
 	}
+	image = NULL;
 }
 
 void	draw(t_map *Map, int x)
