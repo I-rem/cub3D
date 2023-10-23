@@ -38,11 +38,13 @@ static char **free_words(char **result, size_t count)
     i = 0;
     while (i < count)
     {
-        free(result[i]);
+        if (result[i])
+            free(result[i]);
         result[i] = NULL;
         i++;
     }
-    free(result);
+    if (result)
+        free(result);
     result = NULL;
     return NULL;
 }

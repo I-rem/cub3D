@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+/*
 int	result_len(char *stash)
 {
 	int	len;
@@ -54,5 +54,5 @@ char *ft_strjoin2(char *s1, char *s2)
         return_str[i++] = s2[j++];
     return_str[i] = '\0';
     return (return_str);
-}
+}*/
 

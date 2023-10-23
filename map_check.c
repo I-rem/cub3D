@@ -158,6 +158,8 @@ int	texture_check(t_map *Map, int i)
 	if (!file_check(Map->NO, 2) || !file_check(Map->SO, 2)
 		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))
 		return (err("Invalid texture files. Error\n", Map));
-	return (color_check(Map->F, Map) || color_check(Map->C, Map)
-			|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1));
+	if (color_check(Map->F, Map) || color_check(Map->C, Map)
+			|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1))
+		return (err("Invalid map. Error\n", Map));
+	return 0;
 }

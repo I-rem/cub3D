@@ -18,8 +18,5 @@
 # include <unistd.h>
 # include "../libft/libft.h"
 
-char	*ft_strjoin2(char *s1, char *s2);
-int		result_len(char *stash);
 char	*get_next_line(int fd);
-int		check_newline(char *s);
 #endif

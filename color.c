@@ -2,12 +2,12 @@
 
 int	err (char *str, t_map *Map)
 {
-	if (Map)
-		free_map(Map);
-	Map = NULL;
 	if (str)
 		while (*str)
 			write(1, str++, 1);
+	if (Map)
+		free_map(Map);
+	Map = NULL;
 	return (1);
 }
 

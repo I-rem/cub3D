@@ -42,24 +42,26 @@ int init_map(int fd, t_map *Map)
         free(str);
         if (!temp)
         {
-            free(result);
+			if (result)
+            	free(result);
             return err("Memory allocation failed. Error\n", Map);
         }
-        free(result);
+		if (result)
+        	free(result);
         result = temp;
 		temp = NULL;
     }
     if (result == NULL)
         return err("Failed to read map. Error\n", Map);
     map_size(result, Map);
-    if (Map->row_count < 9 || Map->col_count < 4)
+	if (Map->row_count < 9 || Map->col_count < 4)
     {
         free(result);
         return err("Invalid map format. Error\n", Map);
     }
-    Map->map = ft_split(result, '\n');
+	Map->map = ft_split(result, '\n');
     free(result);
-    if (!Map->map)
+	if (!Map->map)
         return err("Memory allocation failed. Error\n", Map);
     return (texture_check(Map, -1));
 }
@@ -131,10 +133,7 @@ int	main (int argc, char **argv)
 	if (!fd)
 		return (err("Invalid file. Error\n", NULL));   
 	if (init_map(fd, &Map))
-	{
-		free_map(&Map);
 		return (1);
-	}
 	close(fd);
 	new_map(&Map);
 	init_dir(&Map);
@@ -147,4 +146,5 @@ int	main (int argc, char **argv)
 		return (err("Mlx Pointer Error\n", &Map));
 	open_window(&Map);
 	img_init(&Map, -1);
+	free_map(&Map);
 }
