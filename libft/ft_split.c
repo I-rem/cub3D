@@ -59,6 +59,7 @@ static char *make_word(const char *s, char c)
     while (s[len] != '\0' && s[len] != c)
         len++;
     word = (char *)malloc(len + 1);
+	//word = (char *)ft_calloc(sizeof(char), len + 1);
     if (!word)
         return NULL;
     i = 0;
@@ -92,13 +93,19 @@ char **ft_split(char const *s, char c)
         {
             result[i] = make_word(s, c);
             if (!result[i])
-                return free_words(result, i);
+            {
+                free_words(result, i); // Free the memory allocated so far.
+                free(result); // Free the result array.
+                return NULL;
+            }
             i++;
             while (*s != '\0' && *s != c)
                 s++;
         }
     }
     result[i] = NULL;
+
     return result;
 }
+
 

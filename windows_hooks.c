@@ -11,6 +11,7 @@ void free_map(t_map *Map)
         free(Map->map[i]);
         Map->map[i] = NULL;
     }
+	free(Map->map - 6);
 	Map->map = NULL;
 	if (Map->NO)
     	free(Map->NO);
