@@ -88,14 +88,6 @@ void	img_delete(t_map *data)
 		mlx_destroy_image(data->Window.mlx_ptr, data->Images[2].img);
 	if (data->Images && data->Images[3].img)
 		mlx_destroy_image(data->Window.mlx_ptr, data->Images[3].img);
-	/*if (data->Images[0].addr)
-		free(data->Images[0].addr);
-	if (data->Images[1].img)
-		free(data->Images[1].addr);
-	if (data->Images[2].img)
-		free(data->Images[2].addr);
-	if (data->Images[3].img)
-		free(data->Images[3].addr);*/
 }
 
 void	check_move(t_map *Map, int keycode)

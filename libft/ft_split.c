@@ -94,8 +94,8 @@ char **ft_split(char const *s, char c)
             result[i] = make_word(s, c);
             if (!result[i])
             {
-                free_words(result, i); // Free the memory allocated so far.
-                free(result); // Free the result array.
+                free_words(result, i);
+                free(result);
                 return NULL;
             }
             i++;

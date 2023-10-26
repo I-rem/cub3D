@@ -6,12 +6,15 @@ void free_map(t_map *Map)
 
 	i = -1;
 	img_delete(Map);
-   	while (Map->map && Map->map[++i] != NULL)
-    {
-        free(Map->map[i]);
-        Map->map[i] = NULL;
-    }
-	free(Map->map - 6);
+
+	if (Map->map)
+   		while (Map->map && Map->map[++i])
+		{	
+			free(Map->map[i]);
+			Map->map[i] = NULL;
+    	}
+	if (Map->map)
+		free(Map->map - 6);
 	Map->map = NULL;
 	if (Map->NO)
     	free(Map->NO);

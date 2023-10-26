@@ -1,5 +1,32 @@
 #include "cub3d.h"
 
+int		line_check(char *map)
+{
+	int	count;
+	int	i;
+
+	i = -1;
+	count = 0;
+	while (map[++i] && count < 6)
+		if (map[i] == '\n')
+		{
+			count++;
+			while(map[++i] == '\n');
+		}
+	if (count == 6)
+		while (map[++i])
+		{
+			if (map[i] && map[i] == '\n'
+				&& map[i + 1] == '\n')
+			{
+				while(map[++i] == '\n');
+				if (map[i] != '\0')
+					return (1);	
+			}
+		}
+	return (0);
+}
+
 void	map_size (char *map, t_map *Map)
 {
 	int	max;
@@ -28,6 +55,19 @@ void	map_size (char *map, t_map *Map)
 	Map->col_count = max;
 }
 
+void	init_null(t_map *Map)
+{
+	Map->map = NULL;
+	Map->NO = NULL;
+	Map->SO = NULL;
+	Map->WE = NULL;
+	Map->EA = NULL;
+	Map->F = NULL;
+	Map->C = NULL;
+	Map->F_img = NULL;
+	Map->C_img = NULL;
+}
+
 int init_map(int fd, t_map *Map)
 {
     char *str;
@@ -36,6 +76,7 @@ int init_map(int fd, t_map *Map)
 
 	result = NULL;
 	temp = NULL;
+	init_null(Map);
     while ((str = get_next_line(fd)) != NULL)
     {
         temp = ft_strjoin(result, str);
@@ -59,6 +100,8 @@ int init_map(int fd, t_map *Map)
         free(result);
         return err("Invalid map format. Error\n", Map);
     }
+	if (line_check(result))
+		return(err("Empty line in map. Error\n", Map));
 	Map->map = ft_split(result, '\n');
     free(result);
 	if (!Map->map)
@@ -79,7 +122,6 @@ void	new_map(t_map *Map)
 			free(Map->map[i]);
 		Map->map[i] = NULL;
 	}
-	//free(Map->map);
 	Map->map += 6;
 	i = 0;
 	while (Map->map[i] != NULL)
