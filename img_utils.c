@@ -21,11 +21,11 @@ void	move(t_map *Map, double x, double y)
 
 void img_init2(void *img, int color, int y, int x)
 {
-    int pixel_bits;
-    int line_bytes;
-    int endian;
-    char *buffer;
-    int pixel;
+    int		pixel_bits;
+    int		line_bytes;
+    int		endian;
+    char	*buffer;
+    int		pixel;
 
     buffer = mlx_get_data_addr(img, &pixel_bits, &line_bytes, &endian);
     while (y < WINDOW_HEIGHT / 2)

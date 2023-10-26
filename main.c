@@ -1,71 +1,20 @@
 #include "cub3d.h"
 
-int		line_check(char *map)
+int	init_map2(char *result, t_map *Map)
 {
-	int	count;
-	int	i;
-
-	i = -1;
-	count = 0;
-	while (map[++i] && count < 6)
-		if (map[i] == '\n')
-		{
-			count++;
-			while(map[++i] == '\n');
-		}
-	if (count == 6)
-		while (map[++i])
-		{
-			if (map[i] && map[i] == '\n'
-				&& map[i + 1] == '\n')
-			{
-				while(map[++i] == '\n');
-				if (map[i] != '\0')
-					return (1);	
-			}
-		}
-	return (0);
-}
-
-void	map_size (char *map, t_map *Map)
-{
-	int	max;
-	int	row;
-	int	i;
-	int	col;
-
-	i = -1;
-	max = 0;
-	row = 0;
-	col = 0;
-	if (map)
-		while (map[++i])
-		{
-			if (map[i] == '\n')
-			{
-				col = 0;
-				row++;
-			}
-			else
-				col++;
-			if (col > max)
-				max = col;
-		}
-	Map->row_count = row;
-	Map->col_count = max;
-}
-
-void	init_null(t_map *Map)
-{
-	Map->map = NULL;
-	Map->NO = NULL;
-	Map->SO = NULL;
-	Map->WE = NULL;
-	Map->EA = NULL;
-	Map->F = NULL;
-	Map->C = NULL;
-	Map->F_img = NULL;
-	Map->C_img = NULL;
+	map_size(result, Map);
+	if (Map->row_count < 9 || Map->col_count < 4 || line_check(result))
+    {
+		if (result)
+        	free(result);
+        return err("Invalid map format. Error\n", Map);
+    }
+	Map->map = ft_split(result, '\n');
+	if (result)
+    	free(result);
+	if (!Map->map)
+        return err("Memory allocation failed. Error\n", Map);
+    return (texture_check(Map, -1));
 }
 
 int init_map(int fd, t_map *Map)
@@ -77,36 +26,18 @@ int init_map(int fd, t_map *Map)
 	result = NULL;
 	temp = NULL;
 	init_null(Map);
-    while ((str = get_next_line(fd)) != NULL)
+	str = get_next_line(fd);
+    while (str != NULL)
     {
         temp = ft_strjoin(result, str);
         free(str);
+		free(result);
         if (!temp)
-        {
-			if (result)
-            	free(result);
             return err("Memory allocation failed. Error\n", Map);
-        }
-		if (result)
-        	free(result);
         result = temp;
-		temp = NULL;
+		str = get_next_line(fd);
     }
-    if (result == NULL)
-        return err("Failed to read map. Error\n", Map);
-    map_size(result, Map);
-	if (Map->row_count < 9 || Map->col_count < 4)
-    {
-        free(result);
-        return err("Invalid map format. Error\n", Map);
-    }
-	if (line_check(result))
-		return(err("Empty line in map. Error\n", Map));
-	Map->map = ft_split(result, '\n');
-    free(result);
-	if (!Map->map)
-        return err("Memory allocation failed. Error\n", Map);
-    return (texture_check(Map, -1));
+	return (init_map2(result, Map));
 }
 
 void	new_map(t_map *Map)
@@ -123,17 +54,15 @@ void	new_map(t_map *Map)
 		Map->map[i] = NULL;
 	}
 	Map->map += 6;
-	i = 0;
-	while (Map->map[i] != NULL)
-		i++;
+	i = -1;
+	while (Map->map[++i] != NULL);
 	Map->row_count = i;
 	i = -1;
 	max = 0;
 	while (Map->map[++i])
 	{
-		j = 0;
-		while (Map->map[i][j])
-			j++;
+		j = -1;
+		while (Map->map[i][++j]);
 		if (j > max)
 			max = j;
 	}

@@ -52,57 +52,6 @@ int	char_check (t_map *Map, int i, int j, int start_count)
 	return (char_check2(Map, 5, -1));
 }
 
-int color_check(char *color, t_map *Map)
-{
-    char **rgb;
-    int len;
-
-    rgb = ft_split(color, ',');
-    len = 0;
-
-    while (rgb[len])
-        len++;
-    if (len != 3)
-    {
-        for (int i = 0; i < len; i++)
-        {
-            free(rgb[i]);
-            rgb[i] = NULL;
-        }
-        if (rgb)
-            free(rgb);
-        rgb = NULL;
-
-        return err("Wrong color format. Error\n", Map);
-    }
-    for (int i = 0; i < len; i++)
-    {
-        int colorValue = ft_atoi(rgb[i]);
-        if (colorValue > 255 || colorValue < 0)
-        {
-            for (int j = 0; j < len; j++)
-            {
-                free(rgb[j]);
-                rgb[j] = NULL;
-            }
-
-            if (rgb)
-                free(rgb);
-            rgb = NULL;
-
-            return err("Wrong color format. Error\n", Map);
-        }
-        free(rgb[i]);
-        rgb[i] = NULL;
-    }
-    if (rgb)
-        free(rgb);
-    rgb = NULL;
-
-    return 0;
-}
-
-
 int	wall_check (t_map *Map, int i, int j)
 {
 	while (i < Map->col_count && Map->map[++i])
@@ -116,7 +65,8 @@ int	wall_check (t_map *Map, int i, int j)
 				|| (j != 0 && Map->map[i ][j - 1] == ' ')
 				|| (Map->map[i][j + 1] && Map->map[i][j + 1] == ' ')))
 				return (err("Improper map. Error\n", Map));
-			if (Map->map[i][j] && (Map->map[i][j] == 'N' || Map->map[i][j] == 'S'
+			if (Map->map[i][j] && (Map->map[i][j] == 'N'
+				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
 				&& ((i != 0 && Map->map[i - 1][j] == ' ')
 				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
@@ -128,18 +78,8 @@ int	wall_check (t_map *Map, int i, int j)
 	return (0);
 }
 
-int	texture_check(t_map *Map, int i)
+int	texture_check2(t_map *Map, int i)
 {
-	char	*temp;
-
-	while (++i < 6 && Map->map[i])
-	{
-		temp = ft_strtrim(Map->map[i], " ");
-		free(Map->map[i]);
-		Map->map[i] = temp;
-		temp = NULL;
-	}
-	i = -1;
 	while (++i < 6 && Map->map[i])
 	{
 		if (!ft_strncmp(Map->map[i], "NO ", 3))
@@ -161,5 +101,19 @@ int	texture_check(t_map *Map, int i)
 	if (color_check(Map->F, Map) || color_check(Map->C, Map)
 			|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1))
 		return (err("Invalid map. Error\n", Map));
-	return 0;
+	return (0);
+}
+
+int	texture_check(t_map *Map, int i)
+{
+	char	*temp;
+
+	while (++i < 6 && Map->map[i])
+	{
+		temp = ft_strtrim(Map->map[i], " ");
+		free(Map->map[i]);
+		Map->map[i] = temp;
+		temp = NULL;
+	}
+	return (texture_check2(Map, -1));
 }

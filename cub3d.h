@@ -106,5 +106,11 @@ void	check_move(t_map *Map, int keycode);
 int		find_color(char *str);
 void 	cast_ray(t_map *Map, int x);
 void    free_map(t_map *Map);
+void	init_null(t_map *Map);
+int		line_check(char *map);
+int		color_check(char *color, t_map *Map);
+void	map_size (char *map, t_map *Map);
+char	*find_binary (int decimal);
+int		find_decimal (char *binary);
 #endif
 

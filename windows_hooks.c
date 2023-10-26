@@ -1,41 +1,5 @@
 #include "cub3d.h"
 
-void free_map(t_map *Map)
-{
-	int i;
-
-	i = -1;
-	img_delete(Map);
-
-	if (Map->map)
-   		while (Map->map && Map->map[++i])
-		{	
-			free(Map->map[i]);
-			Map->map[i] = NULL;
-    	}
-	if (Map->map)
-		free(Map->map - 6);
-	Map->map = NULL;
-	if (Map->NO)
-    	free(Map->NO);
-	Map->NO = NULL;
-	if (Map->SO)
-    	free(Map->SO);
-	Map->SO = NULL;
-	if (Map->WE)
-    	free(Map->WE);
-	Map->WE = NULL;
-	if (Map->EA)
-    	free(Map->EA);
-	Map->EA = NULL;
-	if (Map->F)
-    	free(Map->F);
-	Map->F = NULL;
-	if (Map->C)
-    	free(Map->C);
-	Map->C = NULL;
-}
-
 int	close_program(t_map *Map)
 {
 	mlx_destroy_window(Map->Window.mlx_ptr, Map->Window.win_ptr);
@@ -60,7 +24,7 @@ int	render_map(t_map *Map)
 	x = -1;
 	while(++x < WINDOW_WIDTH)
 		cast_ray(Map, x);	
-	return 0;
+	return (0);
 }
 
 int	handle_input(int keycode, t_map *M)

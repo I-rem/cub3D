@@ -29,60 +29,12 @@ int	file_check(char *filepath, int type)
 	return (fd);
 }
 
-char	*find_binary (int decimal)
+int	find_color2(char **rgb, char *color)
 {
-	char	*binary;
-	char	*temp;
-
-	binary = ft_strdup("");
-	while (decimal > 0)
-	{
-		if (decimal % 2 == 1)
-			temp = ft_strjoin("1", binary);
-		else
-			temp = ft_strjoin("0", binary);
-		decimal /= 2;
-		free(binary);
-		binary = temp;
-		temp = NULL;
-	}
-	return (binary);
-}
-
-int	find_decimal (char *binary)
-{
-	int	result;
 	int	i;
+	int	result;
 
-	i = -1;
-	result = 0;
-	while (binary[++i])
-		result = result * 2 + binary[i] - '0';
-	return (result);
-}
-
-int find_color(char *str)
-{
-    char **rgb = ft_split(str, ',');
-    int i;
-    char *color = ft_strdup("");
-    int result;
-
-    i = -1;
-    while (rgb[++i])
-    {
-        int temp = ft_atoi(rgb[i]);
-        char *binary = find_binary(temp);
-        char *temp_color = ft_strjoin(color, binary);
-        if (color)
-            free(color);  
-        color = temp_color;
-		if (binary)
-        	free(binary);
-		binary = NULL;
-		temp_color = NULL;
-    }
-    result = find_decimal(color);
+	result = find_decimal(color);
     free(color);
     color = NULL;
     i = -1;
@@ -95,4 +47,32 @@ int find_color(char *str)
     	free(rgb);
     rgb = NULL;
     return result;
+}
+
+int find_color(char *str)
+{
+    char	**rgb;
+    int		i;
+    char	*color;
+	int		temp;
+	char	*binary;
+	char	*temp_color;
+
+    i = -1;
+	rgb = ft_split(str, ',');
+	color = ft_strdup("");
+    while (rgb[++i])
+    {
+        temp = ft_atoi(rgb[i]);
+        binary = find_binary(temp);
+        temp_color = ft_strjoin(color, binary);
+        if (color)
+            free(color);  
+        color = temp_color;
+		if (binary)
+        	free(binary);
+		binary = NULL;
+		temp_color = NULL;
+    }
+	return (find_color2(rgb, color));
 }
