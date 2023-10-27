@@ -52,27 +52,33 @@ int	char_check (t_map *Map, int i, int j, int start_count)
 	return (char_check2(Map, 5, -1));
 }
 
+int	is_bad(char	c)
+{
+	if (!c || c == ' ' || c == '\n' || c == '\0')
+		return (1);
+	return (0);
+}
+
 int	wall_check (t_map *Map, int i, int j)
 {
-	while (i < Map->col_count && Map->map[++i])
+	new_map(Map);
+	while (++i < Map->col_count && Map->map[i])
 	{
 		j = -1;
-		while (j < Map->row_count && Map->map[i][++j])
+		while (++j < Map->row_count && Map->map[i][j])
 		{
 			if ((Map->map[i][j] && Map->map[i][j] == '0')
-				&& (i == 0 || Map->map[i - 1][j] == ' '
-				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
-				|| (j == 0 || Map->map[i ][j - 1] == ' '
-				|| (Map->map[i][j + 1] == ' ')))
-				return (err("Improper map. Error\n", Map));
+				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
+				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
+				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
+				return (1);
 			if (Map->map[i][j] && (Map->map[i][j] == 'N'
 				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
-				&& (i == 0 || Map->map[i - 1][j] == ' '
-				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
-				|| (j != 0 && Map->map[i ][j - 1] == ' ')
-				|| Map->map[i][j + 1] == ' '))
-				return (err("Improper map. Error\n", Map));
+				&& (i == 6 || j== 0 || is_bad(Map->map[i - 1][j])
+				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
+				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
+				return (1);
 		}
 	}
 	return (0);

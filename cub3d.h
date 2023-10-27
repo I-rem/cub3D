@@ -112,5 +112,6 @@ int		color_check(char *color, t_map *Map);
 void	map_size (char *map, t_map *Map);
 char	*find_binary (int decimal);
 int		find_decimal (char *binary);
+void	new_map(t_map *Map);
 #endif
 

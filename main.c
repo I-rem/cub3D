@@ -106,7 +106,6 @@ int	main (int argc, char **argv)
 	if (init_map(fd, &Map))
 		return (1);
 	close(fd);
-	new_map(&Map);
 	init_dir(&Map);
 	Map.Player.cam_x = 0.0;
 	Map.Player.cam_y = 0.66;

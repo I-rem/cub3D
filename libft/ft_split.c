@@ -59,7 +59,7 @@ static char *make_word(const char *s, char c)
     while (s[len] != '\0' && s[len] != c)
         len++;
     word = (char *)malloc(len + 1);
-	//word = (char *)ft_calloc(sizeof(char), len + 1);
+	word = (char *)ft_calloc(sizeof(char), len + 1);
     if (!word)
         return NULL;
     i = 0;
@@ -83,7 +83,6 @@ char **ft_split(char const *s, char c)
     result = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
     if (!result)
         return NULL;
-
     i = 0;
     while (*s != '\0')
     {
