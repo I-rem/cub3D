@@ -60,18 +60,18 @@ int	wall_check (t_map *Map, int i, int j)
 		while (j < Map->row_count && Map->map[i][++j])
 		{
 			if ((Map->map[i][j] && Map->map[i][j] == '0')
-				&& ((i != 0 && (Map->map[i - 1][j] == ' '))
+				&& (i == 0 || Map->map[i - 1][j] == ' '
 				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
-				|| (j != 0 && Map->map[i ][j - 1] == ' ')
-				|| (Map->map[i][j + 1] && Map->map[i][j + 1] == ' ')))
+				|| (j == 0 || Map->map[i ][j - 1] == ' '
+				|| (Map->map[i][j + 1] == ' ')))
 				return (err("Improper map. Error\n", Map));
 			if (Map->map[i][j] && (Map->map[i][j] == 'N'
 				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
-				&& ((i != 0 && Map->map[i - 1][j] == ' ')
+				&& (i == 0 || Map->map[i - 1][j] == ' '
 				|| (Map->map[i + 1] && Map->map[i + 1][j] == ' ')
 				|| (j != 0 && Map->map[i ][j - 1] == ' ')
-				|| (Map->map[i][j + 1] && Map->map[i][j + 1] == ' ')))
+				|| Map->map[i][j + 1] == ' '))
 				return (err("Improper map. Error\n", Map));
 		}
 	}
