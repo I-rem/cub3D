@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:02 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 14:46:35 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 17:27:30 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@
 */
 # define ROTATION_SPEED 0.01744
 # define MOVE_SPEED 0.1
-
 
 typedef struct s_window{
 	void	*mlx_ptr;
