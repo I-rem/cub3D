@@ -14,6 +14,8 @@
 
 int	init_map2(char *result, t_map *Map)
 {
+	int	i;
+
 	map_size(result, Map, -1);
 	if (Map->row_count < 9 || Map->col_count < 4 || line_check(result))
 	{
@@ -22,6 +24,10 @@ int	init_map2(char *result, t_map *Map)
 		return (err("Invalid map format. Error\n", Map));
 	}
 	Map->map = ft_split(result, '\n');
+	i = 0;
+	while (Map->map[i])
+		i++;
+	Map->row_count = i;
 	if (result)
 		free(result);
 	if (!Map->map)
@@ -67,7 +73,6 @@ void	new_map(t_map *Map)
 		Map->map[i] = NULL;
 	}
 	Map->map += 6;
-	Map->row_count -= 6;
 	i = -1;
 	max = 0;
 	while (Map->map[++i])

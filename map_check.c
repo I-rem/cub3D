@@ -67,20 +67,21 @@ int	char_check(t_map *Map, int i, int j, int start_count)
 int	wall_check(t_map *Map, int i, int j)
 {
 	new_map(Map);
+
 	while (++i < Map->col_count && Map->map[i])
 	{
 		j = -1;
 		while (++j < Map->row_count && Map->map[i][j])
-		{
+		{			
 			if ((Map->map[i][j] && Map->map[i][j] == '0')
-				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
+				&& (i == 0 || j == 0 || is_bad(Map->map[i - 1][j])
 				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
 				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
 				return (err("Walls are wrong. Error\n", Map));
 			if (Map->map[i][j] && (Map->map[i][j] == 'N'
 				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
-				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
+				&& (i == 0 || j == 0 || is_bad(Map->map[i - 1][j])
 				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
 				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
 				return (err("Walls are wrong. Error\n", Map));
