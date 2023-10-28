@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:33:03 by ikayacio          #+#    #+#             */
-/*   Updated: 2022/10/15 12:47:05 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:12:56 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	void	*p;
 
-	//if (count == SIZE_MAX && size == SIZE_MAX)
-	//	return (NULL);
+	if (count == SIZE_MAX && size == SIZE_MAX)
+		return (NULL);
 	p = malloc (count * size);
 	if (!p)
 		return (NULL);

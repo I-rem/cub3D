@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:35:33 by ikayacio          #+#    #+#             */
-/*   Updated: 2022/10/19 08:23:10 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:13:17 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	char	*trimmed;
 	size_t	start;
 	size_t	len;
-	size_t	i;
+	int		i;
 
 	if (s1 == NULL)
 		return (NULL);
@@ -28,22 +28,14 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (len > start && ft_strchr(set, s1[len - 1]) != NULL)
 		len--;
 	if (start >= len)
-	{
-		trimmed = ft_strdup("");  
-		if (trimmed == NULL)
-			return (NULL);  
-		return (trimmed);
-	}
-	trimmed = (char *)malloc(sizeof(char) * (len - start + 1));
+		trimmed = ft_strdup("");
+	else
+		trimmed = (char *)malloc(sizeof(char) * (len - start + 1));
 	if (trimmed == NULL)
-		return (NULL);  
-	i = 0;
-	while (start + i < len)
-	{
+		return (NULL);
+	i = -1;
+	while (++i + start < len)
 		trimmed[i] = s1[start + i];
-		i++;
-	}
 	trimmed[i] = '\0';
 	return (trimmed);
 }
-

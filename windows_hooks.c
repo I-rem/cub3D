@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   windows_hooks.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/28 10:51:50 by ikayacio          #+#    #+#             */
+/*   Updated: 2023/10/28 10:51:52 by ikayacio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	close_program(t_map *Map)
@@ -18,11 +30,11 @@ int	render_map(t_map *Map)
 	int	x;
 
 	mlx_put_image_to_window(Map->Window.mlx_ptr,
-							Map->Window.win_ptr, Map->C_img, 0, 0);
+		Map->Window.win_ptr, Map->C_img, 0, 0);
 	mlx_put_image_to_window(Map->Window.mlx_ptr, Map->Window.win_ptr,
-							Map->F_img, 0, WINDOW_HEIGHT / 2);
+		Map->F_img, 0, WINDOW_HEIGHT / 2);
 	x = -1;
-	while(++x < WINDOW_WIDTH)
+	while (++x < WINDOW_WIDTH)
 		cast_ray(Map, x);	
 	return (0);
 }
@@ -36,9 +48,9 @@ int	handle_input(int keycode, t_map *M)
 	if (keycode == ESC)
 		close_program(M);
 	else if (keycode == W || keycode == A || keycode == S || keycode == D)
-	        check_move(M, keycode);
+		check_move(M, keycode);
 	else if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
-    {
+	{
 		rs = ROTATION_SPEED;
 		if (keycode == RIGHT_ARR)
 			rs = -ROTATION_SPEED;
@@ -52,13 +64,12 @@ int	handle_input(int keycode, t_map *M)
 		M->Player.cam_y = old_pl_x * sin(rs) + M->Player.cam_y * cos(rs);
 		render_map(M);
 	}
-    return (0);
+	return (0);
 }
 
 void	open_window(t_map *Map)
 {
 	Map->Window.win_ptr = mlx_new_window(Map->Window.mlx_ptr,
-							WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
+			WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	mlx_hook(Map->Window.win_ptr, 17, 0, close_program, Map);
 }
-

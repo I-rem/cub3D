@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/28 10:51:02 by ikayacio          #+#    #+#             */
+/*   Updated: 2023/10/28 10:51:03 by ikayacio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 # include "mlx_linux/mlx.h"
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
@@ -28,68 +40,68 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65363
-#define ROTATION_SPEED (3.14 / 180.0)
+# define ROTATION_SPEED (3.14 / 180.0)
 # define MOVE_SPEED 0.1
 
 typedef struct s_window{
-    void	*mlx_ptr;
-    void	*win_ptr;
-} t_window;
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_window;
 
 typedef struct s_img{
-    void *img;
-    char *addr;
-    int bpp;
-    int line_len;
-    int endian;
-    int width;
-    int height;
-} t_img;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		width;
+	int		height;
+}	t_img;
 
 typedef struct s_ray{
-    double  pos_x;
-    double  dir_x;
-    double  dir_y;
-    int     map_x;
-    int     map_y;
-    double side_dist_x;
-    double side_dist_y;
-    double delta_dist_x;
-    double delta_dist_y;
-    double perp_dist;
-    int step_x;
-    int step_y;
-    int side;
-} t_ray;
+	double	pos_x;
+	double	dir_x;
+	double	dir_y;
+	int		map_x;
+	int		map_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_dist;
+	int		step_x;
+	int		step_y;
+	int		side;
+}	t_ray;
 
 typedef struct s_player{
-    double     pos_x;
-    double     pos_y;
-    double  dir_x;
-    double  dir_y;
-    double  cam_x;
-    double  cam_y;
-} t_player;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	cam_x;
+	double	cam_y;
+}	t_player;
 
 typedef struct s_map{
-    int		row_count;
-    int		col_count;
-    char	**map;
-    char	*NO;
-    char	*SO;
-    char	*WE;
-    char	*EA;
-    char	*F;
-    char	*C;
-    int		F_col;
-    int		C_col;
-    char    start_dir;
-    t_window	Window;
-    void	*F_img;
-    void	*C_img;
-    t_img   Images[4];
-    t_ray   Ray;
-    t_player Player;
+	int		row_count;
+	int		col_count;
+	char	**map;
+	char	*NO;
+	char	*SO;
+	char	*WE;
+	char	*EA;
+	char	*F;
+	char	*C;
+	int		F_col;
+	int		C_col;
+	char    start_dir;
+	t_window	Window;
+	void	*F_img;
+	void	*C_img;
+	t_img	Images[4];
+	t_ray	Ray;
+	t_player Player;
 } t_map;
 
 int		err(char *str, t_map *Map);
@@ -103,15 +115,17 @@ void	open_window(t_map *Map);
 void	img_delete(t_map *data);
 void	img_init(t_map *data, int i);
 void	check_move(t_map *Map, int keycode);
-int		find_color(char *str);
+int		find_color(char *str, int i);
 void 	cast_ray(t_map *Map, int x);
 void    free_map(t_map *Map);
 void	init_null(t_map *Map);
 int		line_check(char *map);
 int		color_check(char *color, t_map *Map);
-void	map_size (char *map, t_map *Map);
-char	*find_binary (int decimal);
-int		find_decimal (char *binary);
+void	map_size(char *map, t_map *Map, int i);
+char	*find_binary(int decimal);
+int		find_decimal(char *binary);
 void	new_map(t_map *Map);
+int		is_bad(char c);
+int	line_check2(char *map, int count, int i);
 #endif
 

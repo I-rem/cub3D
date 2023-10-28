@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/28 10:50:44 by ikayacio          #+#    #+#             */
+/*   Updated: 2023/10/28 10:50:48 by ikayacio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-char	*find_binary (int decimal)
+char	*find_binary(int decimal)
 {
 	char	*binary;
 	char	*temp;
@@ -20,7 +32,7 @@ char	*find_binary (int decimal)
 	return (binary);
 }
 
-int	find_decimal (char *binary)
+int	find_decimal(char *binary)
 {
 	int	result;
 	int	i;
@@ -34,55 +46,55 @@ int	find_decimal (char *binary)
 
 int	color_check2(t_map *Map, int i, int len, char **rgb)
 {
-	int colorValue;
+	int	color;
 	int	j;
 
 	while (++i < len)
-    {
-        colorValue = ft_atoi(rgb[i]);
-        if (colorValue > 255 || colorValue < 0)
-        {
+	{
+		color = ft_atoi(rgb[i]);
+		if (color > 255 || color < 0)
+		{
 			j = -1;
-            while (++j < len)
-            {
-                free(rgb[j]);
-                rgb[j] = NULL;
-            }
-            if (rgb)
-                free(rgb);
-            rgb = NULL;
-            return err("Wrong color format. Error\n", Map);
-        }
-        free(rgb[i]);
-        rgb[i] = NULL;
-    }
+			while (++j < len)
+			{
+				free(rgb[j]);
+				rgb[j] = NULL;
+			}
+			if (rgb)
+				free(rgb);
+			rgb = NULL;
+			return (err("Wrong color format. Error\n", Map));
+		}
+		free(rgb[i]);
+		rgb[i] = NULL;
+	}
 	free(rgb);
-    rgb = NULL;
-    return (0);
+	rgb = NULL;
+	return (0);
 }
 
-int color_check(char *color, t_map *Map)
+int	color_check(char *color, t_map *Map)
 {
-    char	**rgb;
-    int		len;
+	char	**rgb;
+	int		len;
 	int		i;
 
-    rgb = ft_split(color, ',');
-    len = 0;
+	rgb = ft_split(color, ',');
+	len = 0;
 	while (rgb && rgb[len])
 		len++;
 	i = -1;
-    if (len != 3)
-    {
+	if (len != 3)
+	{
 		while (++i < len)
 		{
 			free(rgb[i]);
-            rgb[i] = NULL;
+			rgb[i] = NULL;
 		}
-        if (rgb)
-            free(rgb);
-        rgb = NULL;
-        return err("Wrong color format. Error\n", Map);
-    }
+		if (rgb)
+			free(rgb);
+		rgb = NULL;
+		return (err("Wrong color format. Error\n", Map))s;
+	}
 	return (color_check2(Map, i, len, rgb));
 }

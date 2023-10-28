@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/28 10:51:31 by ikayacio          #+#    #+#             */
+/*   Updated: 2023/10/28 10:51:32 by ikayacio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	char_check2(t_map *Map, int i, int j)
@@ -25,7 +37,7 @@ int	char_check2(t_map *Map, int i, int j)
 	return (0);
 }
 
-int	char_check (t_map *Map, int i, int j, int start_count)
+int	char_check(t_map *Map, int i, int j, int start_count)
 {
 	while (Map->map[++i])
 	{
@@ -48,18 +60,12 @@ int	char_check (t_map *Map, int i, int j, int start_count)
 		}
 	}
 	if (start_count == 0)
-		return err("No starting position entered on map. Error\n", Map);
+		return (err("No starting position entered on map. Error\n", Map));
 	return (char_check2(Map, 5, -1));
 }
 
-int	is_bad(char	c)
-{
-	if (!c || c == ' ' || c == '\n' || c == '\0')
-		return (1);
-	return (0);
-}
 
-int	wall_check (t_map *Map, int i, int j)
+int	wall_check(t_map *Map, int i, int j)
 {
 	new_map(Map);
 	while (++i < Map->col_count && Map->map[i])
@@ -75,7 +81,7 @@ int	wall_check (t_map *Map, int i, int j)
 			if (Map->map[i][j] && (Map->map[i][j] == 'N'
 				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
-				&& (i == 6 || j== 0 || is_bad(Map->map[i - 1][j])
+				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
 				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
 				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
 				return (1);
@@ -105,7 +111,7 @@ int	texture_check2(t_map *Map, int i)
 		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))
 		return (err("Invalid texture files. Error\n", Map));
 	if (color_check(Map->F, Map) || color_check(Map->C, Map)
-			|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1))
+		|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1))
 		return (err("Invalid map. Error\n", Map));
 	return (0);
 }
