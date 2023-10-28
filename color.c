@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:50:55 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:50:56 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:45:55 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	line_check2(char *map, int count, int i)
 {
 	if (count == 6)
 	{
-		while (++i < ft_strlen(map) && map[i])
+		while (++i < (int)ft_strlen(map) && map[i])
 		{
 			if (map[i] && map[i] == '\n'
 				&& map[i + 1] == '\n')

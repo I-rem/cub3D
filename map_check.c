@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:31 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:51:32 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:47:40 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	char_check(t_map *Map, int i, int j, int start_count)
 				start_count++;
 				if (start_count > 1)
 					return (err("Too many starting positions. Error\n", Map));
-				Map->Player.pos_x = j;
-				Map->Player.pos_y = i - 6;
+				Map->player.pos_x = j;
+				Map->player.pos_y = i - 6;
 				Map->start_dir = Map->map[i][j];
 			}
 			else if (Map->map[i][j] != '1' && Map->map[i][j] != '0'
@@ -63,7 +63,6 @@ int	char_check(t_map *Map, int i, int j, int start_count)
 		return (err("No starting position entered on map. Error\n", Map));
 	return (char_check2(Map, 5, -1));
 }
-
 
 int	wall_check(t_map *Map, int i, int j)
 {
@@ -77,14 +76,14 @@ int	wall_check(t_map *Map, int i, int j)
 				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
 				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
 				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
-				return (1);
+				return (err("Walls are wrong. Error\n", Map));
 			if (Map->map[i][j] && (Map->map[i][j] == 'N'
 				|| Map->map[i][j] == 'S'
 				|| Map->map[i][j] == 'W' || Map->map[i][j] == 'E')
 				&& (i == 6 || j == 0 || is_bad(Map->map[i - 1][j])
 				|| !Map->map[i + 1] || is_bad(Map->map[i + 1][j])
 				|| is_bad(Map->map[i][j - 1]) || is_bad(Map->map[i][j + 1])))
-				return (1);
+				return (err("Walls are wrong. Error\n", Map));
 		}
 	}
 	return (0);
@@ -95,24 +94,24 @@ int	texture_check2(t_map *Map, int i)
 	while (++i < 6 && Map->map[i])
 	{
 		if (!ft_strncmp(Map->map[i], "NO ", 3))
-			Map->NO = ft_strtrim(Map->map[i] + 3, " ");
+			Map->no = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "SO ", 3))
-			Map->SO = ft_strtrim(Map->map[i] + 3, " ");
+			Map->so = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "WE ", 3))
-			Map->WE = ft_strtrim(Map->map[i] + 3, " ");
+			Map->we = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "EA ", 3))
-			Map->EA = ft_strtrim(Map->map[i] + 3, " ");
+			Map->ea = ft_strtrim(Map->map[i] + 3, " ");
 		else if (!ft_strncmp(Map->map[i], "F ", 2))
-			Map->F = ft_strtrim(Map->map[i] + 2, " ");
+			Map->f = ft_strtrim(Map->map[i] + 2, " ");
 		else if (!ft_strncmp(Map->map[i], "C ", 2))
-			Map->C = ft_strtrim(Map->map[i] + 2, " ");
+			Map->c = ft_strtrim(Map->map[i] + 2, " ");
 	}
-	if (!file_check(Map->NO, 2) || !file_check(Map->SO, 2)
-		|| !file_check(Map->WE, 2) || !file_check(Map->EA, 2))
+	if (!file_check(Map->no, 2) || !file_check(Map->so, 2)
+		|| !file_check(Map->we, 2) || !file_check(Map->ea, 2))
 		return (err("Invalid texture files. Error\n", Map));
-	if (color_check(Map->F, Map) || color_check(Map->C, Map)
+	if (color_check(Map->f, Map) || color_check(Map->c, Map)
 		|| char_check(Map, 5, -1, 0) || wall_check(Map, 5, -1))
-		return (err("Invalid map. Error\n", Map));
+		return (1); // return 1 yapalım wall_check içinden error döndürelim
 	return (0);
 }
 

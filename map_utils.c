@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:40 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:51:41 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:48:04 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,31 @@ void	free_map(t_map *Map)
 	if (Map->map - 6)
 		free(Map->map - 6);
 	Map->map = NULL;
-	free(Map->NO);
-	Map->NO = NULL;
-	free(Map->SO);
-	Map->SO = NULL;
-	free(Map->WE);
-	Map->WE = NULL;
-	free(Map->EA);
-	Map->EA = NULL;
-	free(Map->F);
-	Map->F = NULL;
-	free(Map->C);
-	Map->C = NULL;
+	free(Map->no);
+	Map->no = NULL;
+	free(Map->so);
+	Map->so = NULL;
+	free(Map->we);
+	Map->we = NULL;
+	free(Map->ea);
+	Map->ea = NULL;
+	free(Map->f);
+	Map->f = NULL;
+	free(Map->c);
+	Map->c = NULL;
 }
 
 void	init_null(t_map *Map)
 {
 	Map->map = NULL;
-	Map->NO = NULL;
-	Map->SO = NULL;
-	Map->WE = NULL;
-	Map->EA = NULL;
-	Map->F = NULL;
-	Map->C = NULL;
-	Map->F_img = NULL;
-	Map->C_img = NULL;
+	Map->no = NULL;
+	Map->so = NULL;
+	Map->we = NULL;
+	Map->ea = NULL;
+	Map->f = NULL;
+	Map->c = NULL;
+	Map->f_img = NULL;
+	Map->c_img = NULL;
 }
 
 int	line_check(char *map)
@@ -108,4 +108,3 @@ int	is_bad(char c)
 		return (1);
 	return (0);
 }
-

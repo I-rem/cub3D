@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:16 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:51:17 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:49:49 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ void	new_map(t_map *Map)
 	max = 0;
 	while (Map->map[++i])
 	{
-		j = -1;
-		while (Map->map[i][++j]);
+		j = 0;
+		while (Map->map[i][j])
+			j++;
 		if (j > max)
 			max = j;
 	}
@@ -84,23 +85,23 @@ void	init_dir(t_map *Map)
 {
 	if (Map->start_dir == 'W')
 	{
-		Map->Player.dir_x = -1.0;
-		Map->Player.dir_y = 0.0;
+		Map->player.dir_x = -1.0;
+		Map->player.dir_y = 0.0;
 	}
 	else if (Map->start_dir == 'E')
 	{
-		Map->Player.dir_x = 1.0;
-		Map->Player.dir_y = 0.0;
+		Map->player.dir_x = 1.0;
+		Map->player.dir_y = 0.0;
 	}
 	else if (Map->start_dir == 'N')
 	{
-		Map->Player.dir_x = 0.0;
-		Map->Player.dir_y = -1.0;
+		Map->player.dir_x = 0.0;
+		Map->player.dir_y = -1.0;
 	}
 	else if (Map->start_dir == 'S')
 	{
-		Map->Player.dir_x = 0.0;
-		Map->Player.dir_y = 1.0;
+		Map->player.dir_x = 0.0;
+		Map->player.dir_y = 1.0;
 	}
 }
 
@@ -118,12 +119,12 @@ int	main(int argc, char **argv)
 		return (1);
 	close(fd);
 	init_dir(&map);
-	map.Player.cam_x = 0.0;
-	map.Player.cam_y = 0.66;
-	map.Player.pos_x += 0.32;
-	map.Player.pos_y += 0.5;
-	map.Window.mlx_ptr = mlx_init();
-	if (map.Window.mlx_ptr == NULL)
+	map.player.cam_x = 0.0;
+	map.player.cam_y = 0.66;
+	map.player.pos_x += 0.32;
+	map.player.pos_y += 0.5;
+	map.window.mlx_ptr = mlx_init();
+	if (map.window.mlx_ptr == NULL)
 		return (err("Mlx Pointer Error\n", &map));
 	open_window(&map);
 	img_init(&map, -1);

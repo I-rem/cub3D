@@ -6,14 +6,13 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:02 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:51:03 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:46:35 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 # include "mlx_linux/mlx.h"
-# include "gnl/get_next_line.h"
 # include "libft/libft.h"
 # include <math.h>
 # include <unistd.h>
@@ -40,7 +39,7 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65363
-# define ROTATION_SPEED (3.14 / 180.0)
+# define ROTATION_SPEED 0.01744
 # define MOVE_SPEED 0.1
 
 typedef struct s_window{
@@ -84,25 +83,26 @@ typedef struct s_player{
 }	t_player;
 
 typedef struct s_map{
-	int		row_count;
-	int		col_count;
-	char	**map;
-	char	*NO;
-	char	*SO;
-	char	*WE;
-	char	*EA;
-	char	*F;
-	char	*C;
-	int		F_col;
-	int		C_col;
-	char    start_dir;
-	t_window	Window;
-	void	*F_img;
-	void	*C_img;
-	t_img	Images[4];
-	t_ray	Ray;
-	t_player Player;
-} t_map;
+	int			row_count;
+	int			col_count;
+	char		**map;
+	char		*no;
+	char		*so;
+	char		*we;
+	char		*ea;
+	char		*f;
+	char		*c;
+	int			f_col;
+	int			c_col;
+	char		start_dir;
+	t_window	window;
+	void		*f_img;
+	void		*c_img;
+	t_img		images[4];
+	t_ray		ray;
+	t_player	player;
+	int			id;
+}	t_map;
 
 int		err(char *str, t_map *Map);
 int		texture_check(t_map *Map, int i);
@@ -116,8 +116,8 @@ void	img_delete(t_map *data);
 void	img_init(t_map *data, int i);
 void	check_move(t_map *Map, int keycode);
 int		find_color(char *str, int i);
-void 	cast_ray(t_map *Map, int x);
-void    free_map(t_map *Map);
+void	cast_ray(t_map *Map, int x);
+void	free_map(t_map *Map);
 void	init_null(t_map *Map);
 int		line_check(char *map);
 int		color_check(char *color, t_map *Map);
@@ -126,6 +126,5 @@ char	*find_binary(int decimal);
 int		find_decimal(char *binary);
 void	new_map(t_map *Map);
 int		is_bad(char c);
-int	line_check2(char *map, int count, int i);
+int		line_check2(char *map, int count, int i);
 #endif
-

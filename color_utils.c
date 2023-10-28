@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:50:44 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 10:50:48 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:46:13 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	color_check(char *color, t_map *Map)
 		if (rgb)
 			free(rgb);
 		rgb = NULL;
-		return (err("Wrong color format. Error\n", Map))s;
+		return (err("Wrong num of colors. Error\n", Map));
 	}
 	return (color_check2(Map, i, len, rgb));
 }
