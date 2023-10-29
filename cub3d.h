@@ -25,6 +25,7 @@
 # define WINDOW_WIDTH 600
 # define WINDOW_HEIGHT 400
 
+/*
 # define ESC 53
 # define W 13
 # define A 0
@@ -32,8 +33,8 @@
 # define D 2
 # define RIGHT_ARR 124
 # define LEFT_ARR 123
+*/
 
-/*
 # define ESC 65307
 # define W 119
 # define A 97
@@ -41,7 +42,7 @@
 # define D 100
 # define RIGHT_ARR 65361
 # define LEFT_ARR 65363
-*/
+
 # define ROTATION_SPEED 0.01744
 # define MOVE_SPEED 0.1
 
