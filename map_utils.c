@@ -51,6 +51,10 @@ void	init_null(t_map *Map)
 	Map->c = NULL;
 	Map->f_img = NULL;
 	Map->c_img = NULL;
+	Map->images[0].img = NULL;
+	Map->images[1].img = NULL;
+	Map->images[2].img = NULL;
+	Map->images[3].img = NULL;
 }
 
 int	line_check(char *map)
