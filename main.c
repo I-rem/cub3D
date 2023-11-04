@@ -128,7 +128,7 @@ int	main(int argc, char **argv)
 	init_dir(&map);
 	map.player.cam_x = 0.0;
 	map.player.cam_y = 0.66;
-	map.player.pos_x += 0.32;
+	map.player.pos_x += 0.5;
 	map.player.pos_y += 0.5;
 	map.window.mlx_ptr = mlx_init();
 	if (map.window.mlx_ptr == NULL)

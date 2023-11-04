@@ -12,25 +12,30 @@
 
 #include "cub3d.h"
 
-void	draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end)
+void draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end)
 {
-	t_img	*image;
-	int		y;
-	int		img_y;
-	int		color;
+    t_img *image;
+    int y;
+    double tex_x;
+    double tex_y;
 
-	image = &Map->images[Map->id];
-	y = draw_start;
-	while (y < draw_end)
-	{
-		img_y = (int)((y - draw_start) * (double)image->height
-				/ (double)(draw_end - draw_start));
-		color = *(int *)(image->addr + (img_y * image->line_len + x
-					* (image->bpp / 8)));
-		mlx_pixel_put(Map->window.mlx_ptr, Map->window.win_ptr, x, y, color);
-		y++;
-	}
-	image = NULL;
+    image = &Map->images[Map->id];
+    if (Map->ray.side == 0)
+        tex_x = Map->player.pos_y + Map->ray.perp_dist * Map->ray.dir_y;
+    else
+        tex_x = Map->player.pos_x + Map->ray.perp_dist * Map->ray.dir_x;
+    tex_x = (tex_x - floor(tex_x)) * image->width;
+    y = draw_start;
+    while (y < draw_end)
+    {
+        tex_y = (int)((y - draw_start) * ((double)image->height
+			/ (double)(draw_end - draw_start)));
+        int texel_offset = (tex_y * image->line_len + (int)tex_x
+			* (image->bpp / 8));
+        mlx_pixel_put(Map->window.mlx_ptr, Map->window.win_ptr, x, y,
+			*(int *)(image->addr + texel_offset));
+        y++;
+    }
 }
 
 void	draw(t_map *Map, int x)
