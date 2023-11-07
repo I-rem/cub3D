@@ -75,7 +75,7 @@ int	handle_input(int keycode, t_map *M)
 		if (keycode == RIGHT_ARR)
 			M->flags.r_flag = 1;
 		else
-			M->flags.r_flag = 1;
+			M->flags.l_flag = 1;
 		/*
 		rs = ROTATION_SPEED;
 		if (keycode == RIGHT_ARR)
