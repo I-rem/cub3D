@@ -55,10 +55,15 @@ int	init_map(int fd, t_map *Map)
 		result = temp;
 		str = get_next_line(fd);
 	}
+	Map->flags.w_flag = 0;
+	Map->flags.a_flag = 0;
+	Map->flags.s_flag = 0;
+	Map->flags.d_flag = 0;
+	Map->flags.r_flag = 0;
+	Map->flags.l_flag = 0;
 	return (init_map2(result, Map));
 }
 
-// Buradaki row_count değişikliğini kontrol et hata olabilir
 void	new_map(t_map *Map)
 {
 	int	i;

@@ -19,12 +19,6 @@ int	close_program(t_map *Map)
 	exit(EXIT_SUCCESS);
 }
 
-int	handle_no_event(t_map *data)
-{
-	(void)data;
-	return (0);
-}
-
 int	render_map(t_map *Map)
 {
 	int	x;
@@ -39,18 +33,50 @@ int	render_map(t_map *Map)
 	return (0);
 }
 
+int	handle_release(int keycode, t_map *M)
+{
+	if (keycode == W)
+		M->flags.w_flag = 0;
+	if (keycode == A)
+		M->flags.a_flag = 0;
+	if (keycode == S)
+		M->flags.s_flag = 0;
+	if (keycode == D)
+		M->flags.d_flag = 0;
+	if (keycode == RIGHT_ARR)
+		M->flags.r_flag = 0;
+	if (keycode ==LEFT_ARR)
+		M->flags.l_flag = 0;
+	return (0);
+}
 int	handle_input(int keycode, t_map *M)
 {
+	/*
 	double	rs;
 	double	old_dir_x;
 	double	old_pl_x;
-
+	*/
 	if (keycode == ESC)
 		close_program(M);
 	else if (keycode == W || keycode == A || keycode == S || keycode == D)
-		check_move(M, keycode);
+	{
+		if (keycode == W)
+			M->flags.w_flag = 1;
+		else if (keycode == A)
+			M->flags.a_flag = 1;
+		else if (keycode == S)
+			M->flags.s_flag = 1;
+		else if (keycode == D)
+			M->flags.d_flag = 1;
+		//check_move(M, keycode);
+	}
 	else if (keycode == RIGHT_ARR || keycode == LEFT_ARR)
 	{
+		if (keycode == RIGHT_ARR)
+			M->flags.r_flag = 1;
+		else
+			M->flags.r_flag = 1;
+		/*
 		rs = ROTATION_SPEED;
 		if (keycode == RIGHT_ARR)
 			rs = -ROTATION_SPEED;
@@ -63,6 +89,7 @@ int	handle_input(int keycode, t_map *M)
 		M->player.cam_x = M->player.cam_x * cos(rs) - M->player.cam_y * sin(rs);
 		M->player.cam_y = old_pl_x * sin(rs) + M->player.cam_y * cos(rs);
 		render_map(M);
+		*/
 	}
 	return (0);
 }

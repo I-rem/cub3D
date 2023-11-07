@@ -1,6 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                                              */
+/*                                                      :::      ::::::::   */
 /*   img_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
@@ -67,9 +68,51 @@ void	img_init(t_map *data, int i)
 				&data->images[i].bpp, &data->images[i].line_len,
 				&data->images[i].endian);
 	render_map(data);
-	mlx_key_hook(data->window.win_ptr, &handle_input, data);
+	//mlx_key_hook(data->window.win_ptr, &handle_input, data); // this is called on key up i dont like that
+	mlx_hook(data->window.win_ptr, KeyPress, KeyPressMask, &handle_input, data); // register to keypress event
+	mlx_hook(data->window.win_ptr, KeyRelease, KeyReleaseMask, &handle_release, data); // register to keyrelease event
 	mlx_loop_hook(data->window.mlx_ptr, &handle_no_event, data);
 	mlx_loop(data->window.mlx_ptr);
+}
+
+void	rotate(t_map *M)
+{
+	double	rs;
+	double	old_dir_x;
+	double	old_pl_x;
+
+	if (M->flags.r_flag)
+		rs = -ROTATION_SPEED;
+	else if (M->flags.l_flag)
+		rs = ROTATION_SPEED;
+	if (M->start_dir == 'W')
+		rs *= -1;
+	old_dir_x = M->player.dir_x;
+	M->player.dir_x = M->player.dir_x * cos(rs) - M->player.dir_y * sin(rs);
+	M->player.dir_y = old_dir_x * sin(rs) + M->player.dir_y * cos(rs);
+	old_pl_x = M->player.cam_x;
+	M->player.cam_x = M->player.cam_x * cos(rs) - M->player.cam_y * sin(rs);
+	M->player.cam_y = old_pl_x * sin(rs) + M->player.cam_y * cos(rs);
+	render_map(M);
+}
+
+int	handle_no_event(t_map *Map)
+{
+	if (Map->flags.r_flag || Map->flags.l_flag)
+		rotate(Map);
+	if (Map->flags.w_flag || Map->flags.a_flag
+		|| Map->flags.s_flag || Map->flags.d_flag)
+	{
+		if (Map->flags.w_flag)
+			check_move(Map, W);
+		else if (Map->flags.a_flag)
+			check_move(Map, A);
+		else if (Map->flags.s_flag)
+			check_move(Map, S);
+		else if (Map->flags.d_flag)
+			check_move(Map, D);
+	}
+	return (0);
 }
 
 void	img_delete(t_map *data)

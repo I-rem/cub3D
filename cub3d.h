@@ -22,6 +22,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
+# include <X11/X.h>
+
 # define WINDOW_WIDTH 600
 # define WINDOW_HEIGHT 400
 
@@ -86,6 +88,15 @@ typedef struct s_player{
 	double	cam_y;
 }	t_player;
 
+typedef struct s_flags{
+	int	w_flag;
+	int	a_flag;
+	int	s_flag;
+	int	d_flag;
+	int	r_flag;
+	int	l_flag;
+}	t_flags;
+
 typedef struct s_map{
 	int			row_count;
 	int			col_count;
@@ -106,6 +117,7 @@ typedef struct s_map{
 	t_ray		ray;
 	t_player	player;
 	int			id;
+	t_flags		flags;
 }	t_map;
 
 int		err(char *str, t_map *Map);
@@ -131,4 +143,5 @@ int		find_decimal(char *binary);
 void	new_map(t_map *Map);
 int		is_bad(char c);
 int		line_check2(char *map, int count, int i);
+int	handle_release(int keycode, t_map *M);
 #endif
