@@ -46,7 +46,7 @@
 # define LEFT_ARR 65363
 
 # define ROTATION_SPEED 0.01744
-# define MOVE_SPEED 0.1
+# define MOVE_SPEED 0.01
 
 typedef struct s_window{
 	void	*mlx_ptr;
@@ -114,6 +114,7 @@ typedef struct s_map{
 	void		*f_img;
 	void		*c_img;
 	t_img		images[4];
+	t_img		wall;
 	t_ray		ray;
 	t_player	player;
 	int			id;
@@ -143,5 +144,5 @@ int		find_decimal(char *binary);
 void	new_map(t_map *Map);
 int		is_bad(char c);
 int		line_check2(char *map, int count, int i);
-int	handle_release(int keycode, t_map *M);
+int		handle_release(int keycode, t_map *M);
 #endif
