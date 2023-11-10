@@ -15,27 +15,30 @@
 void draw_wall_slice(t_map *Map, int x, int draw_start, int draw_end)
 {
     t_img *image;
-    int y;
-    double tex_x;
-    double tex_y;
-
     image = &Map->images[Map->id];
+    double tex_x;
+
     if (Map->ray.side == 0)
         tex_x = Map->player.pos_y + Map->ray.perp_dist * Map->ray.dir_y;
     else
         tex_x = Map->player.pos_x + Map->ray.perp_dist * Map->ray.dir_x;
     tex_x = (tex_x - floor(tex_x)) * image->width;
-    y = draw_start;
-    while (y < draw_end)
+    int img_height = draw_end - draw_start;
+    int img_width = 1;
+    int img_bits_per_pixel = image->bpp;
+    int img_line_len = image->line_len;
+    int endian; 
+    void *img_ptr = mlx_new_image(Map->window.mlx_ptr, img_width, img_height);
+    char *img_addr = mlx_get_data_addr(img_ptr, &img_bits_per_pixel, &img_line_len, &endian);
+    for (int y = 0; y < img_height; y++)
     {
-        tex_y = (int)((y - draw_start) * ((double)image->height
-			/ (double)(draw_end - draw_start)));
-        int texel_offset = (tex_y * image->line_len + (int)tex_x
-			* (image->bpp / 8));
-        mlx_pixel_put(Map->window.mlx_ptr, Map->window.win_ptr, x, y,
-			*(int *)(image->addr + texel_offset));
-        y++;
+        int tex_y = (int)((y / (double)img_height) * image->height);
+        int texel_offset = (tex_y * image->line_len + (int)tex_x * (image->bpp / 8));
+        int img_offset = y * img_line_len;
+        *(int *)(img_addr + img_offset) = *(int *)(image->addr + texel_offset);
     }
+    mlx_put_image_to_window(Map->window.mlx_ptr, Map->window.win_ptr, img_ptr, x, draw_start);
+    mlx_destroy_image(Map->window.mlx_ptr, img_ptr);
 }
 
 void	draw(t_map *Map, int x)
