@@ -2,7 +2,7 @@
 
 NAME := cub3D
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -Wall -Wextra -Werror -MMD -MP -O3
 SRCS := main.c map_check.c img_utils.c windows_hooks.c color.c ray.c map_utils.c color_utils.c
 OBJS := $(SRCS:.c=.o)
 RM := rm -f

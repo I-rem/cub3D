@@ -22,7 +22,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <string.h>
-# include <X11/X.h>
 
 # define WINDOW_WIDTH 600
 # define WINDOW_HEIGHT 400

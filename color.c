@@ -33,13 +33,16 @@ int	line_check2(char *map, int count, int i)
 
 int	err(char *str, t_map *Map)
 {
+	int	result;
+
+	result = 0;
 	if (str)
 		while (*str)
-			write(1, str++, 1);
+			result += write(1, str++, 1);
 	if (Map)
 		free_map(Map);
 	Map = NULL;
-	return (1);
+	return (result);
 }
 
 int	file_check(char *filepath, int type)

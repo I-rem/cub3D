@@ -45,34 +45,34 @@ void	img_init2(void *img, int color, int y, int x)
 	}
 }
 
-void	img_init(t_map *data, int i)
+void	img_init(t_map *M, int i)
 {
-	data->f_col = find_color(data->f, -1);
-	data->c_col = find_color(data->c, -1);
-	data->f_img = mlx_new_image(data->window.mlx_ptr,
+	M->f_col = find_color(M->f, -1);
+	M->c_col = find_color(M->c, -1);
+	M->f_img = mlx_new_image(M->window.mlx_ptr,
 			WINDOW_WIDTH, WINDOW_HEIGHT / 2);
-	data->c_img = mlx_new_image(data->window.mlx_ptr,
+	M->c_img = mlx_new_image(M->window.mlx_ptr,
 			WINDOW_WIDTH, WINDOW_HEIGHT / 2);
-	img_init2(data->c_img, data->c_col, 0, 0);
-	img_init2(data->f_img, data->f_col, 0, 0);
-	data->images[0].img = mlx_xpm_file_to_image(data->window.mlx_ptr, data->no,
-			&data->images[0].width, &data->images[0].height);
-	data->images[1].img = mlx_xpm_file_to_image(data->window.mlx_ptr, data->so,
-			&data->images[1].width, &data->images[1].height);
-	data->images[2].img = mlx_xpm_file_to_image(data->window.mlx_ptr, data->we,
-			&data->images[2].width, &data->images[2].height);
-	data->images[3].img = mlx_xpm_file_to_image(data->window.mlx_ptr, data->ea,
-			&data->images[3].width, &data->images[3].height);
+	img_init2(M->c_img, M->c_col, 0, 0);
+	img_init2(M->f_img, M->f_col, 0, 0);
+	M->images[0].img = mlx_xpm_file_to_image(M->window.mlx_ptr, M->no,
+			&M->images[0].width, &M->images[0].height);
+	M->images[1].img = mlx_xpm_file_to_image(M->window.mlx_ptr, M->so,
+			&M->images[1].width, &M->images[1].height);
+	M->images[2].img = mlx_xpm_file_to_image(M->window.mlx_ptr, M->we,
+			&M->images[2].width, &M->images[2].height);
+	M->images[3].img = mlx_xpm_file_to_image(M->window.mlx_ptr, M->ea,
+			&M->images[3].width, &M->images[3].height);
 	while (++i < 4)
-		data->images[i].addr = mlx_get_data_addr(data->images[i].img,
-				&data->images[i].bpp, &data->images[i].line_len,
-				&data->images[i].endian);
-	render_map(data);
-	//mlx_key_hook(data->window.win_ptr, &handle_input, data); // this is called on key up i dont like that
-	mlx_hook(data->window.win_ptr, KeyPress, KeyPressMask, &handle_input, data); // register to keypress event
-	mlx_hook(data->window.win_ptr, KeyRelease, KeyReleaseMask, &handle_release, data); // register to keyrelease event
-	mlx_loop_hook(data->window.mlx_ptr, &handle_no_event, data);
-	mlx_loop(data->window.mlx_ptr);
+		M->images[i].addr = mlx_get_data_addr(M->images[i].img,
+				&M->images[i].bpp, &M->images[i].line_len,
+				&M->images[i].endian);
+	render_map(M);
+	//mlx_key_hook(M->window.win_ptr, &handle_input, M); // this is called on key up i dont like that
+	mlx_hook(M->window.win_ptr, 2, 1L<<0, &handle_input, M); // register to keypress event
+	mlx_hook(M->window.win_ptr, 3, 1L<<1, &handle_release, M); // register to keyrelease event
+	mlx_loop_hook(M->window.mlx_ptr, &handle_no_event, M);
+	mlx_loop(M->window.mlx_ptr);
 }
 
 void	rotate(t_map *M)
@@ -81,9 +81,8 @@ void	rotate(t_map *M)
 	double	old_dir_x;
 	double	old_pl_x;
 
-	if (M->flags.r_flag)
-		rs = -ROTATION_SPEED;
-	else if (M->flags.l_flag)
+	rs = -ROTATION_SPEED;
+	if (M->flags.l_flag)
 		rs = ROTATION_SPEED;
 	if (M->start_dir == 'W')
 		rs *= -1;

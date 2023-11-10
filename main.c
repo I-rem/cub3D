@@ -83,13 +83,11 @@ void	new_map(t_map *Map)
 	while (Map->map[++i])
 	{
 		j = 0;
-		write(1, "\n", 1);
 		while (Map->map[i][j])
 			j++;
 		if (j > max)
 			max = j;
 	}
-	write(1, "\n", 1);
 	Map->col_count = max;
 }
 
