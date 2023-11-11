@@ -144,4 +144,6 @@ void	new_map(t_map *Map);
 int		is_bad(char c);
 int		line_check2(char *map, int count, int i);
 int		handle_release(int keycode, t_map *M);
+void	rotate(t_map *M);
+void	draw_wall_slice(t_map *M, int x, int draw_start, int draw_end);
 #endif

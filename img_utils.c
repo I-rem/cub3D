@@ -68,50 +68,10 @@ void	img_init(t_map *M, int i)
 				&M->images[i].bpp, &M->images[i].line_len,
 				&M->images[i].endian);
 	render_map(M);
-	//mlx_key_hook(M->window.win_ptr, &handle_input, M); // this is called on key up i dont like that
-	mlx_hook(M->window.win_ptr, 2, 1L<<0, &handle_input, M); // register to keypress event
-	mlx_hook(M->window.win_ptr, 3, 1L<<1, &handle_release, M); // register to keyrelease event
+	mlx_hook(M->window.win_ptr, 2, 1L<<0, &handle_input, M);
+	mlx_hook(M->window.win_ptr, 3, 1L<<1, &handle_release, M);
 	mlx_loop_hook(M->window.mlx_ptr, &handle_no_event, M);
 	mlx_loop(M->window.mlx_ptr);
-}
-
-void	rotate(t_map *M)
-{
-	double	rs;
-	double	old_dir_x;
-	double	old_pl_x;
-
-	rs = -ROTATION_SPEED;
-	if (M->flags.l_flag)
-		rs = ROTATION_SPEED;
-	if (M->start_dir == 'W')
-		rs *= -1;
-	old_dir_x = M->player.dir_x;
-	M->player.dir_x = M->player.dir_x * cos(rs) - M->player.dir_y * sin(rs);
-	M->player.dir_y = old_dir_x * sin(rs) + M->player.dir_y * cos(rs);
-	old_pl_x = M->player.cam_x;
-	M->player.cam_x = M->player.cam_x * cos(rs) - M->player.cam_y * sin(rs);
-	M->player.cam_y = old_pl_x * sin(rs) + M->player.cam_y * cos(rs);
-	render_map(M);
-}
-
-int	handle_no_event(t_map *Map)
-{
-	if (Map->flags.r_flag || Map->flags.l_flag)
-		rotate(Map);
-	if (Map->flags.w_flag || Map->flags.a_flag
-		|| Map->flags.s_flag || Map->flags.d_flag)
-	{
-		if (Map->flags.w_flag)
-			check_move(Map, W);
-		else if (Map->flags.a_flag)
-			check_move(Map, A);
-		else if (Map->flags.s_flag)
-			check_move(Map, S);
-		else if (Map->flags.d_flag)
-			check_move(Map, D);
-	}
-	return (0);
 }
 
 void	img_delete(t_map *data)
