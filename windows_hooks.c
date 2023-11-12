@@ -6,7 +6,7 @@
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:50 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 14:48:50 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/11/12 10:42:02 by ikayacio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ int	handle_release(int keycode, t_map *M)
 		M->flags.d_flag = 0;
 	if (keycode == RIGHT_ARR)
 		M->flags.r_flag = 0;
-	if (keycode ==LEFT_ARR)
+	if (keycode == LEFT_ARR)
 		M->flags.l_flag = 0;
 	return (0);
 }
+
 int	handle_input(int keycode, t_map *M)
 {
 	if (keycode == ESC)
@@ -64,8 +65,8 @@ int	handle_input(int keycode, t_map *M)
 		else if (keycode == D)
 			M->flags.d_flag = 1;
 	}
-	else if (keycode == RIGHT_ARR ||
-			keycode == LEFT_ARR)
+	else if (keycode == RIGHT_ARR
+		|| keycode == LEFT_ARR)
 	{
 		if (keycode == RIGHT_ARR)
 			M->flags.r_flag = 1;

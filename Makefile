@@ -1,67 +1,33 @@
-# Makefile for cub3D
 
-NAME := cub3D
-CC := gcc
-CFLAGS := -Wall -Wextra -Werror -MMD -MP -O3
 SRCS := main.c map_check.c img_utils.c windows_hooks.c color.c ray.c map_utils.c color_utils.c render_utils.c
-OBJS := $(SRCS:.c=.o)
-RM := rm -f
-UNAME := $(shell uname)
+OBJS = $(SRCS:.c=.o)
+CC = gcc
+MFLAGS = ./mlx/libmlx.a
+LFLAGS = ./libft/libft.a
+AFLAGS =  -Wall -Wextra -Werror -I./mlx -I./libft
+RM = rm -rf
+NAME = cub3D
 
-# Directory where libft.a is located
-LIBFT_DIR := libft
+all :$(MFLAGS) $(LFLAGS) $(NAME)
 
-# Name of the libft library
-LIBFT := $(LIBFT_DIR)/libft.a
+$(MFLAGS):
+	make -C ./mlx
 
-ifeq ($(UNAME), Darwin)
-$(NAME): ${OBJS} $(LIBFT)
-    @echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
-    @ $(MAKE) -C mlx all >/dev/null 2>&1
-    @ cp ./mlx/libmlx.a .
-    $(CC) $(CFLAGS) -g3 -Ofast -o $(NAME) -Imlx $(OBJS) -Lmlx -lmlx -L$(LIBFT_DIR) -lft -lm -framework OpenGL -framework AppKit
-    @echo "$(GREEN)$(NAME) created[0m ✔️"
-endif
+$(LFLAGS):
+	make -C ./libft
 
-ifeq ($(UNAME), Linux)
-$(NAME): ${OBJS} $(LIBFT)
-		@echo "$(GREEN)Linux compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
-		@chmod 777 mlx_linux/configure
-		@ $(MAKE) -C mlx_linux all
-		$(CC) $(CFLAGS) -g3 -o $(NAME) $(OBJS) -Imlx_linux -Lmlx_linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -L$(LIBFT_DIR) -lft
-		@echo "$(GREEN)$(NAME) created[0m ✔️"
-endif
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) $(MFLAGS) $(LFLAGS) $(AFLAGS) -framework OpenGL -framework AppKit -o $(NAME)
 
-all: ${NAME} cub3d.h
+fclean : clean
+	make fclean -C ./libft
+	$(RM) $(NAME)
 
-ifeq ($(UNAME), Darwin)
-clean:
-    @ $(RM) *.o */*.o */*/*.o
-    @ rm -rf $(NAME).dSYM >/dev/null 2>&1
-    @ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✔️"
-endif
+clean :
+	make clean -C ./mlx
+	make clean -C ./libft
+	$(RM) ./*.o ./gnl/*.o
 
-ifeq ($(UNAME), Linux)
-clean:
-		@ $(RM) *.o */*.o */*/*.o
-		@ rm -rf $(NAME).dSYM >/dev/null 2>&1
-		@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✔️"
-endif
+re : fclean all
 
-ifeq ($(UNAME), Linux)
-fclean: clean
-		@ $(RM) ${NAME}
-		@ $(MAKE) -C mlx_linux clean
-		@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binary ✔️"
-endif
-
-ifeq ($(UNAME), Darwin)
-fclean: clean
-    @ $(RM) ${NAME}
-    @ rm libmlx.a
-    @ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binary ✔️"
-endif
-
-re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY : all fclean clean re

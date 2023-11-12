@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                                              */
-/*                                                      :::      ::::::::   */
+/*                                                                            */
+/*                                                      :::      ::::::::     */
 /*   img_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
@@ -15,9 +15,17 @@
 
 void	move(t_map *Map, double x, double y)
 {
-	Map->player.pos_x = x;
-	Map->player.pos_y = y;
-	render_map(Map);
+	if (Map->map[(int)y][(int)(x + 0.2)] != '1'
+			&& Map->map[(int)(y + 0.2)][(int)x] != '1'
+			&& Map->map[(int)(y + 0.2)][(int)(x + 0.2)] != '1'
+			&& Map->map[(int)y][(int)(x - 0.2)] != '1'
+			&& Map->map[(int)(y - 0.2)][(int)x] != '1'
+			&& Map->map[(int)(y - 0.2)][(int)(x - 0.2)] != '1')
+	{
+		Map->player.pos_x = x;
+		Map->player.pos_y = y;
+		render_map(Map);
+	}
 }
 
 void	img_init2(void *img, int color, int y, int x)
@@ -68,8 +76,8 @@ void	img_init(t_map *M, int i)
 				&M->images[i].bpp, &M->images[i].line_len,
 				&M->images[i].endian);
 	render_map(M);
-	mlx_hook(M->window.win_ptr, 2, 1L<<0, &handle_input, M);
-	mlx_hook(M->window.win_ptr, 3, 1L<<1, &handle_release, M);
+	mlx_hook(M->window.win_ptr, 2, 1L << 0, &handle_input, M);
+	mlx_hook(M->window.win_ptr, 3, 1L << 1, &handle_release, M);
 	mlx_loop_hook(M->window.mlx_ptr, &handle_no_event, M);
 	mlx_loop(M->window.mlx_ptr);
 }
