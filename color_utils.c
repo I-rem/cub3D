@@ -63,7 +63,7 @@ int	color_check2(t_map *Map, int i, int len, char **rgb)
 			if (rgb)
 				free(rgb);
 			rgb = NULL;
-			return (err("Wrong color format. Error\n", Map));
+			return (err("Wrong color format. Error\n", NULL));
 		}
 		free(rgb[i]);
 		rgb[i] = NULL;
@@ -94,7 +94,7 @@ int	color_check(char *color, t_map *Map)
 		if (rgb)
 			free(rgb);
 		rgb = NULL;
-		return (err("Wrong num of colors. Error\n", Map));
+		return (err("Wrong num of colors. Error\n", NULL));
 	}
 	return (color_check2(Map, i, len, rgb));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikayacio <ikayacio@student.42istanbul.com  +#+  +:+       +#+        */
+/*   By: bkaramol <bkaramol@42istanbul.com.tr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:51:02 by ikayacio          #+#    #+#             */
-/*   Updated: 2023/10/28 17:27:30 by ikayacio         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:18:11 by bkaramol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define D 2
 # define RIGHT_ARR 123
 # define LEFT_ARR 124
-# define ROTATION_SPEED 0.01744
-# define MOVE_SPEED 0.01
+# define ROTATION_SPEED 0.1744
+# define MOVE_SPEED 0.1
 
 typedef struct s_window{
 	void	*mlx_ptr;
