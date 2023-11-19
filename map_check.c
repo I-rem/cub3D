@@ -31,9 +31,9 @@ int	char_check2(t_map *Map, int i, int j)
 		}
 	}
 	if (zero_count == 0)
-		return (err("No floors. Error\n", Map));
+		return (err("No floors. Error\n", NULL));
 	else if (one_count == 1)
-		return (err("No walls. Error\n", Map));
+		return (err("No walls. Error\n", NULL));
 	return (0);
 }
 
@@ -49,18 +49,18 @@ int	char_check(t_map *Map, int i, int j, int start_count)
 			{
 				start_count++;
 				if (start_count > 1)
-					return (err("Too many starting positions. Error\n", Map));
+					return (err("Too many starting positions. Error\n", NULL));
 				Map->player.pos_x = j;
 				Map->player.pos_y = i - 6;
 				Map->start_dir = Map->map[i][j];
 			}
 			else if (Map->map[i][j] != '1' && Map->map[i][j] != '0'
 					&& Map->map[i][j] != ' ')
-				return (err("Invalid characters on map. Error\n", Map));
+				return (err("Invalid characters on map. Error\n", NULL));
 		}
 	}
 	if (start_count == 0)
-		return (err("No starting position entered on map. Error\n", Map));
+		return (err("No starting position entered on map. Error\n", NULL));
 	return (char_check2(Map, 5, -1));
 }
 
