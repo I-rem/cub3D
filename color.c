@@ -42,7 +42,6 @@ int	err(char *str, t_map *Map)
 	if (Map)
 		free_map(Map);
 	Map = NULL;
-	system("leaks cub3D");
 	return (result);
 }
 
